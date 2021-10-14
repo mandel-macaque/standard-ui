@@ -17,13 +17,6 @@ namespace Microcharts
     {
     }
 
-    public class PointChartImplementation : PointChartImplementation<IPointChart>
-    {
-        public PointChartImplementation(IPointChart control) : base(control)
-        {
-        }
-    }
-
     /// <summary>
     /// ![chart](../images/Point.png)
     ///

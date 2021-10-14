@@ -8,7 +8,7 @@ namespace SimpleControls.Wpf
     {
         public PointChart()
         {
-            InitImplementation(new PointChartImplementation(this));
+            InitImplementation(new PointChartImplementation<IPointChart>(this));
         }
     }
 }
