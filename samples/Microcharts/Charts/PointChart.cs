@@ -7,16 +7,21 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 using static Microsoft.StandardUI.FactoryStatics;
-using SkiaSharp;
-using SkiaSharp.HarfBuzz;
-using Microsoft.StandardUI.Media;
 
 namespace Microcharts
 {
     public interface IPointChart : IChart
     {
+    }
+
+    public class PointChartImplementation : PointChartImplementation<IPointChart>
+    {
+        public PointChartImplementation(IPointChart control) : base(control)
+        {
+        }
     }
 
     /// <summary>
