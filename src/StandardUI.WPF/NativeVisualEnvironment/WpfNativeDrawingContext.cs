@@ -1,13 +1,12 @@
 ﻿using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
-using Microsoft.StandardUI.SkiaVisualizer;
 using System;
 using System.Windows.Media;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;
 
-namespace Microsoft.StandardUI.VisualEnvironment.WpfNative
+namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 {
     public class WpfNativeDrawingContext : IDrawingContext
     {
