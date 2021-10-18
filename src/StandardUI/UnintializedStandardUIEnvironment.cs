@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI
     {
         public static UnintializedStandardUIEnvironment Instance = new UnintializedStandardUIEnvironment();
 
-        public IVisualEnvironment VisualEnvironment => throw new InvalidOperationException("StandardUIEnvironment.Init hasn't been called");
+        public IVisualEnvironment VisualEnvironment => throw new InvalidOperationException("StandardUIEnvironment.Init hasn't been calledX");
 
-        public IStandardUIFactory Factory => throw new InvalidOperationException("StandardUIEnvironment.Init hasn't been called");
+        public IStandardUIFactory Factory => throw new InvalidOperationException("StandardUIEnvironment.Init hasn't been calledA");
     }
 }

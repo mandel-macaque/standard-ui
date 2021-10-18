@@ -50,6 +50,6 @@ namespace Microsoft.StandardUI
         public IUIPropertyMetadata CreatePropertyMetadata(object defaultValue, UIPropertyChangedCallback propertyChangedCallback) => throw CreateInitNotCalledException();
         public IUIProperty RegisterUIProperty(string name, Type propertyType, Type ownerType, IUIPropertyMetadata typeMetadata) => throw CreateInitNotCalledException();
 
-        private Exception CreateInitNotCalledException() => new InvalidOperationException("StandardUIEnvironment.Init hasn't been called");
+        private Exception CreateInitNotCalledException() => new InvalidOperationException("StandardUIEnvironment.Init hasn't been called: " + Environment.StackTrace);
     }
 }

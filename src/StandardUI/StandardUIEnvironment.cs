@@ -5,6 +5,7 @@ namespace Microsoft.StandardUI
     public static class StandardUIEnvironment
     {
         public static IStandardUIEnvironment Instance { get; private set; } = UnintializedStandardUIEnvironment.Instance;
+        public static bool IsInitialized { get; private set; }
 
         public static void Init(IStandardUIEnvironment environment)
         {
@@ -14,6 +15,8 @@ namespace Microsoft.StandardUI
             Instance = environment;
 
             Factory = environment.Factory;
+
+            IsInitialized = true;
         }
 
         public static IVisualEnvironment VisualEnvironment => Instance.VisualEnvironment;

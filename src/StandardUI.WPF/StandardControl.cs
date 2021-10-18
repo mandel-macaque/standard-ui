@@ -1,4 +1,5 @@
 ﻿using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Wpf.NativeVisualEnvironment;
 using System;
 using System.Windows.Media;
 
@@ -9,6 +10,14 @@ namespace Microsoft.StandardUI.Wpf
         private StandardControlImplementation _implementation;
         private StandardUIFrameworkElement? _buildContent;
         private bool _invalid = true;
+
+        public StandardControl()
+        {
+            if (!StandardUIEnvironment.IsInitialized)
+            {
+                WpfStandardUIEnvironment.Init(new WpfNativeVisualEnvironment());
+            }
+        }
 
         protected void InitImplementation(StandardControlImplementation implementation)
         {

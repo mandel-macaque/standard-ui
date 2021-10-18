@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Microsoft.StandardUI.SkiaVisualizer
+namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 {
     public class WpfNativeVisual : IVisual
     {
