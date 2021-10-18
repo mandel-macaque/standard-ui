@@ -1,11 +1,10 @@
 ﻿// This code will eventually be generated.
 
 using Microsoft.StandardUI.Wpf;
-using Microcharts;
 using System.Collections.Generic;
 using Microsoft.StandardUI;
 
-namespace SimpleControls.Wpf
+namespace Microcharts.Wpf
 {
     public abstract class Chart : StandardControl, IChart
     {

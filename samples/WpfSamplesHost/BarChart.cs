@@ -1,8 +1,6 @@
 ﻿// This code will eventually be generated.
 
-using Microcharts;
-
-namespace SimpleControls.Wpf
+namespace Microcharts.Wpf
 {
     public class BarChart : PointChart, IBarChart
     {
