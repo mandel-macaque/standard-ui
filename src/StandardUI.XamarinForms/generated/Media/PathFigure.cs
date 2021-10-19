@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class PathFigure : BindableObject, IPathFigure
+    public class PathFigure : StandardUIBindableObject, IPathFigure
     {
         public static readonly BindableProperty SegmentsProperty = PropertyUtils.Register(nameof(Segments), typeof(IEnumerable<IPathSegment>), typeof(PathFigure), null);
         public static readonly BindableProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointXamarinForms), typeof(PathFigure), PointXamarinForms.Default);

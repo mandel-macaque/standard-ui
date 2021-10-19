@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class GradientStop : BindableObject, IGradientStop
+    public class GradientStop : StandardUIBindableObject, IGradientStop
     {
         public static readonly BindableProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorXamarinForms), typeof(GradientStop), ColorXamarinForms.Default);
         public static readonly BindableProperty OffsetProperty = PropertyUtils.Register(nameof(Offset), typeof(double), typeof(GradientStop), 0.0);

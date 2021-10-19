@@ -2,6 +2,7 @@
 
 using Microsoft.StandardUI.Media;
 using Xamarin.Forms;
+using SweepDirection = Microsoft.StandardUI.Media.SweepDirection;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
@@ -11,7 +12,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
         public static readonly BindableProperty SizeProperty = PropertyUtils.Register(nameof(Size), typeof(SizeXamarinForms), typeof(ArcSegment), SizeXamarinForms.Default);
         public static readonly BindableProperty RotationAngleProperty = PropertyUtils.Register(nameof(RotationAngle), typeof(double), typeof(ArcSegment), 0.0);
         public static readonly BindableProperty IsLargeArcProperty = PropertyUtils.Register(nameof(IsLargeArc), typeof(bool), typeof(ArcSegment), false);
-        public static readonly BindableProperty SweepDirectionProperty = PropertyUtils.Register(nameof(SweepDirection), typeof(Microsoft.StandardUI.Media.SweepDirection), typeof(ArcSegment), Microsoft.StandardUI.Media.SweepDirection.Counterclockwise);
+        public static readonly BindableProperty SweepDirectionProperty = PropertyUtils.Register(nameof(SweepDirection), typeof(SweepDirection), typeof(ArcSegment), SweepDirection.Counterclockwise);
         
         public PointXamarinForms Point
         {
@@ -47,9 +48,9 @@ namespace Microsoft.StandardUI.XamarinForms.Media
             set => SetValue(IsLargeArcProperty, value);
         }
         
-        public Microsoft.StandardUI.Media.SweepDirection SweepDirection
+        public SweepDirection SweepDirection
         {
-            get => (Microsoft.StandardUI.Media.SweepDirection) GetValue(SweepDirectionProperty);
+            get => (SweepDirection) GetValue(SweepDirectionProperty);
             set => SetValue(SweepDirectionProperty, value);
         }
     }

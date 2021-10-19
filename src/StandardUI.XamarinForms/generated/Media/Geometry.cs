@@ -6,7 +6,7 @@ using Microsoft.StandardUI.XamarinForms.Converters;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class Geometry : BindableObject, IGeometry
+    public class Geometry : StandardUIBindableObject, IGeometry
     {
         public static readonly BindableProperty StandardFlatteningToleranceProperty = PropertyUtils.Register(nameof(StandardFlatteningTolerance), typeof(double), typeof(Geometry), 0.25);
         public static readonly BindableProperty TransformProperty = PropertyUtils.Register(nameof(Transform), typeof(Transform), typeof(Geometry), null);

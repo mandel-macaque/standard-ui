@@ -29,6 +29,6 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
             set => Points = new PointsXamarinForms(value);
         }
         
-        public override void Draw(IDrawingContext visualizer) => visualizer.DrawPolyline(this);
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPolyline(this);
     }
 }

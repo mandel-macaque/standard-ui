@@ -6,7 +6,7 @@ using Microsoft.StandardUI.XamarinForms.Converters;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class Brush : BindableObject, IBrush
+    public class Brush : StandardUIBindableObject, IBrush
     {
     }
 }

@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms
 {
-    public class UIPropertyMetadata : BindableObject, IUIPropertyMetadata
+    public class UIPropertyMetadata : StandardUIBindableObject, IUIPropertyMetadata
     {
     }
 }

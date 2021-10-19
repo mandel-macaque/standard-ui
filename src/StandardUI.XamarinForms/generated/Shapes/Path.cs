@@ -22,6 +22,6 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
             set => Data = (Geometry) value;
         }
         
-        public override void Draw(IDrawingContext visualizer) => visualizer.DrawPath(this);
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPath(this);
     }
 }

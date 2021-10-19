@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms
 {
-    public class VisualStateManager : BindableObject, IVisualStateManager
+    public class VisualStateManager : StandardUIBindableObject, IVisualStateManager
     {
     }
 }

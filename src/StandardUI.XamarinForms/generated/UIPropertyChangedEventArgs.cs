@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms
 {
-    public class UIPropertyChangedEventArgs : BindableObject, IUIPropertyChangedEventArgs
+    public class UIPropertyChangedEventArgs : StandardUIBindableObject, IUIPropertyChangedEventArgs
     {
     }
 }

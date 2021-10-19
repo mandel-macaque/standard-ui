@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class PathSegment : BindableObject, IPathSegment
+    public class PathSegment : StandardUIBindableObject, IPathSegment
     {
     }
 }

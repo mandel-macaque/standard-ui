@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms
 {
-    public class TargetPropertyPath : BindableObject, ITargetPropertyPath
+    public class TargetPropertyPath : StandardUIBindableObject, ITargetPropertyPath
     {
         public static readonly BindableProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(PropertyPath), typeof(TargetPropertyPath), null);
         public static readonly BindableProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(object), typeof(TargetPropertyPath), null);

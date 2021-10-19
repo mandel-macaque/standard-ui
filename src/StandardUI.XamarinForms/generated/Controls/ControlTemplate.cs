@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Controls
 {
-    public class ControlTemplate : BindableObject, IControlTemplate
+    public class ControlTemplate : StandardUIBindableObject, IControlTemplate
     {
     }
 }

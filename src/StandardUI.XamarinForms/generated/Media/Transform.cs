@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {
-    public class Transform : BindableObject, ITransform
+    public class Transform : StandardUIBindableObject, ITransform
     {
     }
 }

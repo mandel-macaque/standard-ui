@@ -6,27 +6,28 @@ using Microsoft.StandardUI.Text;
 using Microsoft.StandardUI.XamarinForms.Text;
 using Microsoft.StandardUI.Controls;
 using Xamarin.Forms;
+using Brush = Microsoft.StandardUI.XamarinForms.Media.Brush;
 
 namespace Microsoft.StandardUI.XamarinForms.Controls
 {
     public class TextBlock : StandardUIView, ITextBlock
     {
-        public static readonly BindableProperty ForegroundProperty = PropertyUtils.Register(nameof(Foreground), typeof(Microsoft.StandardUI.XamarinForms.Media.Brush), typeof(TextBlock), null);
+        public static readonly BindableProperty ForegroundProperty = PropertyUtils.Register(nameof(Foreground), typeof(Brush), typeof(TextBlock), null);
         public static readonly BindableProperty TextProperty = PropertyUtils.Register(nameof(Text), typeof(string), typeof(TextBlock), "");
         public static readonly BindableProperty FontStyleProperty = PropertyUtils.Register(nameof(FontStyle), typeof(FontStyle), typeof(TextBlock), FontStyle.Normal);
         public static readonly BindableProperty FontWeightProperty = PropertyUtils.Register(nameof(FontWeight), typeof(FontWeightXamarinForms), typeof(TextBlock), FontWeightXamarinForms.Default);
         public static readonly BindableProperty FontSizeProperty = PropertyUtils.Register(nameof(FontSize), typeof(double), typeof(TextBlock), 11.0);
         public static readonly BindableProperty TextAlignmentProperty = PropertyUtils.Register(nameof(TextAlignment), typeof(TextAlignment), typeof(TextBlock), TextAlignment.Left);
-
-        public Microsoft.StandardUI.XamarinForms.Media.Brush Foreground
+        
+        public Brush Foreground
         {
-            get => (Microsoft.StandardUI.XamarinForms.Media.Brush) GetValue(ForegroundProperty);
+            get => (Brush) GetValue(ForegroundProperty);
             set => SetValue(ForegroundProperty, value);
         }
         IBrush ITextBlock.Foreground
         {
             get => Foreground;
-            set => Foreground = (Microsoft.StandardUI.XamarinForms.Media.Brush) value;
+            set => Foreground = (Brush) value;
         }
         
         public string Text
@@ -63,7 +64,7 @@ namespace Microsoft.StandardUI.XamarinForms.Controls
             get => (TextAlignment) GetValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
-
+        
         public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
     }
 }
