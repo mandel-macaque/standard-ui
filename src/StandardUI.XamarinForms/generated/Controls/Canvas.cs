@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Controls
 {
     public partial class Canvas : Panel, ICanvas
     {
-        public static readonly BindableProperty LeftProperty = PropertyUtils.Create("Left", typeof(double), typeof(VisualElement), 0.0);
-        public static readonly BindableProperty TopProperty = PropertyUtils.Create("Top", typeof(double), typeof(VisualElement), 0.0);
+        public static readonly BindableProperty LeftProperty = PropertyUtils.Register("Left", typeof(double), typeof(VisualElement), 0.0);
+        public static readonly BindableProperty TopProperty = PropertyUtils.Register("Top", typeof(double), typeof(VisualElement), 0.0);
         
         public static double GetLeft(VisualElement element) => (double) element.GetValue(LeftProperty);
         public static void SetLeft(VisualElement element, double value) => element.SetValue(LeftProperty, value);

@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
 {
     public class Rectangle : Shape, IRectangle
     {
-        public static readonly BindableProperty RadiusXProperty = PropertyUtils.Create(nameof(RadiusX), typeof(double), typeof(Rectangle), 0.0);
-        public static readonly BindableProperty RadiusYProperty = PropertyUtils.Create(nameof(RadiusY), typeof(double), typeof(Rectangle), 0.0);
+        public static readonly BindableProperty RadiusXProperty = PropertyUtils.Register(nameof(RadiusX), typeof(double), typeof(Rectangle), 0.0);
+        public static readonly BindableProperty RadiusYProperty = PropertyUtils.Register(nameof(RadiusY), typeof(double), typeof(Rectangle), 0.0);
         
         public double RadiusX
         {

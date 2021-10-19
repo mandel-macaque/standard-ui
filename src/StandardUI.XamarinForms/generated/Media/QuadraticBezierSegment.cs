@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class QuadraticBezierSegment : PathSegment, IQuadraticBezierSegment
     {
-        public static readonly BindableProperty Point1Property = PropertyUtils.Create(nameof(Point1), typeof(PointXamarinForms), typeof(QuadraticBezierSegment), PointXamarinForms.Default);
-        public static readonly BindableProperty Point2Property = PropertyUtils.Create(nameof(Point2), typeof(PointXamarinForms), typeof(QuadraticBezierSegment), PointXamarinForms.Default);
+        public static readonly BindableProperty Point1Property = PropertyUtils.Register(nameof(Point1), typeof(PointXamarinForms), typeof(QuadraticBezierSegment), PointXamarinForms.Default);
+        public static readonly BindableProperty Point2Property = PropertyUtils.Register(nameof(Point2), typeof(PointXamarinForms), typeof(QuadraticBezierSegment), PointXamarinForms.Default);
         
         public PointXamarinForms Point1
         {

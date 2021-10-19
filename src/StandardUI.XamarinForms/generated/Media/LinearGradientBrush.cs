@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class LinearGradientBrush : GradientBrush, ILinearGradientBrush
     {
-        public static readonly BindableProperty StartPointProperty = PropertyUtils.Create(nameof(StartPoint), typeof(PointXamarinForms), typeof(LinearGradientBrush), PointXamarinForms.Default);
-        public static readonly BindableProperty EndPointProperty = PropertyUtils.Create(nameof(EndPoint), typeof(PointXamarinForms), typeof(LinearGradientBrush), PointXamarinForms.Default);
+        public static readonly BindableProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointXamarinForms), typeof(LinearGradientBrush), PointXamarinForms.Default);
+        public static readonly BindableProperty EndPointProperty = PropertyUtils.Register(nameof(EndPoint), typeof(PointXamarinForms), typeof(LinearGradientBrush), PointXamarinForms.Default);
         
         public PointXamarinForms StartPoint
         {

@@ -7,9 +7,9 @@ namespace Microsoft.StandardUI.XamarinForms
 {
     public class Setter : UIPropertyObject, ISetter
     {
-        public static readonly BindableProperty PropertyProperty = PropertyUtils.Create(nameof(Property), typeof(UIProperty), typeof(Setter), null);
-        public static readonly BindableProperty TargetProperty = PropertyUtils.Create(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);
-        public static readonly BindableProperty ValueProperty = PropertyUtils.Create(nameof(Value), typeof(object), typeof(Setter), null);
+        public static readonly BindableProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(UIProperty), typeof(Setter), null);
+        public static readonly BindableProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);
+        public static readonly BindableProperty ValueProperty = PropertyUtils.Register(nameof(Value), typeof(object), typeof(Setter), null);
         
         public UIProperty? Property
         {

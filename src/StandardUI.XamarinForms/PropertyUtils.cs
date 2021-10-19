@@ -18,7 +18,7 @@ namespace Microsoft.StandardUI.XamarinForms
             return Enumerable.Empty<T>();
         }
 
-        public static BindableProperty Create(string propertyName, Type propertyType, Type ownerType, object? defaultValue)
+        public static BindableProperty Register(string propertyName, Type propertyType, Type ownerType, object? defaultValue)
         {
             if (propertyType == typeof(IBrush))
                 propertyType = typeof(Microsoft.StandardUI.XamarinForms.Media.Brush);
@@ -31,6 +31,12 @@ namespace Microsoft.StandardUI.XamarinForms
             }
 
             return BindableProperty.Create(propertyName, propertyType, ownerType, defaultValue: defaultValue,
+                propertyChanged: OnPropertyChanged);
+        }
+
+        public static BindableProperty RegisterAttached(string propertyName, Type propertyType, Type ownerType, object? defaultValue)
+        {
+            return BindableProperty.CreateAttached(propertyName, propertyType, ownerType, defaultValue: defaultValue,
                 propertyChanged: OnPropertyChanged);
         }
 

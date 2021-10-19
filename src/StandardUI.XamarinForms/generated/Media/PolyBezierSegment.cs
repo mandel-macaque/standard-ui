@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class PolyBezierSegment : PathSegment, IPolyBezierSegment
     {
-        public static readonly BindableProperty PointsProperty = PropertyUtils.Create(nameof(Points), typeof(PointsXamarinForms), typeof(PolyBezierSegment), PointsXamarinForms.Default);
+        public static readonly BindableProperty PointsProperty = PropertyUtils.Register(nameof(Points), typeof(PointsXamarinForms), typeof(PolyBezierSegment), PointsXamarinForms.Default);
         
         public PointsXamarinForms Points
         {

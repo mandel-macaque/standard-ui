@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms
 {
     public class TargetPropertyPath : BindableObject, ITargetPropertyPath
     {
-        public static readonly BindableProperty PropertyProperty = PropertyUtils.Create(nameof(Property), typeof(PropertyPath), typeof(TargetPropertyPath), null);
-        public static readonly BindableProperty TargetProperty = PropertyUtils.Create(nameof(Target), typeof(object), typeof(TargetPropertyPath), null);
+        public static readonly BindableProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(PropertyPath), typeof(TargetPropertyPath), null);
+        public static readonly BindableProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(object), typeof(TargetPropertyPath), null);
         
         public PropertyPath Property
         {

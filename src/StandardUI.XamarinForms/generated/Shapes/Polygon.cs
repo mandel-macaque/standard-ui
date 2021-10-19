@@ -9,8 +9,8 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
 {
     public class Polygon : Shape, IPolygon
     {
-        public static readonly BindableProperty FillRuleProperty = PropertyUtils.Create(nameof(FillRule), typeof(FillRule), typeof(Polygon), FillRule.EvenOdd);
-        public static readonly BindableProperty PointsProperty = PropertyUtils.Create(nameof(Points), typeof(PointsXamarinForms), typeof(Polygon), PointsXamarinForms.Default);
+        public static readonly BindableProperty FillRuleProperty = PropertyUtils.Register(nameof(FillRule), typeof(FillRule), typeof(Polygon), FillRule.EvenOdd);
+        public static readonly BindableProperty PointsProperty = PropertyUtils.Register(nameof(Points), typeof(PointsXamarinForms), typeof(Polygon), PointsXamarinForms.Default);
         
         public FillRule FillRule
         {

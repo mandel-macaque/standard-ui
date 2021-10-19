@@ -9,7 +9,7 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
 {
     public class Path : Shape, IPath
     {
-        public static readonly BindableProperty DataProperty = PropertyUtils.Create(nameof(Data), typeof(Geometry), typeof(Path), null);
+        public static readonly BindableProperty DataProperty = PropertyUtils.Register(nameof(Data), typeof(Geometry), typeof(Path), null);
         
         public Geometry Data
         {

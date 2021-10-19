@@ -7,9 +7,9 @@ namespace Microsoft.StandardUI.XamarinForms
 {
     public class VisualStateGroup : UIPropertyObject, IVisualStateGroup
     {
-        public static readonly BindableProperty CurrentStateProperty = PropertyUtils.Create(nameof(CurrentState), typeof(VisualState), typeof(VisualStateGroup), null);
-        public static readonly BindableProperty NameProperty = PropertyUtils.Create(nameof(Name), typeof(string), typeof(VisualStateGroup), "");
-        public static readonly BindableProperty StatesProperty = PropertyUtils.Create(nameof(States), typeof(VisualStateCollection), typeof(VisualStateGroup), null);
+        public static readonly BindableProperty CurrentStateProperty = PropertyUtils.Register(nameof(CurrentState), typeof(VisualState), typeof(VisualStateGroup), null);
+        public static readonly BindableProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualStateGroup), "");
+        public static readonly BindableProperty StatesProperty = PropertyUtils.Register(nameof(States), typeof(VisualStateCollection), typeof(VisualStateGroup), null);
         
         private VisualStateCollection _visualStateCollection;
         

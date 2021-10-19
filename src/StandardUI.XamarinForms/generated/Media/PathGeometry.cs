@@ -8,8 +8,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class PathGeometry : Geometry, IPathGeometry
     {
-        public static readonly BindableProperty FiguresProperty = PropertyUtils.Create(nameof(Figures), typeof(IEnumerable<IPathFigure>), typeof(PathGeometry), null);
-        public static readonly BindableProperty FillRuleProperty = PropertyUtils.Create(nameof(FillRule), typeof(FillRule), typeof(PathGeometry), FillRule.EvenOdd);
+        public static readonly BindableProperty FiguresProperty = PropertyUtils.Register(nameof(Figures), typeof(IEnumerable<IPathFigure>), typeof(PathGeometry), null);
+        public static readonly BindableProperty FillRuleProperty = PropertyUtils.Register(nameof(FillRule), typeof(FillRule), typeof(PathGeometry), FillRule.EvenOdd);
         
         public IEnumerable<IPathFigure> Figures
         {

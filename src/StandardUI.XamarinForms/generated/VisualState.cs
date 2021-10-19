@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms
 {
     public class VisualState : UIPropertyObject, IVisualState
     {
-        public static readonly BindableProperty NameProperty = PropertyUtils.Create(nameof(Name), typeof(string), typeof(VisualState), "");
-        public static readonly BindableProperty SettersProperty = PropertyUtils.Create(nameof(Setters), typeof(SetterCollection), typeof(VisualState), null);
+        public static readonly BindableProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualState), "");
+        public static readonly BindableProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(SetterCollection), typeof(VisualState), null);
         
         private SetterCollection _setterCollection;
         

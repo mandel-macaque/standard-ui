@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class LineSegment : PathSegment, ILineSegment
     {
-        public static readonly BindableProperty PointProperty = PropertyUtils.Create(nameof(Point), typeof(PointXamarinForms), typeof(LineSegment), PointXamarinForms.Default);
+        public static readonly BindableProperty PointProperty = PropertyUtils.Register(nameof(Point), typeof(PointXamarinForms), typeof(LineSegment), PointXamarinForms.Default);
         
         public PointXamarinForms Point
         {

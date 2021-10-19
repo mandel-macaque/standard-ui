@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class PolyLineSegment : PathSegment, IPolyLineSegment
     {
-        public static readonly BindableProperty PointsProperty = PropertyUtils.Create(nameof(Points), typeof(PointsXamarinForms), typeof(PolyLineSegment), PointsXamarinForms.Default);
+        public static readonly BindableProperty PointsProperty = PropertyUtils.Register(nameof(Points), typeof(PointsXamarinForms), typeof(PolyLineSegment), PointsXamarinForms.Default);
         
         public PointsXamarinForms Points
         {

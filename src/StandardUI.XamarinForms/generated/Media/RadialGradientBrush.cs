@@ -7,9 +7,9 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class RadialGradientBrush : GradientBrush, IRadialGradientBrush
     {
-        public static readonly BindableProperty CenterProperty = PropertyUtils.Create(nameof(Center), typeof(PointXamarinForms), typeof(RadialGradientBrush), PointXamarinForms.CenterDefault);
-        public static readonly BindableProperty GradientOriginProperty = PropertyUtils.Create(nameof(GradientOrigin), typeof(PointXamarinForms), typeof(RadialGradientBrush), PointXamarinForms.CenterDefault);
-        public static readonly BindableProperty RadiusXProperty = PropertyUtils.Create(nameof(RadiusX), typeof(double), typeof(RadialGradientBrush), 0.5);
+        public static readonly BindableProperty CenterProperty = PropertyUtils.Register(nameof(Center), typeof(PointXamarinForms), typeof(RadialGradientBrush), PointXamarinForms.CenterDefault);
+        public static readonly BindableProperty GradientOriginProperty = PropertyUtils.Register(nameof(GradientOrigin), typeof(PointXamarinForms), typeof(RadialGradientBrush), PointXamarinForms.CenterDefault);
+        public static readonly BindableProperty RadiusXProperty = PropertyUtils.Register(nameof(RadiusX), typeof(double), typeof(RadialGradientBrush), 0.5);
         
         public PointXamarinForms Center
         {

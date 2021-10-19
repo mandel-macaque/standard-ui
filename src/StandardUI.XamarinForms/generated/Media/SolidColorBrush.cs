@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class SolidColorBrush : Brush, ISolidColorBrush
     {
-        public static readonly BindableProperty ColorProperty = PropertyUtils.Create(nameof(Color), typeof(ColorXamarinForms), typeof(SolidColorBrush), ColorXamarinForms.Default);
+        public static readonly BindableProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorXamarinForms), typeof(SolidColorBrush), ColorXamarinForms.Default);
         
         public ColorXamarinForms Color
         {

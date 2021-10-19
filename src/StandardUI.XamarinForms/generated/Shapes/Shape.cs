@@ -9,12 +9,12 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
 {
     public class Shape : StandardUIView, IShape
     {
-        public static readonly BindableProperty FillProperty = PropertyUtils.Create(nameof(Fill), typeof(Microsoft.StandardUI.XamarinForms.Media.Brush), typeof(Shape), null);
-        public static readonly BindableProperty StrokeProperty = PropertyUtils.Create(nameof(Stroke), typeof(Microsoft.StandardUI.XamarinForms.Media.Brush), typeof(Shape), null);
-        public static readonly BindableProperty StrokeThicknessProperty = PropertyUtils.Create(nameof(StrokeThickness), typeof(double), typeof(Shape), 1.0);
-        public static readonly BindableProperty StrokeMiterLimitProperty = PropertyUtils.Create(nameof(StrokeMiterLimit), typeof(double), typeof(Shape), 10.0);
-        public static readonly BindableProperty StrokeLineCapProperty = PropertyUtils.Create(nameof(StrokeLineCap), typeof(PenLineCap), typeof(Shape), PenLineCap.Flat);
-        public static readonly BindableProperty StrokeLineJoinProperty = PropertyUtils.Create(nameof(StrokeLineJoin), typeof(PenLineJoin), typeof(Shape), PenLineJoin.Miter);
+        public static readonly BindableProperty FillProperty = PropertyUtils.Register(nameof(Fill), typeof(Microsoft.StandardUI.XamarinForms.Media.Brush), typeof(Shape), null);
+        public static readonly BindableProperty StrokeProperty = PropertyUtils.Register(nameof(Stroke), typeof(Microsoft.StandardUI.XamarinForms.Media.Brush), typeof(Shape), null);
+        public static readonly BindableProperty StrokeThicknessProperty = PropertyUtils.Register(nameof(StrokeThickness), typeof(double), typeof(Shape), 1.0);
+        public static readonly BindableProperty StrokeMiterLimitProperty = PropertyUtils.Register(nameof(StrokeMiterLimit), typeof(double), typeof(Shape), 10.0);
+        public static readonly BindableProperty StrokeLineCapProperty = PropertyUtils.Register(nameof(StrokeLineCap), typeof(PenLineCap), typeof(Shape), PenLineCap.Flat);
+        public static readonly BindableProperty StrokeLineJoinProperty = PropertyUtils.Register(nameof(StrokeLineJoin), typeof(PenLineJoin), typeof(Shape), PenLineJoin.Miter);
 
         public Microsoft.StandardUI.XamarinForms.Media.Brush? Fill
         {

@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class TranslateTransform : Transform, ITranslateTransform
     {
-        public static readonly BindableProperty XProperty = PropertyUtils.Create(nameof(X), typeof(double), typeof(TranslateTransform), 0.0);
-        public static readonly BindableProperty YProperty = PropertyUtils.Create(nameof(Y), typeof(double), typeof(TranslateTransform), 0.0);
+        public static readonly BindableProperty XProperty = PropertyUtils.Register(nameof(X), typeof(double), typeof(TranslateTransform), 0.0);
+        public static readonly BindableProperty YProperty = PropertyUtils.Register(nameof(Y), typeof(double), typeof(TranslateTransform), 0.0);
         
         public double X
         {

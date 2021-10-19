@@ -8,10 +8,10 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class PathFigure : BindableObject, IPathFigure
     {
-        public static readonly BindableProperty SegmentsProperty = PropertyUtils.Create(nameof(Segments), typeof(IEnumerable<IPathSegment>), typeof(PathFigure), null);
-        public static readonly BindableProperty StartPointProperty = PropertyUtils.Create(nameof(StartPoint), typeof(PointXamarinForms), typeof(PathFigure), PointXamarinForms.Default);
-        public static readonly BindableProperty IsClosedProperty = PropertyUtils.Create(nameof(IsClosed), typeof(bool), typeof(PathFigure), false);
-        public static readonly BindableProperty IsFilledProperty = PropertyUtils.Create(nameof(IsFilled), typeof(bool), typeof(PathFigure), true);
+        public static readonly BindableProperty SegmentsProperty = PropertyUtils.Register(nameof(Segments), typeof(IEnumerable<IPathSegment>), typeof(PathFigure), null);
+        public static readonly BindableProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointXamarinForms), typeof(PathFigure), PointXamarinForms.Default);
+        public static readonly BindableProperty IsClosedProperty = PropertyUtils.Register(nameof(IsClosed), typeof(bool), typeof(PathFigure), false);
+        public static readonly BindableProperty IsFilledProperty = PropertyUtils.Register(nameof(IsFilled), typeof(bool), typeof(PathFigure), true);
         
         public IEnumerable<IPathSegment> Segments
         {

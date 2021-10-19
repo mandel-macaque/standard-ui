@@ -7,10 +7,10 @@ namespace Microsoft.StandardUI.XamarinForms.Shapes
 {
     public class Line : Shape, ILine
     {
-        public static readonly BindableProperty X1Property = PropertyUtils.Create(nameof(X1), typeof(double), typeof(Line), 0.0);
-        public static readonly BindableProperty Y1Property = PropertyUtils.Create(nameof(Y1), typeof(double), typeof(Line), 0.0);
-        public static readonly BindableProperty X2Property = PropertyUtils.Create(nameof(X2), typeof(double), typeof(Line), 0.0);
-        public static readonly BindableProperty Y2Property = PropertyUtils.Create(nameof(Y2), typeof(double), typeof(Line), 0.0);
+        public static readonly BindableProperty X1Property = PropertyUtils.Register(nameof(X1), typeof(double), typeof(Line), 0.0);
+        public static readonly BindableProperty Y1Property = PropertyUtils.Register(nameof(Y1), typeof(double), typeof(Line), 0.0);
+        public static readonly BindableProperty X2Property = PropertyUtils.Register(nameof(X2), typeof(double), typeof(Line), 0.0);
+        public static readonly BindableProperty Y2Property = PropertyUtils.Register(nameof(Y2), typeof(double), typeof(Line), 0.0);
 
         public double X1
         {

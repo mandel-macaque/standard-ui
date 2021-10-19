@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms.Controls
 {
     public class Panel : StandardUIView, IPanel
     {
-        public static readonly BindableProperty ChildrenProperty = PropertyUtils.Create(nameof(Children), typeof(UIElementCollection), typeof(Panel), null);
+        public static readonly BindableProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection), typeof(Panel), null);
         
         private UIElementCollection _uiElementCollection;
         

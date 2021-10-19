@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class TransformGroup : Transform, ITransformGroup
     {
-        public static readonly BindableProperty ChildrenProperty = PropertyUtils.Create(nameof(Children), typeof(IEnumerable<ITransform>), typeof(TransformGroup), null);
+        public static readonly BindableProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(IEnumerable<ITransform>), typeof(TransformGroup), null);
         
         public IEnumerable<ITransform> Children => (IEnumerable<ITransform>) GetValue(ChildrenProperty);
     }

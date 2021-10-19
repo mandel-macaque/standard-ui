@@ -8,8 +8,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class Geometry : BindableObject, IGeometry
     {
-        public static readonly BindableProperty StandardFlatteningToleranceProperty = PropertyUtils.Create(nameof(StandardFlatteningTolerance), typeof(double), typeof(Geometry), 0.25);
-        public static readonly BindableProperty TransformProperty = PropertyUtils.Create(nameof(Transform), typeof(Transform), typeof(Geometry), null);
+        public static readonly BindableProperty StandardFlatteningToleranceProperty = PropertyUtils.Register(nameof(StandardFlatteningTolerance), typeof(double), typeof(Geometry), 0.25);
+        public static readonly BindableProperty TransformProperty = PropertyUtils.Register(nameof(Transform), typeof(Transform), typeof(Geometry), null);
         
         public double StandardFlatteningTolerance
         {

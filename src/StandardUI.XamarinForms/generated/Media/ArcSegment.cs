@@ -7,11 +7,11 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class ArcSegment : PathSegment, IArcSegment
     {
-        public static readonly BindableProperty PointProperty = PropertyUtils.Create(nameof(Point), typeof(PointXamarinForms), typeof(ArcSegment), PointXamarinForms.Default);
-        public static readonly BindableProperty SizeProperty = PropertyUtils.Create(nameof(Size), typeof(SizeXamarinForms), typeof(ArcSegment), SizeXamarinForms.Default);
-        public static readonly BindableProperty RotationAngleProperty = PropertyUtils.Create(nameof(RotationAngle), typeof(double), typeof(ArcSegment), 0.0);
-        public static readonly BindableProperty IsLargeArcProperty = PropertyUtils.Create(nameof(IsLargeArc), typeof(bool), typeof(ArcSegment), false);
-        public static readonly BindableProperty SweepDirectionProperty = PropertyUtils.Create(nameof(SweepDirection), typeof(Microsoft.StandardUI.Media.SweepDirection), typeof(ArcSegment), Microsoft.StandardUI.Media.SweepDirection.Counterclockwise);
+        public static readonly BindableProperty PointProperty = PropertyUtils.Register(nameof(Point), typeof(PointXamarinForms), typeof(ArcSegment), PointXamarinForms.Default);
+        public static readonly BindableProperty SizeProperty = PropertyUtils.Register(nameof(Size), typeof(SizeXamarinForms), typeof(ArcSegment), SizeXamarinForms.Default);
+        public static readonly BindableProperty RotationAngleProperty = PropertyUtils.Register(nameof(RotationAngle), typeof(double), typeof(ArcSegment), 0.0);
+        public static readonly BindableProperty IsLargeArcProperty = PropertyUtils.Register(nameof(IsLargeArc), typeof(bool), typeof(ArcSegment), false);
+        public static readonly BindableProperty SweepDirectionProperty = PropertyUtils.Register(nameof(SweepDirection), typeof(Microsoft.StandardUI.Media.SweepDirection), typeof(ArcSegment), Microsoft.StandardUI.Media.SweepDirection.Counterclockwise);
         
         public PointXamarinForms Point
         {

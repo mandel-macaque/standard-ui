@@ -7,8 +7,8 @@ namespace Microsoft.StandardUI.XamarinForms.Media
 {
     public class GradientStop : BindableObject, IGradientStop
     {
-        public static readonly BindableProperty ColorProperty = PropertyUtils.Create(nameof(Color), typeof(ColorXamarinForms), typeof(GradientStop), ColorXamarinForms.Default);
-        public static readonly BindableProperty OffsetProperty = PropertyUtils.Create(nameof(Offset), typeof(double), typeof(GradientStop), 0.0);
+        public static readonly BindableProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorXamarinForms), typeof(GradientStop), ColorXamarinForms.Default);
+        public static readonly BindableProperty OffsetProperty = PropertyUtils.Register(nameof(Offset), typeof(double), typeof(GradientStop), 0.0);
         
         public ColorXamarinForms Color
         {

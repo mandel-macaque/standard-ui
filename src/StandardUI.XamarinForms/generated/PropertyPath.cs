@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.XamarinForms
 {
     public class PropertyPath : BindableObject, IPropertyPath
     {
-        public static readonly BindableProperty PathProperty = PropertyUtils.Create(nameof(Path), typeof(string), typeof(PropertyPath), "");
+        public static readonly BindableProperty PathProperty = PropertyUtils.Register(nameof(Path), typeof(string), typeof(PropertyPath), "");
         
         public string Path => (string) GetValue(PathProperty);
     }
