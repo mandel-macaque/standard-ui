@@ -298,22 +298,20 @@ namespace StandardUI.CodeGenerator
         {
             Source source = new Source(Context);
 
-            var usingNames = new Dictionary<string, NameSyntax>();
+            var usings = new HashSet<string>();
 
             foreach (UsingDirectiveSyntax sourceUsing in _sourceCompilationUnit.Usings)
             {
                 NameSyntax sourceUsingName = sourceUsing.Name;
-                AddUsing(usingNames, sourceUsingName);
+                AddUsing(usings, sourceUsingName);
 
                 if (sourceUsingName.ToString().StartsWith("Microsoft.StandardUI."))
-                    AddUsing(usingNames, Context.ToDestinationNamespaceName(sourceUsingName));
+                    AddUsing(usings, Context.ToDestinationNamespaceName(sourceUsingName));
             }
 
-            AddUsing(usingNames, _sourceNamespaceName);
+            AddUsing(usings, _sourceNamespaceName);
 
-            IEnumerable<NameSyntax> outputTypeUsings = OutputType.GetUsings(hasPropertyDescriptors, DestinationTypeHasTypeConverterAttribute());
-            foreach (NameSyntax outputTypeUsing in outputTypeUsings)
-                AddUsing(usingNames, outputTypeUsing);
+            OutputType.AddUsings(usings, hasPropertyDescriptors, DestinationTypeHasTypeConverterAttribute());
 
             foreach (var member in Declaration.Members)
             {
@@ -322,15 +320,24 @@ namespace StandardUI.CodeGenerator
 
                 // Array.Empty requires System
                 if (modelProperty.Type is ArrayTypeSyntax)
-                    AddUsing(usingNames, IdentifierName("System"));
+                    AddUsing(usings, IdentifierName("System"));
             }
 
             if (DestinationTypeHasTypeConverterAttribute())
-                AddUsing(usingNames, QualifiedName(OutputType.RootNamespace, IdentifierName("Converters")));
+                AddUsing(usings, QualifiedName(OutputType.RootNamespace, IdentifierName("Converters")));
 
-            foreach (NameSyntax name in usingNames.Values)
+            foreach (MemberDeclarationSyntax modelObjectMember in Declaration.Members)
             {
-                source.AddLine($"using {name};");
+                if (!(modelObjectMember is PropertyDeclarationSyntax modelProperty))
+                    continue;
+
+                var property = new Property(Context, this, modelProperty);
+                OutputType.AddTypeAliasUsingIfNeeded(usings, property.DestinationType.ToString());
+            }
+
+            foreach (string @using in usings)
+            {
+                source.AddLine($"using {@using};");
             }
 
             return source;
@@ -348,12 +355,9 @@ namespace StandardUI.CodeGenerator
             return source;
         }
 
-        private static void AddUsing(Dictionary<string, NameSyntax> usingNames, NameSyntax name)
-        {
-            string usingString = name.ToString();
-            if (! usingNames.ContainsKey(usingString))
-                usingNames.Add(usingString, name);
-        }
+        private static void AddUsing(HashSet<string> usings, NameSyntax name) => usings.Add(name.ToString());
+
+        private static void AddUsing(HashSet<string> usings, string @using) => usings.Add(@using);
 
         private bool DestinationTypeHasTypeConverterAttribute()
         {

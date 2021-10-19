@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -15,7 +16,8 @@ namespace StandardUI.CodeGenerator
         public abstract TypeSyntax DestinationTypeForUIElementAttachedTarget { get; }
         public abstract string? DefaultBaseClassName { get; }
         public abstract string DefaultUIElementBaseClassName { get; }
-        public abstract IEnumerable<NameSyntax> GetUsings(bool hasPropertyDescriptors, bool hasTypeConverterAttribute);
+        public virtual void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
+        public virtual void AddTypeAliasUsingIfNeeded(HashSet<string> usings, string destinationTypeName) { }
         public abstract bool EmitChangedNotifications { get; }
     }
 
@@ -41,24 +43,20 @@ namespace StandardUI.CodeGenerator
         public override string DefaultUIElementBaseClassName => "StandardUIFrameworkElement";
         public override string WrapperSuffix => "Wpf";
 
-        public override IEnumerable<NameSyntax> GetUsings(bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
+        public override void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {
-            var usings = new List<NameSyntax>();
-
 #if NOT_NEEDED
             if (hasPropertyDescriptors)
                 usings.Add(QualifiedName(IdentifierName("System"), IdentifierName("Windows")));
 #endif
             if (hasTypeConverterAttribute)
-                usings.Add(QualifiedName(IdentifierName("System"), IdentifierName("ComponentModel")));
+                usings.Add("System.ComponentModel");
 
 #if NOT_NEEDED
             usings.Add(QualifiedName(
                     QualifiedName(IdentifierName("System"), IdentifierName("Windows")),
                     IdentifierName("Markup")));
 #endif
-
-            return usings;
         }
     }
 
@@ -73,10 +71,6 @@ namespace StandardUI.CodeGenerator
         public override string? DefaultBaseClassName => "StandardUIDependencyObject";
         public override string DefaultUIElementBaseClassName => "StandardUIUIElement";
         public override string WrapperSuffix => "Uwp";
-        public override IEnumerable<NameSyntax> GetUsings(bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class XamarinFormsXamlOutputType : XamlOutputType
@@ -91,11 +85,18 @@ namespace StandardUI.CodeGenerator
         public override string DefaultUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
 
-        public override IEnumerable<NameSyntax> GetUsings(bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
+        public override void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {
-            var usings = new List<NameSyntax>();
-            usings.Add(QualifiedName(IdentifierName("Xamarin"), IdentifierName("Forms")));
-            return usings;
+            usings.Add("Xamarin.Forms");
+        }
+
+        public override void AddTypeAliasUsingIfNeeded(HashSet<string> usings, string destinationTypeName)
+        {
+            // These types are also defined in Xamarin.Forms, so add aliases to prefer the Standard UI type
+            if (destinationTypeName == "Brush")
+                usings.Add("using Brush = Microsoft.StandardUI.XamarinForms.Media.Brush");
+            else if (destinationTypeName == "SweepDirection")
+                usings.Add("using Brush = Microsoft.StandardUI.Media.SweepDirection");
         }
     }
 
@@ -108,11 +109,6 @@ namespace StandardUI.CodeGenerator
         public override TypeSyntax DestinationTypeForUIElementAttachedTarget => IdentifierName("ObjectWithCascadingNotifications");
         public override string? DefaultBaseClassName => "ObjectWithCascadingNotifications";
         public override string DefaultUIElementBaseClassName => "ObjectWithCascadingNotifications";
-
-        public override IEnumerable<NameSyntax> GetUsings(bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
-        {
-            return new List<NameSyntax>();
-        }
 
         public override bool EmitChangedNotifications => false;
     }
