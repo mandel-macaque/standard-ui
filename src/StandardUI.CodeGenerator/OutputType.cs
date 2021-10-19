@@ -81,7 +81,7 @@ namespace StandardUI.CodeGenerator
         public override QualifiedNameSyntax RootNamespace => QualifiedName(MicrosoftStandardUI, IdentifierName("XamarinForms"));
         public override string DependencyPropertyClassName => "BindableProperty";
         public override TypeSyntax DestinationTypeForUIElementAttachedTarget => IdentifierName("VisualElement");
-        public override string? DefaultBaseClassName => "BindableObject";
+        public override string? DefaultBaseClassName => "StandardUIBindableObject";
         public override string DefaultUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
 
@@ -93,10 +93,10 @@ namespace StandardUI.CodeGenerator
         public override void AddTypeAliasUsingIfNeeded(HashSet<string> usings, string destinationTypeName)
         {
             // These types are also defined in Xamarin.Forms, so add aliases to prefer the Standard UI type
-            if (destinationTypeName == "Brush")
-                usings.Add("using Brush = Microsoft.StandardUI.XamarinForms.Media.Brush");
+            if (destinationTypeName == "Brush" || destinationTypeName == "Brush?")
+                usings.Add("Brush = Microsoft.StandardUI.XamarinForms.Media.Brush");
             else if (destinationTypeName == "SweepDirection")
-                usings.Add("using Brush = Microsoft.StandardUI.Media.SweepDirection");
+                usings.Add("SweepDirection = Microsoft.StandardUI.Media.SweepDirection");
         }
     }
 
