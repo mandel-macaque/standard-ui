@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.XamarinForms
 {
-    public class ControlTemplateWpf : IControlTemplate
+    public class ControlTemplateXamarinForms : IControlTemplate
     {
        // private System.Windows.Controls.ControlTemplate _controlTemplate;
 
