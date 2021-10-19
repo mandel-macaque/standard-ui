@@ -4,12 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:microcharts="clr-namespace:Microcharts.Wpf"
-        xmlns:local="clr-namespace:WpfHost"
-        xmlns:Shapes="clr-namespace:Microsoft.StandardUI.Wpf.Shapes;assembly=StandardUI.Wpf" x:Class="WpfHost.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel x:Name="controlStack" Orientation="Vertical" HorizontalAlignment="Stretch">
         <Label Content="Hello there. These are .NET Standard UI controls."/>
-        <microcharts:BarChart/>
+        <microcharts:BarChart LabelColor="Blue" Width="200" Height="200"/>
     </StackPanel>
 </Window>
