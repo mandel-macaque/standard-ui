@@ -4,9 +4,9 @@ using Xamarin.Forms;
 namespace Microsoft.StandardUI.XamarinForms
 {
     /// <summary>
-    /// This is the base for predefined dependency objects;
+    /// This is the base for predefined non-view bindable objects;
     /// </summary>
-    public class StandardUIDependencyObject : BindableObject, IUIPropertyObject
+    public class StandardUIBindableObject : BindableObject, IUIPropertyObject
     {
         public object GetValue(IUIProperty property)
         {
