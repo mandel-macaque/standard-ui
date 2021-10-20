@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -33,6 +34,13 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
 
         public void Initialize(GeneratorInitializationContext context)
         {
+#if false
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+            }
+#endif 
+            
             context.RegisterForPostInitialization((pi) => pi.AddSource("StandardUI_AssemblyAttributes", AttributeSource));
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
@@ -40,9 +48,40 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
         public void Execute(GeneratorExecutionContext context)
         {
             SyntaxReceiver rx = (SyntaxReceiver)context.SyntaxContextReceiver!;
+
+            HashSet<string> generatedInterfaces = new HashSet<string>();
             foreach (string interfaceFullTypeName in rx.InterfacesToGenerate)
             {
+                INamedTypeSymbol interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
+                if (interfaceSymbol == null)
+                {
+                    continue;
+                }
+
+                if (generatedInterfaces.Contains(interfaceFullTypeName))
+                {
+                    continue;
+                }
+
                 SourceGenerator.GenerateSourceFile(context, interfaceFullTypeName);
+                generatedInterfaces.Add(interfaceFullTypeName);
+
+                // Generate any ancestor types
+                INamedTypeSymbol ancestorType = GetBaseInterface(interfaceSymbol);
+                while (ancestorType != null)
+                {
+                    var symbolDisplayFormat = new SymbolDisplayFormat(
+                        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+                    string ancestorFullTypeName = ancestorType.ToDisplayString(symbolDisplayFormat);
+
+                    if (ancestorFullTypeName == "Microsoft.StandardUI.Controls.IStandardControl" || generatedInterfaces.Contains(ancestorFullTypeName))
+                        break;
+
+                    SourceGenerator.GenerateSourceFile(context, ancestorFullTypeName);
+                    generatedInterfaces.Add(ancestorFullTypeName);
+
+                    ancestorType = GetBaseInterface(ancestorType);
+                }
             }
         }
 
@@ -59,6 +98,16 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                 return;
             }
 
+            if (interfaceFullTypeName == "Microcharts.IChart")
+            {
+                // For now, hack the IChart case
+                GenerateChartSourceFile(context);
+                return;
+            }
+            
+            string baseTypeName = GetBaseInterface(interfaceSymbol).Name;
+            string controlBaseTypeName = baseTypeName == "IStandardControl" ? "StandardControl" : baseTypeName.Substring(1);
+
             StringBuilder sourceCode = new StringBuilder();
             sourceCode.Append($@"// This file was generated
 
@@ -66,9 +115,9 @@ using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Wpf.Media;
 using Microsoft.StandardUI.Wpf;
 
-namespace SimpleControls.Wpf
+namespace {interfaceNamespace}.Wpf
 {{
-    public class {controlTypeName} : StandardControl, {interfaceFullTypeName}
+    public class {controlTypeName} : {controlBaseTypeName}, {interfaceFullTypeName}
     {{
         public {controlTypeName}()
         {{
@@ -83,6 +132,72 @@ namespace SimpleControls.Wpf
 
             // Create the file
             context.AddSource(controlTypeName, sourceCode.ToString());
+        }
+
+        private static void GenerateChartSourceFile(GeneratorExecutionContext context)
+        {
+            string controlTypeName = "Chart";
+
+            string sourceCode = @"// This file was generated
+
+using Microsoft.StandardUI.Wpf;
+using System.Collections.Generic;
+using Microsoft.StandardUI;
+
+namespace Microcharts.Wpf
+{
+    public abstract class Chart : StandardControl, IChart
+    {
+        public static readonly System.Windows.DependencyProperty EntriesProperty = PropertyUtils.Register(nameof(Entries), typeof(IEnumerable<ChartEntry>), typeof(Chart), null);
+        public static readonly System.Windows.DependencyProperty BackgroundColorProperty = PropertyUtils.Register(nameof(BackgroundColor), typeof(ColorWpf), typeof(Chart), ColorWpf.Default);
+        public static readonly System.Windows.DependencyProperty LabelColorProperty = PropertyUtils.Register(nameof(LabelColor), typeof(ColorWpf), typeof(Chart), ColorWpf.Default);
+
+        public IEnumerable<ChartEntry> Entries
+        {
+            get => (IEnumerable<ChartEntry>)GetValue(EntriesProperty);
+            set => SetValue(EntriesProperty, value);
+        }
+
+        public ColorWpf BackgroundColor
+        {
+            get => (ColorWpf)GetValue(BackgroundColorProperty);
+            set => SetValue(BackgroundColorProperty, value);
+        }
+        Color IChart.BackgroundColor
+        {
+            get => BackgroundColor.Color;
+            set => BackgroundColor = new ColorWpf(value);
+        }
+
+        public ColorWpf LabelColor
+        {
+            get => (ColorWpf)GetValue(LabelColorProperty);
+            set => SetValue(LabelColorProperty, value);
+        }
+        Color IChart.LabelColor
+        {
+            get => LabelColor.Color;
+            set => LabelColor = new ColorWpf(value);
+        }
+    }
+}
+";
+
+            // Create the file
+            context.AddSource(controlTypeName, sourceCode);
+        }
+
+        /// <summary>
+        /// Return the first base interface or null if there aren't any
+        /// </summary>
+        private static INamedTypeSymbol GetBaseInterface(INamedTypeSymbol interfaceSymbol)
+        {
+            foreach (INamedTypeSymbol baseInterface in interfaceSymbol.Interfaces)
+            {
+                return baseInterface;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -184,12 +299,12 @@ namespace SimpleControls.Wpf
         }
 
         /// <summary>
-        /// Roslyn calls this class when code changes are made. If we detect a change to the StandardUIControlAttribute set
+        /// Roslyn calls this class when code changes are made. If we detect a change to the ImportStandardControlAttribute set
         /// we will generate a matching set of source files.
         /// </summary>
         class SyntaxReceiver : ISyntaxContextReceiver
         {
-            public List<string> InterfacesToGenerate = new List<string>();
+            public HashSet<string> InterfacesToGenerate = new HashSet<string>();
 
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
@@ -198,7 +313,6 @@ namespace SimpleControls.Wpf
                     && context.SemanticModel.GetTypeInfo(attrib).Type?.ToDisplayString() == "ImportStandardControlAttribute")
                 {
                     string interfaceFullTypeName = context.SemanticModel.GetConstantValue(attrib.ArgumentList.Arguments[0].Expression).ToString();
-
                     InterfacesToGenerate.Add(interfaceFullTypeName);
                 }
             }
