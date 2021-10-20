@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace StandardUI.CodeGenerator
+namespace Microsoft.StandardUI.SourceGenerator
 {
     /// <summary>
     /// Generates framework-specific implementations of StandardUI control interfaces. The
@@ -17,7 +17,7 @@ namespace StandardUI.CodeGenerator
     /// [assembly: StandardUIControl("Namespace.IControlName")]
     /// </example>
     [Generator]
-    internal class SourceGenerator : ISourceGenerator
+    internal class ImportedControlGenerator : ISourceGenerator
     {
         private const string AttributeSource = @"// This file was generated
 
@@ -63,7 +63,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                     continue;
                 }
 
-                SourceGenerator.GenerateSourceFile(context, interfaceFullTypeName);
+                ImportedControlGenerator.GenerateSourceFile(context, interfaceFullTypeName);
                 generatedInterfaces.Add(interfaceFullTypeName);
 
                 // Generate any ancestor types
@@ -77,7 +77,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                     if (ancestorFullTypeName == "Microsoft.StandardUI.Controls.IStandardControl" || generatedInterfaces.Contains(ancestorFullTypeName))
                         break;
 
-                    SourceGenerator.GenerateSourceFile(context, ancestorFullTypeName);
+                    ImportedControlGenerator.GenerateSourceFile(context, ancestorFullTypeName);
                     generatedInterfaces.Add(ancestorFullTypeName);
 
                     ancestorType = GetBaseInterface(ancestorType);
@@ -93,7 +93,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                 return;
             }
 
-            if (!SourceGenerator.TryGetTypeNamesFromInterface(interfaceFullTypeName, out string interfaceNamespace, out string controlTypeName))
+            if (!ImportedControlGenerator.TryGetTypeNamesFromInterface(interfaceFullTypeName, out string interfaceNamespace, out string controlTypeName))
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace {interfaceNamespace}.Wpf
             InitImplementation(new {interfaceNamespace}.{controlTypeName}Implementation<{interfaceFullTypeName}>(this));
         }}");
 
-            SourceGenerator.GenerateProperties(interfaceSymbol, controlTypeName, sourceCode);
+            ImportedControlGenerator.GenerateProperties(interfaceSymbol, controlTypeName, sourceCode);
 
             sourceCode.Append($@"
     }}
@@ -225,7 +225,7 @@ namespace Microcharts.Wpf
             {
                 string propertyName = propertySymbol.Name;
                 string explicitInterfacePropertyType = propertySymbol.Type.Name;
-                string publicPropertyType = SourceGenerator.IsStandardUIInterface(propertySymbol.Type) ? explicitInterfacePropertyType.Substring(1) : explicitInterfacePropertyType;
+                string publicPropertyType = ImportedControlGenerator.IsStandardUIInterface(propertySymbol.Type) ? explicitInterfacePropertyType.Substring(1) : explicitInterfacePropertyType;
 
                 // The dependency property
                 sourceCode.Append($@"
