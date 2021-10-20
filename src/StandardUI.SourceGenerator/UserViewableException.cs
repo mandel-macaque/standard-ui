@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StandardUI.CodeGenerator
+namespace Microsoft.StandardUI.SourceGenerator
 {
     public class UserViewableException : Exception
     {

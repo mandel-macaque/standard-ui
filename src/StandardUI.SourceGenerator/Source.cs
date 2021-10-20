@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace StandardUI.CodeGenerator
+namespace Microsoft.StandardUI.SourceGenerator
 {
 	public class Source
     {
