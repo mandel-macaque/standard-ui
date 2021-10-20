@@ -15,11 +15,10 @@ using SkiaSharp;
 using static Microsoft.StandardUI.FactoryStatics;
 using Microsoft.StandardUI.Shapes;
 using Microsoft.StandardUI.Media;
-using DefaultValueAttribute = Microsoft.StandardUI.DefaultValueAttribute;
 
 namespace Microcharts
 {
-    public interface IChart : IControl
+    public interface IChart : IStandardControl
     {
         IEnumerable<ChartEntry> Entries { get; set; }
 

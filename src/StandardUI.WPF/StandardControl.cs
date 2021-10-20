@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class StandardControl : System.Windows.Controls.Control, IControl, IStandardControlEnvironmentPeer
+    public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
         private StandardControlImplementation _implementation;
         private StandardUIFrameworkElement? _buildContent;
@@ -36,7 +36,7 @@ namespace Microsoft.StandardUI.Wpf
 
         Size IUIElement.DesiredSize => SizeExtensions.FromWpfSize(DesiredSize);
 
-        IUIPropertyObject? IControl.GetTemplateChild(string childName)
+        IUIPropertyObject? IStandardControl.GetTemplateChild(string childName)
         {
             throw new NotImplementedException();
         }

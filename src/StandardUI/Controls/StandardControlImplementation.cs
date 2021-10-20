@@ -96,7 +96,7 @@ namespace Microsoft.StandardUI.Controls
         }
     }
 
-    public abstract class StandardControlImplementation<T> : StandardControlImplementation where T : IControl
+    public abstract class StandardControlImplementation<T> : StandardControlImplementation where T : IStandardControl
     {
         public T Control { get; }
 

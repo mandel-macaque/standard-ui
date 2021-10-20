@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.StandardUI.Controls
 {
-    public interface IControl : IUIElement
+    public interface IStandardControl : IUIElement
     {
         /// <summary>
         /// Retrieves the named element in the instantiated ControlTemplate visual tree.
