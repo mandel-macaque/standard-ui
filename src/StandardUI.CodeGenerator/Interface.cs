@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -17,6 +18,7 @@ namespace StandardUI.CodeGenerator
         public Context Context { get; }
         public string DestinationClassName { get; }
         public InterfaceDeclarationSyntax Declaration { get; }
+        public INamedTypeSymbol SourceInterface { get; }
         public InterfaceDeclarationSyntax? AttachedInterfaceDeclaration { get; }
         public string Name { get; }
         public string VariableName { get; }
@@ -47,6 +49,12 @@ namespace StandardUI.CodeGenerator
             _sourceCompilationUnit = compilationUnit;
 
             _destinationNamespaceName = Context.ToDestinationNamespaceName(_sourceNamespaceName);
+
+            string fullName = _sourceNamespaceName + "." + Name;
+            INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(fullName);
+            if (interfaceSymbol == null)
+                throw new UserViewableException($"No semantic data found for type {fullName}");
+            SourceInterface = interfaceSymbol;
         }
 
         public void Generate()

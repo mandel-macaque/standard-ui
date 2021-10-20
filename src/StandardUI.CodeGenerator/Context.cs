@@ -12,13 +12,13 @@ namespace StandardUI.CodeGenerator
         public const string RootNamespace = "Microsoft.StandardUI";
 
         public int IndentSize { get; } = 4;
-        public Workspace Workspace { get; }
+        public Compilation Compilation { get; }
         public string RootDirectory { get; }
         public OutputType OutputType { get; }
 
-        public Context(Workspace workspace, string rootDirectory, OutputType outputType)
+        public Context(Compilation compilation, string rootDirectory, OutputType outputType)
         {
-            Workspace = workspace;
+            Compilation = compilation;
             RootDirectory = rootDirectory;
             OutputType = outputType;
         }

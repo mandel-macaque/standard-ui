@@ -118,6 +118,9 @@ namespace StandardUI.CodeGenerator
             {
                 foreach (InterfaceDeclarationSyntax? intface in tree.GetRoot().DescendantNodesAndSelf().OfType<InterfaceDeclarationSyntax>())
                 {
+                    if (!HasModelObjectAttribute(intface))
+                        continue;
+
                     string name = intface.Identifier.Text;
 
                     if (name.EndsWith("Attached"))
@@ -126,18 +129,19 @@ namespace StandardUI.CodeGenerator
                 }
             }
 
+            var wpfContext = new Context(compilation, rootDirectory, WpfXamlOutputType.Instance);
+            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsXamlOutputType.Instance);
+
             foreach (InterfaceDeclarationSyntax intface in interfaces.Values)
             {
-                if (!HasModelObjectAttribute(intface))
-                    continue;
-
                 InterfaceDeclarationSyntax? attachedInterface = null;
                 if (attachedInterfaces.TryGetValue(intface.Identifier.Text + "Attached", out InterfaceDeclarationSyntax value))
                     attachedInterface = value;
 
                 Console.WriteLine($"Processing {intface.Identifier.Text}");
-                new Interface(new Context(workspace, rootDirectory, WpfXamlOutputType.Instance), intface, attachedInterface).Generate();
-                new Interface(new Context(workspace, rootDirectory, XamarinFormsXamlOutputType.Instance), intface, attachedInterface).Generate();
+
+                new Interface(wpfContext, intface, attachedInterface).Generate();
+                new Interface(xamarinFormsContext, intface, attachedInterface).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, XamarinFormsXamlOutputType.Instance).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, StandardModelOutputType.Instance).Generate();
             }
