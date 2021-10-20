@@ -9,4 +9,6 @@ using System.Windows;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: StandardUIControl("SimpleControls.IRadialGauge")]
+[assembly: ImportStandardControl("SimpleControls.IRadialGauge")]
+[assembly: ImportStandardControl("Microcharts.IBarChart")]
+[assembly: ImportStandardControl("Microcharts.IPointChart")]

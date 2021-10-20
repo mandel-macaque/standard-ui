@@ -21,10 +21,10 @@ namespace StandardUI.CodeGenerator
         private const string AttributeSource = @"// This file was generated
 
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple=true)]
-internal sealed class StandardUIControlAttribute : System.Attribute
+internal sealed class ImportStandardControlAttribute : System.Attribute
 {
     public string TypeName { get; }
-    public StandardUIControlAttribute(string typeName)
+    public ImportStandardControlAttribute(string typeName)
     {
         TypeName = typeName;
     }
@@ -195,7 +195,7 @@ namespace SimpleControls.Wpf
             {
                 if (context.Node is AttributeSyntax attrib
                     && attrib.ArgumentList?.Arguments.Count == 1
-                    && context.SemanticModel.GetTypeInfo(attrib).Type?.ToDisplayString() == "StandardUIControlAttribute")
+                    && context.SemanticModel.GetTypeInfo(attrib).Type?.ToDisplayString() == "ImportStandardControlAttribute")
                 {
                     string interfaceFullTypeName = context.SemanticModel.GetConstantValue(attrib.ArgumentList.Arguments[0].Expression).ToString();
 
