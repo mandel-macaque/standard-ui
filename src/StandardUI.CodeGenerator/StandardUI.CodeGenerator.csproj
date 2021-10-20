@@ -18,4 +18,8 @@
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\StandardUI.SourceGenerator\StandardUI.SourceGenerator.csproj" />
+	</ItemGroup>
+
 </Project>
