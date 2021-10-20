@@ -6,7 +6,7 @@ using static Microsoft.StandardUI.FactoryStatics;
 
 namespace SimpleControls
 {
-    public interface IRadialGauge : IControl
+    public interface IRadialGauge : IStandardControl
     {
         [DefaultValue(null)]
         IBrush? Fill { get; set; }
