@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31813.321
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI", "src\StandardUI\StandardUI.csproj", "{752F4208-8318-4C57-9868-9921FF743AA9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.CodeGenerator", "src\StandardUI.CodeGenerator\StandardUI.CodeGenerator.csproj", "{740943F5-2E99-4ED4-9022-BC14F480C3F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.CommandLineSourceGenerator", "src\StandardUI.CommandLineSourceGenerator\StandardUI.CommandLineSourceGenerator.csproj", "{740943F5-2E99-4ED4-9022-BC14F480C3F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.Wpf", "src\StandardUI.WPF\StandardUI.Wpf.csproj", "{4C2D11BC-2E5C-4761-BBD1-0038BC8D6613}"
 EndProject

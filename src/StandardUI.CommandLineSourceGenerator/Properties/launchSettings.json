@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "StandardUI.CodeGenerator": {
+    "Microsoft.StandardUI.CommandLineSourceGenerator": {
       "commandName": "Project",
       "commandLineArgs": " \" $(SolutionDir) \" \" $(DevEnvDir) \""
     }

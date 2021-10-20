@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
 
-namespace StandardUI.CodeGenerator
+namespace Microsoft.StandardUI.CommandLineSourceGeneratord
 {
     class Program
     {
