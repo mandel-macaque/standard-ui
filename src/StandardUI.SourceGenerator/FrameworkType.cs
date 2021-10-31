@@ -7,7 +7,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
-    public abstract class OutputType
+    public abstract class FrameworkType
     {
         public abstract string ProjectBaseDirectory { get; }
         public abstract string RootNamespace { get; }
@@ -19,7 +19,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public abstract bool EmitChangedNotifications { get; }
     }
 
-    public abstract class XamlOutputType : OutputType
+    public abstract class XamlFrameworkType : FrameworkType
     {
         public abstract string DependencyPropertyClassName { get; }
         public virtual string GetPropertyDescriptorName(string propertyName) => propertyName + "Property";
@@ -28,9 +28,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         public virtual void GeneratePanelSubclassMethods(Source methods) { }
     }
 
-    public class WpfXamlOutputType : XamlOutputType
+    public class WpfFrameworkType : XamlFrameworkType
     {
-        public static readonly WpfXamlOutputType Instance = new WpfXamlOutputType();
+        public static readonly WpfFrameworkType Instance = new WpfFrameworkType();
         public static QualifiedNameSyntax SystemWindows = QualifiedName(IdentifierName("System"), IdentifierName("Windows"));
 
         public override string ProjectBaseDirectory => "StandardUI.Wpf";
@@ -58,9 +58,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         }
     }
 
-    public class UwpXamlOutputType : XamlOutputType
+    public class UwpFrameworkType : XamlFrameworkType
     {
-        public static readonly UwpXamlOutputType Instance = new UwpXamlOutputType();
+        public static readonly UwpFrameworkType Instance = new UwpFrameworkType();
 
         public override string ProjectBaseDirectory => "StandardUI.UWP";
         public override string RootNamespace => "Microsoft.StandardUI.Uwp";
@@ -71,9 +71,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         public override string WrapperSuffix => "Uwp";
     }
 
-    public class XamarinFormsXamlOutputType : XamlOutputType
+    public class XamarinFormsFrameworkType : XamlFrameworkType
     {
-        public static readonly XamarinFormsXamlOutputType Instance = new XamarinFormsXamlOutputType();
+        public static readonly XamarinFormsFrameworkType Instance = new XamarinFormsFrameworkType();
 
         public override string ProjectBaseDirectory => "StandardUI.XamarinForms";
         public override string RootNamespace => "Microsoft.StandardUI.XamarinForms";
@@ -98,9 +98,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         }
     }
 
-    public class StandardModelOutputType : OutputType
+    public class StandardModelFrameworkType : FrameworkType
     {
-        public static readonly StandardModelOutputType Instance = new StandardModelOutputType();
+        public static readonly StandardModelFrameworkType Instance = new StandardModelFrameworkType();
 
         public override string ProjectBaseDirectory => Path.Combine("StandardUI", "StandardModel");
         public override string RootNamespace => "Microsoft.StandardUI.StandardModel";

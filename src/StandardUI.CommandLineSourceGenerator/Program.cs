@@ -129,8 +129,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
                 }
             }
 
-            var wpfContext = new Context(compilation, rootDirectory, WpfXamlOutputType.Instance);
-            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsXamlOutputType.Instance);
+            var wpfContext = new Context(compilation, rootDirectory, WpfFrameworkType.Instance);
+            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsFrameworkType.Instance);
 
             foreach (InterfaceDeclarationSyntax intface in interfaces.Values)
             {

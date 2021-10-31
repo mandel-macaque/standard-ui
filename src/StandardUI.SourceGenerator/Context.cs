@@ -16,9 +16,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         public int IndentSize { get; } = 4;
         public Compilation Compilation { get; }
         public string RootDirectory { get; }
-        public OutputType OutputType { get; }
+        public FrameworkType OutputType { get; }
 
-        public Context(Compilation compilation, string rootDirectory, OutputType outputType)
+        public Context(Compilation compilation, string rootDirectory, FrameworkType outputType)
         {
             Compilation = compilation;
             RootDirectory = rootDirectory;
@@ -224,18 +224,18 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public bool IsWrappedType(ITypeSymbol type)
         {
-            return OutputType is XamlOutputType && IsWrappableType(type);
+            return OutputType is XamlFrameworkType && IsWrappableType(type);
         }
 
         public string GetWrapperTypeName(string typeName)
         {
-            return typeName + ((XamlOutputType)OutputType).WrapperSuffix;
+            return typeName + ((XamlFrameworkType)OutputType).WrapperSuffix;
         }
 
         public string GetTypeNameWrapIfNeeded(ITypeSymbol type)
         {
             if (IsWrappedType(type))
-                return type.Name + ((XamlOutputType)OutputType).WrapperSuffix;
+                return type.Name + ((XamlFrameworkType)OutputType).WrapperSuffix;
             else return type.Name;
         }
 

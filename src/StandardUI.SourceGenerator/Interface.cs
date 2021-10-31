@@ -78,7 +78,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             // Add a special case for the WPF visual tree child methods for Panel; later we'll generalize this as needed
-            if (Name == "IPanel" && Context.OutputType is WpfXamlOutputType)
+            if (Name == "IPanel" && Context.OutputType is WpfFrameworkType)
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
 
@@ -266,7 +266,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        public OutputType OutputType => Context.OutputType;
+        public FrameworkType OutputType => Context.OutputType;
 
         private Source? GenerateConstructor(List<Property> collectionProperties)
         {
@@ -320,7 +320,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         private bool DestinationTypeHasTypeConverterAttribute()
         {
-            return Context.OutputType is XamlOutputType &&
+            return Context.OutputType is XamlFrameworkType &&
                    (FrameworkClassName == "Geometry" || FrameworkClassName == "Brush");
         }
 

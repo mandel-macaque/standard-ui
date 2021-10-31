@@ -38,7 +38,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateDescriptor(Source destinationStaticMembers)
         {
-            if (!(Context.OutputType is XamlOutputType xamlOutputType))
+            if (!(Context.OutputType is XamlFrameworkType xamlOutputType))
                 return;
 
             string nonNullablePropertyType = Context.ToNonnullableType(FrameworkTypeName);
@@ -58,7 +58,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateConstructorLinesIfNeeded(Source constuctorBody)
         {
-            if (!(Context.OutputType is XamlOutputType xamlOutputType))
+            if (!(Context.OutputType is XamlFrameworkType xamlOutputType))
                 return;
 
             if (FieldNameIfExists == null)
@@ -111,7 +111,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 #endif
 
             source.AddBlankLineIfNonempty();
-            if (Context.OutputType is XamlOutputType xamlOutputType)
+            if (Context.OutputType is XamlFrameworkType xamlOutputType)
             {
                 string descriptorName = xamlOutputType.GetPropertyDescriptorName(Name);
 

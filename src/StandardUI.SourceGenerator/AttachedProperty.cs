@@ -52,7 +52,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateMainClassDescriptor(Source source)
         {
-            if (!(Context.OutputType is XamlOutputType xamlOutputType))
+            if (!(Context.OutputType is XamlFrameworkType xamlOutputType))
                 return;
 
             string nonNullablePropertyType = Context.ToNonnullableType(FrameworkTypeName);
@@ -64,7 +64,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public void GenerateMainClassMethods(Source source)
         {
             source.AddBlankLineIfNonempty();
-            if (Context.OutputType is XamlOutputType xamlOutputType)
+            if (Context.OutputType is XamlFrameworkType xamlOutputType)
             {
                 string descriptorName = xamlOutputType.GetPropertyDescriptorName(Name);
 
@@ -92,7 +92,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             bool classPropertyTypeDiffersFromInterface = Type.ToString() != FrameworkTypeName;
 
             source.AddBlankLineIfNonempty();
-            if (Context.OutputType is XamlOutputType xamlOutputType)
+            if (Context.OutputType is XamlFrameworkType xamlOutputType)
             {
                 source.AddLine($"public {FrameworkTypeName} Get{Name}({TargetTypeName} {TargetParameterName}) => {Interface.FrameworkClassName}.Get{Name}(({TargetFrameworkTypeName}) {TargetParameterName});");
                 if (SetterMethod != null)
