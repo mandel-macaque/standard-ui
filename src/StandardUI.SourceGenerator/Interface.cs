@@ -8,18 +8,18 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Interface
     {
-        public static int IndentSize = 4;
-        public const string RootNamespace = "Microsoft.StandardUI";
-
-        private readonly NameSyntax _sourceNamespaceName;
         private readonly CompilationUnitSyntax _sourceCompilationUnit;
-        private readonly QualifiedNameSyntax _destinationNamespaceName;
 
         public Context Context { get; }
-        public string DestinationClassName { get; }
+        public INamedTypeSymbol Type { get; }
+        public INamespaceSymbol Namespace { get; }
+        public string NamespaceName { get; }
+        public string? ChildNamespaceName { get; }
+        public string FrameworkClassName { get; }
+        public string FrameworkNamespaceName { get; }
         public InterfaceDeclarationSyntax Declaration { get; }
-        public INamedTypeSymbol SourceInterface { get; }
         public InterfaceDeclarationSyntax? AttachedInterfaceDeclaration { get; }
+        public INamedTypeSymbol? AttachedType { get; }
         public string Name { get; }
         public string VariableName { get; }
 
@@ -33,28 +33,42 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!Name.StartsWith("I"))
                 throw new UserViewableException($"Data model interface {Name} must start with 'I'");
 
-            DestinationClassName = Name.Substring(1);
+
+            if (!(sourceInterfaceDeclaration.Parent is NamespaceDeclarationSyntax interfaceNamespaceDeclaration))
+                throw new UserViewableException(
+                    $"Parent of ${sourceInterfaceDeclaration.Identifier.Text} interface should be namespace declaration, but it's a {sourceInterfaceDeclaration.Parent.GetType()} node instead");
+            string namespaceName = interfaceNamespaceDeclaration.Name.ToString();
+            string fullName = namespaceName + "." + sourceInterfaceDeclaration.Identifier.ToString();
+            INamedTypeSymbol? interfaceSymbol = Context.Compilation.GetTypeByMetadataName(fullName);
+            if (interfaceSymbol == null)
+                throw new UserViewableException($"No semantic data found for type {fullName}");
+            Type = interfaceSymbol;
+
+
+            FrameworkClassName = Name.Substring(1);
 
             // Form the default variable name for the interface by dropping the "I" and lower casing the first letter(s) after (ICanvas => canvas)
             VariableName = Context.TypeNameToVariableName(Name.Substring(1));
 
-            if (!(Declaration.Parent is NamespaceDeclarationSyntax interfaceNamespaceDeclaration))
-                throw new UserViewableException(
-                    $"Parent of ${Name} interface should be namespace declaration, but it's a {Declaration.Parent.GetType()} node instead");
-            _sourceNamespaceName = interfaceNamespaceDeclaration.Name;
+            Namespace = Type.ContainingNamespace;
+            NamespaceName = Context.GetNamespaceFullName(Namespace);
+            ChildNamespaceName = Context.GetChildNamespaceName(namespaceName);
 
             if (!(interfaceNamespaceDeclaration.Parent is CompilationUnitSyntax compilationUnit))
                 throw new UserViewableException(
                     $"Parent of ${interfaceNamespaceDeclaration} namespace should be compilation unit, but it's a {interfaceNamespaceDeclaration.Parent!.GetType()} node instead");
             _sourceCompilationUnit = compilationUnit;
 
-            _destinationNamespaceName = Context.ToDestinationNamespaceName(_sourceNamespaceName);
+            FrameworkNamespaceName = Context.ToFrameworkNamespaceName(Namespace);
 
-            string fullName = _sourceNamespaceName + "." + Name;
-            INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(fullName);
-            if (interfaceSymbol == null)
-                throw new UserViewableException($"No semantic data found for type {fullName}");
-            SourceInterface = interfaceSymbol;
+            if (sourceAttachedInterfaceDeclaration != null)
+            {
+                string fullNameAttached = namespaceName + "." + sourceAttachedInterfaceDeclaration.Identifier.Text;
+                INamedTypeSymbol? interfaceSymbolAttached = context.Compilation.GetTypeByMetadataName(fullNameAttached);
+                if (interfaceSymbolAttached == null)
+                    throw new UserViewableException($"No semantic data found for attached type {fullNameAttached}");
+                AttachedType = interfaceSymbolAttached;
+            }
         }
 
         public void Generate()
@@ -71,13 +85,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             var attachedClassMethods = new Source(Context);
 
             // Add the property descriptors and accessors
-            foreach (MemberDeclarationSyntax modelObjectMember in Declaration.Members)
+            foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
             {
-                if (!(modelObjectMember is PropertyDeclarationSyntax modelProperty))
-                    continue;
+                PropertyDeclarationSyntax propertyDeclaration = (PropertyDeclarationSyntax)Declaration.Members.Where(
+                    member => member is PropertyDeclarationSyntax memberProperty && memberProperty.Identifier.Text == propertySymbol.Name).First();
 
-                string propertyName = modelProperty.Identifier.Text;
-                var property = new Property(Context, this, modelProperty);
+                var property = new Property(Context, this, propertySymbol);
                 properties.Add(property);
 
                 property.GenerateDescriptor(mainClassStaticFields);
@@ -90,7 +103,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
                 mainClassNonstaticMethods.AddLine(
-                    $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{DestinationClassName}(this);");
+                    $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{FrameworkClassName}(this);");
             }
 
             // Add a special case for the WPF visual tree child methods for Panel; later we'll generalize this as needed
@@ -106,15 +119,15 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             // If there are any attached properties, add the property descriptors and accessors for them
-            if (AttachedInterfaceDeclaration != null)
+            if (AttachedType != null)
             {
-                foreach (MemberDeclarationSyntax member in AttachedInterfaceDeclaration.Members)
+                foreach (ISymbol member in AttachedType.GetMembers())
                 {
-                    if (!(member is MethodDeclarationSyntax getterMethodDeclaration))
+                    if (!(member is IMethodSymbol getterMethod))
                         continue;
 
                     // We just process the Get 
-                    string methodName = getterMethodDeclaration.Identifier.Text;
+                    string methodName = getterMethod.Name;
                     if (!methodName.StartsWith("Get"))
                     {
                         if (!methodName.StartsWith("Set"))
@@ -125,10 +138,10 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                     string propertyName = methodName.Substring("Get".Length);
                     string setterMethodName = "Set" + propertyName;
-                    MethodDeclarationSyntax? setterMethodDeclaration = (MethodDeclarationSyntax?)AttachedInterfaceDeclaration.Members.
-                        FirstOrDefault(m => m is MethodDeclarationSyntax potentialSetter && potentialSetter.Identifier.Text == setterMethodName);
+                    IMethodSymbol? setterMethod = (IMethodSymbol?) AttachedType.GetMembers(setterMethodName).FirstOrDefault();
 
-                    var attachedProperty = new AttachedProperty(Context, this, AttachedInterfaceDeclaration, getterMethodDeclaration, setterMethodDeclaration);
+                    var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
+
 
                     attachedProperty.GenerateMainClassDescriptor(mainClassStaticFields);
                     attachedProperty.GenerateMainClassMethods(mainClassStaticMethods);
@@ -142,7 +155,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             Source? constructor = GenerateConstructor(properties);
 
-            string platformOutputDirectory = Context.GetPlatformOutputDirectory(_sourceNamespaceName);
+            string platformOutputDirectory = Context.GetPlatformOutputDirectory(ChildNamespaceName);
 
             string mainClassDerviedFrom;
             if (destinationBaseClass == null)
@@ -152,32 +165,32 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             bool isPartial = Context.IsPanelSubclass(Declaration);
 
-            Source mainClassSource = GenerateClassFile(usingDeclarations, _destinationNamespaceName, DestinationClassName, mainClassDerviedFrom, isPartial: isPartial,
+            Source mainClassSource = GenerateClassFile(usingDeclarations, FrameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
-            mainClassSource.WriteToFile(platformOutputDirectory, DestinationClassName + ".cs");
+            mainClassSource.WriteToFile(platformOutputDirectory, FrameworkClassName + ".cs");
 
             if (AttachedInterfaceDeclaration != null)
             {
-                string attachedClassName = DestinationClassName + "Attached";
+                string attachedClassName = FrameworkClassName + "Attached";
                 string attachedClassDerivedFrom = AttachedInterfaceDeclaration.Identifier.Text;
 
                 attachedClassStaticFields.AddLine($"public static {attachedClassName} Instance = new {attachedClassName}();");
 
-                Source attachedClassSource = GenerateClassFile(usingDeclarations, _destinationNamespaceName, attachedClassName, attachedClassDerivedFrom,
+                Source attachedClassSource = GenerateClassFile(usingDeclarations, FrameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
                 attachedClassSource.WriteToFile(platformOutputDirectory, attachedClassName + ".cs");
             }
 
             if (!extensionClassMethods.IsEmpty)
             {
-                string extensionsClassName = DestinationClassName + "Extensions";
-                Source extensionsClassSource = GenerateStaticClassFile(GenerateExtensionsClassUsingDeclarations(), _sourceNamespaceName, extensionsClassName, extensionClassMethods);
-                extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(_sourceNamespaceName), extensionsClassName + ".cs");
+                string extensionsClassName = FrameworkClassName + "Extensions";
+                Source extensionsClassSource = GenerateStaticClassFile(GenerateExtensionsClassUsingDeclarations(), NamespaceName, extensionsClassName, extensionClassMethods);
+                extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), extensionsClassName + ".cs");
             }
         }
 
-        public Source GenerateClassFile(Source usingDeclarations, NameSyntax namespaceName, string className, string derivedFrom, bool isPartial = false,
+        public Source GenerateClassFile(Source usingDeclarations, string namespaceName, string className, string derivedFrom, bool isPartial = false,
             Source? constructor = null, Source? staticFields = null, Source? staticMethods = null, Source? nonstaticFields = null, Source? nonstaticMethods = null)
         {
             Source fileSource = new Source(Context);
@@ -236,7 +249,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             return fileSource;
         }
 
-        public Source GenerateStaticClassFile(Source usingDeclarations, NameSyntax namespaceName, string className, Source staticMethods)
+        public Source GenerateStaticClassFile(Source usingDeclarations, string namespaceName, string className, Source staticMethods)
         {
             Source fileSource = new Source(Context);
 
@@ -291,7 +304,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             Source constructor = new Source(Context);
             constructor.AddLines(
-                $"public {DestinationClassName}()",
+                $"public {FrameworkClassName}()",
                 "{");
             using (constructor.Indent())
                 constructor.AddSource(
@@ -314,10 +327,10 @@ namespace Microsoft.StandardUI.SourceGenerator
                 AddUsing(usings, sourceUsingName);
 
                 if (sourceUsingName.ToString().StartsWith("Microsoft.StandardUI."))
-                    AddUsing(usings, Context.ToDestinationNamespaceName(sourceUsingName));
+                    AddUsing(usings, Context.ToFrameworkNamespaceName(sourceUsingName));
             }
 
-            AddUsing(usings, _sourceNamespaceName);
+            AddUsing(usings, NamespaceName);
 
             OutputType.AddUsings(usings, hasPropertyDescriptors, DestinationTypeHasTypeConverterAttribute());
 
@@ -332,15 +345,15 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             if (DestinationTypeHasTypeConverterAttribute())
-                AddUsing(usings, QualifiedName(OutputType.RootNamespace, IdentifierName("Converters")));
+                AddUsing(usings, OutputType.RootNamespace + ".Converters");
 
-            foreach (MemberDeclarationSyntax modelObjectMember in Declaration.Members)
+            foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
             {
-                if (!(modelObjectMember is PropertyDeclarationSyntax modelProperty))
-                    continue;
+                PropertyDeclarationSyntax propertyDeclaration = (PropertyDeclarationSyntax)Declaration.Members.Where(
+                    member => member is PropertyDeclarationSyntax memberProperty && memberProperty.Identifier.Text == propertySymbol.Name).First();
 
-                var property = new Property(Context, this, modelProperty);
-                OutputType.AddTypeAliasUsingIfNeeded(usings, property.DestinationType.ToString());
+                var property = new Property(Context, this, propertySymbol);
+                OutputType.AddTypeAliasUsingIfNeeded(usings, property.FrameworkTypeName.ToString());
             }
 
             foreach (string @using in usings)
@@ -370,7 +383,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         private bool DestinationTypeHasTypeConverterAttribute()
         {
             return Context.OutputType is XamlOutputType &&
-                   (DestinationClassName == "Geometry" || DestinationClassName == "Brush");
+                   (FrameworkClassName == "Geometry" || FrameworkClassName == "Brush");
         }
 
         private string? GetDestinationBaseClass()
@@ -379,12 +392,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (elementType != null)
                 return $"StandardUICollection<{elementType}>";
 
-            TypeSyntax? baseInterface = Declaration.BaseList?.Types.FirstOrDefault()?.Type;
+            INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)
                 return OutputType.DefaultBaseClassName;
             else
-                return Context.ToDestinationType(baseInterface).ToString();
+                return Context.ToFrameworkTypeName(baseInterface);
         }
     }
 }

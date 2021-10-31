@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -10,6 +12,7 @@ namespace Microsoft.StandardUI.SourceGenerator
     public class Context
     {
         public const string RootNamespace = "Microsoft.StandardUI";
+        public readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
         public int IndentSize { get; } = 4;
         public Compilation Compilation { get; }
@@ -23,47 +26,117 @@ namespace Microsoft.StandardUI.SourceGenerator
             OutputType = outputType;
         }
 
-        public QualifiedNameSyntax ToDestinationNamespaceName(NameSyntax sourceNamespace)
+        public string ToFrameworkNamespaceName(NameSyntax sourceNamespace)
         {
-            string? childNamespaceName = GetChildNamespace(sourceNamespace);
+            string frameworkRootNamespace = OutputType.RootNamespace;
 
-            QualifiedNameSyntax destinationNamespace = OutputType.RootNamespace;
-
-            // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.WPF.Media destination namespace
+            // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
             // If the source namespace is just Microsoft.StandardUI, don't change anything here
-            if (childNamespaceName != null)
-                destinationNamespace = QualifiedName(destinationNamespace, IdentifierName(childNamespaceName));
-
-            return destinationNamespace;
+            string? childNamespaceName = GetChildNamespace(sourceNamespace);
+            if (childNamespaceName == null)
+                return frameworkRootNamespace;
+            else return frameworkRootNamespace + "." + childNamespaceName;
         }
 
-        public TypeSyntax ToDestinationType(TypeSyntax sourceType)
+        public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
         {
-            if (sourceType is IdentifierNameSyntax identifierName)
-                return GetIdentifierDestinationType(identifierName);
-            else if (sourceType is NullableTypeSyntax nullableType &&
-                     nullableType.ElementType is IdentifierNameSyntax nullableIdentifierName)
-                return NullableType(GetIdentifierDestinationType(nullableIdentifierName));
-            else if (sourceType is PredefinedTypeSyntax predefinedType)
-                return predefinedType;
-            else if (sourceType is GenericNameSyntax genericName)
-                return genericName;
-            else if (sourceType is NameSyntax name)
-                return name;
-            else if (sourceType is ArrayTypeSyntax arrayType)
-                return arrayType;
-            /*
-                PropertyDeclaration(
-                    GenericName(
-                        Identifier("IEnumerable"))
-                    .WithTypeArgumentList(
-                        TypeArgumentList(
-                            SingletonSeparatedList<TypeSyntax>(
-                                IdentifierName("IGraphicsElement")))),
-                    Identifier("Children"))             */
-            else
-                throw new UserViewableException(
-                    $"Type {sourceType.GetType()} isn't supported for model object generation");
+            string frameworkRootNamespace = OutputType.RootNamespace;
+
+            // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
+            // If the source namespace is just Microsoft.StandardUI, don't change anything here
+            string? childNamespaceName = GetChildNamespaceName(GetNamespaceFullName(namespc));
+            if (childNamespaceName == null)
+                return frameworkRootNamespace;
+            else return frameworkRootNamespace + "." + childNamespaceName;
+        }
+
+        public string ToTypeName(ITypeSymbol type) =>
+            AddNullableSuffixIfNeeded(ToTypeNameNonNullable(type), type.NullableAnnotation);
+
+        public string AddNullableSuffixIfNeeded(string typeName, NullableAnnotation nullableAnnotation) =>
+            nullableAnnotation == NullableAnnotation.Annotated ? typeName + "?" : typeName;
+
+        public string ToTypeNameNonNullable(ITypeSymbol type)
+        {
+            switch (type.SpecialType)
+            {
+                case SpecialType.System_Boolean:
+                    return "bool";
+                case SpecialType.System_SByte:
+                    return "sbyte";
+                case SpecialType.System_Int16:
+                    return "short";
+                case SpecialType.System_Int32:
+                    return "int";
+                case SpecialType.System_Int64:
+                    return "long";
+                case SpecialType.System_Byte:
+                    return "byte";
+                case SpecialType.System_UInt16:
+                    return "ushort";
+                case SpecialType.System_UInt32:
+                    return "uint";
+                case SpecialType.System_UInt64:
+                    return "ulong";
+                case SpecialType.System_Single:
+                    return "ulong";
+                case SpecialType.System_Double:
+                    return "double";
+                case SpecialType.System_Char:
+                    return "char";
+                case SpecialType.System_Object:
+                    return "object";
+                case SpecialType.System_String:
+                    return "string";
+            }
+
+            string typeName = type.Name;
+            if (typeName.Length == 0)
+                throw new UserViewableException($"Type {type} has no type name");
+
+            if (type is INamedTypeSymbol namedType && namedType.IsGenericType)
+            {
+                var buffer = new StringBuilder(typeName);
+                buffer.Append("<");
+
+                bool firstArgument = true;
+                foreach (ITypeSymbol typeArgument in namedType.TypeArguments)
+                {
+                    if (! firstArgument)
+                        buffer.Append(",");
+                    buffer.Append(typeArgument.Name);
+
+                    firstArgument = false;
+                }
+
+                buffer.Append(">");
+                return buffer.ToString();
+            }
+
+            return typeName;
+        }
+
+        public string ToFrameworkTypeName(ITypeSymbol type)
+        {
+            string typeName = type.Name;
+
+            string destinationTypeName;
+            if (TypeIs(type, "Microsoft.StandardUI.IUIElement"))
+                destinationTypeName = OutputType.DefaultUIElementBaseClassName;
+            else if (type.TypeKind == TypeKind.Interface && typeName.StartsWith("I") && typeName != "IEnumerable")  // TODO: Use attribute check instead
+                destinationTypeName = typeName.Substring(1);
+            else if (IsWrappedType(type))
+                destinationTypeName = GetTypeNameWrapIfNeeded(type);
+            else destinationTypeName = ToTypeName(type);
+
+            return AddNullableSuffixIfNeeded(destinationTypeName, type.NullableAnnotation);
+        }
+
+        public string ToNonnullableType(string type)
+        {
+            if (type.EndsWith("?"))
+                return type.Substring(0, type.Length - 1);
+            else return type;
         }
 
         /// <summary>
@@ -94,28 +167,6 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return typeName.Substring(0, upperCasePrefixCharCount - 1).ToLower() + typeName.Substring(upperCasePrefixCharCount - 1);
         }
 
-        public NameSyntax GetIdentifierDestinationType(IdentifierNameSyntax identifierName)
-        {
-            string typeName = identifierName.Identifier.Text;
-            if (IsEnumType(typeName))
-                return identifierName;
-            else if (IsWrappableType(typeName))
-            {
-                if (IsWrappedType(typeName))
-                    return IdentifierName(typeName + ((XamlOutputType) OutputType).WrapperSuffix);
-                else return identifierName;
-            }
-            else if (IsNonwrappedObjectType(typeName))
-                return identifierName;
-            else if (typeName == "IUIElement")
-                return IdentifierName(OutputType.DefaultUIElementBaseClassName);
-            else if (typeName.StartsWith("I"))
-                return IdentifierName(typeName.Substring(1));
-            else
-                throw new UserViewableException(
-                    $"Identifier type {typeName} isn't supported for model object generation; interface name starting with 'I' is expected");
-        }
-
         public static bool IsTransformType(TypeSyntax type)
         {
             if (type is NullableTypeSyntax nullableType)
@@ -124,10 +175,20 @@ namespace Microsoft.StandardUI.SourceGenerator
             return type is IdentifierNameSyntax identifierName && identifierName.Identifier.Text.EndsWith("Transform");
         }
 
-        public bool IsWrappableType(string typeName)
+        public bool IsWrappableType(ITypeSymbol type)
         {
+            if (!(type is INamedTypeSymbol namedType))
+                return false;
+
+            string typeName = type.Name;
             return typeName == "Color" || typeName == "Point" || typeName == "Points" || typeName == "Size" || typeName == "DataSource" || typeName == "FontWeight";
         }
+
+        public bool TypeIs(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
+
+        public string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
+
+        public string GetNamespaceFullName(INamespaceSymbol namespce) => namespce.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
         public static bool IsPanelSubclass(InterfaceDeclarationSyntax interfaceDeclaration)
         {
@@ -147,14 +208,21 @@ namespace Microsoft.StandardUI.SourceGenerator
             return false;
         }
 
-        public bool IsWrappedType(string typeName)
+        public bool IsWrappedType(ITypeSymbol type)
         {
-            return OutputType is XamlOutputType && IsWrappableType(typeName);
+            return OutputType is XamlOutputType && IsWrappableType(type);
         }
 
         public string GetWrapperTypeName(string typeName)
         {
             return typeName + ((XamlOutputType)OutputType).WrapperSuffix;
+        }
+
+        public string GetTypeNameWrapIfNeeded(ITypeSymbol type)
+        {
+            if (IsWrappedType(type))
+                return type.Name + ((XamlOutputType)OutputType).WrapperSuffix;
+            else return type.Name;
         }
 
         public bool IsNonwrappedObjectType(string typeName)
@@ -169,14 +237,20 @@ namespace Microsoft.StandardUI.SourceGenerator
                    typeName == "TextAlignment" || typeName == "FontStyle" || typeName == "BackgroundSizing";
         }
 
-        public static string? IsCollectionType(TypeSyntax type)
-        {
-            if (!(type is IdentifierNameSyntax identiferTypeName))
-                return null;
+        public bool IsUIElementType(ITypeSymbol type) => TypeIs(type, "Microsoft.StandardUI.IUIElement");
 
-            return IsCollectionType(identiferTypeName.Identifier.Text);
+        public static string? IsCollectionType(ITypeSymbol type)
+        {
+            string typeName = type.Name;
+            const string collectionSuffix = "Collection";
+
+            if (typeName.EndsWith(collectionSuffix))
+                return typeName.Substring(0, typeName.Length - collectionSuffix.Length);
+            else
+                return null;
         }
 
+        // TODO: Remove when no longer used
         public static string? IsCollectionType(string typeName)
         {
             const string collectionSuffix = "Collection";
@@ -187,75 +261,92 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return null;
         }
 
-        public ExpressionSyntax GetDefaultValue(SyntaxList<AttributeListSyntax> attributeLists, string propertyName, TypeSyntax sourcePropertyType)
+        public string GetDefaultValue(ImmutableArray<AttributeData> attributes, string fullPropertyName, ITypeSymbol propertyType)
         {
-            foreach (AttributeListSyntax attributeList in attributeLists)
+            string typeFullName = GetTypeFullName(propertyType);
+
+            foreach (AttributeData attribute in attributes)
             {
-                foreach (AttributeSyntax attribute in attributeList.Attributes)
+                var attributeTypeFullName = GetTypeFullName(attribute.AttributeClass);
+                if (attributeTypeFullName != "Microsoft.StandardUI.DefaultValueAttribute")
+                    continue;
+
+                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
+
+                if (constructorArguments.Length != 1)
+                    throw new UserViewableException($"Property {fullPropertyName} should have a single argument for the [DefaultValue] attribute");
+                TypedConstant argument = constructorArguments[0];
+
+                var kind = argument.Kind;
+
+                if (kind == TypedConstantKind.Primitive)
                 {
-                    if (attribute.Name.ToString() != "DefaultValue")
-                        continue;
-
-                    AttributeArgumentSyntax? firstArgument = attribute.ArgumentList?.Arguments.FirstOrDefault();
-                    if (firstArgument == null)
-                        throw new UserViewableException($"Property {propertyName} should have an argument for the [DefaultValue] attribute");
-
-                    ExpressionSyntax defaultExpression = firstArgument.Expression;
-                    if (defaultExpression is LiteralExpressionSyntax literalExpression && literalExpression.Token.IsKind(SyntaxKind.StringLiteralToken))
+                    if (argument.Value is string stringArgumentValue)
                     {
-                        string literalExpressionString = literalExpression.Token.ToString();
-                        if (literalExpressionString == "\"0.5,0.5\"")
-                        {
-                            bool isWrappedType = sourcePropertyType is IdentifierNameSyntax propertyTypeName &&
-                                             IsWrappedType(propertyTypeName.Identifier.Text);
-
-                            defaultExpression =
-                                MemberAccessExpression(
-                                    SyntaxKind.SimpleMemberAccessExpression,
-                                    IdentifierName(isWrappedType ? GetWrapperTypeName("Point") : "Point"),
-                                    IdentifierName("CenterDefault"));
-                        }
-                        else if (literalExpressionString != "\"\"")
-                            throw new UserViewableException($"Unknown string literal based default value: {literalExpressionString}");
+                        if (typeFullName == "Microsoft.StandardUI.Point" && stringArgumentValue == "0.5,0.5")
+                            return $"{ToFrameworkTypeName(propertyType)}.CenterDefault";
+                        else if (stringArgumentValue == "")
+                            return "\"\"";
+                        else new UserViewableException($"Unknown string literal based default value: {stringArgumentValue}");
+                    }
+                    else if (argument.Value is double doubleArgumentValue)
+                    {
+                        if (doubleArgumentValue - Math.Truncate(doubleArgumentValue) == 0)
+                            return doubleArgumentValue.ToString("F1", CultureInfo.InvariantCulture);
+                        else return doubleArgumentValue.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else if (argument.Value is bool boolArgumentValue)
+                    {
+                        return boolArgumentValue ? "true" : "false";
+                    }
+                    else if (argument.IsNull)
+                    {
+                        return "null";
                     }
 
-                    return defaultExpression;
+                    throw new UserViewableException($"{fullPropertyName} default value {argument.Value.ToString()} not yet supported");
                 }
+                else if (kind == TypedConstantKind.Enum)
+                {
+                    object enumValue = argument.Value;
+                    ITypeSymbol type = argument.Type!;
+                    ImmutableArray<ISymbol> enumMembers = type.GetMembers();
+
+                    foreach (IFieldSymbol enumFieldMember in enumMembers)
+                    {
+                        if (enumFieldMember.ConstantValue.Equals(enumValue))
+                            return $"{type.Name}.{enumFieldMember.Name}";
+                    }
+
+                    throw new UserViewableException($"No symbol found in enum {type.Name} for value {enumValue}");
+                }
+
+                // TODO: add explicit checks for different expression types
+                return argument.Value.ToString();
+                // throw new UserViewableException($"Default value type {argument} not yet supported");
             }
 
-            if (IsCollectionType(sourcePropertyType) != null)
-                return LiteralExpression(SyntaxKind.NullLiteralExpression);
-            else if (sourcePropertyType is GenericNameSyntax genericName && genericName.Identifier.Text == "IEnumerable" &&
-                genericName.TypeArgumentList.Arguments.Count == 1 &&
-                genericName.TypeArgumentList.Arguments[0] is IdentifierNameSyntax elementIdentifierName)
+            if (typeFullName == "System.Collections.Generic.IEnumerable")
+                return "null";
+
+            if  (IsCollectionType(propertyType) != null)
+                return "null";
+
+            if (propertyType is INamedTypeSymbol namedTypeSymbol &&
+                namedTypeSymbol.Name is string typeName &&
+                (typeName == "Color" ||
+                typeName == "Point" ||
+                typeName == "Points" ||
+                typeName == "Size" ||
+                typeName == "Thickness" ||
+                typeName == "CornerRadius" ||
+                typeName == "FontWeight"))
             {
-                return
-                    LiteralExpression(SyntaxKind.NullLiteralExpression);
+                return $"{GetTypeNameWrapIfNeeded(propertyType)}.Default";
             }
-            else if ( sourcePropertyType is IdentifierNameSyntax propertyTypeName &&
-                (propertyTypeName.Identifier.Text == "Color" ||
-                propertyTypeName.Identifier.Text == "Point" ||
-                propertyTypeName.Identifier.Text == "Points" ||
-                propertyTypeName.Identifier.Text == "Size" ||
-                propertyTypeName.Identifier.Text == "Thickness" ||
-                propertyTypeName.Identifier.Text == "CornerRadius" ||
-                propertyTypeName.Identifier.Text == "FontWeight") )
-            {
-                // WithoutTrivia is needed here to remove any comment before the type, so the comment isn't written to the output
-                propertyTypeName = propertyTypeName.WithoutTrivia();
-
-                ExpressionSyntax typeExpression;
-                if (IsWrappedType(propertyTypeName.Identifier.Text))
-                    typeExpression = IdentifierName(GetWrapperTypeName(propertyTypeName.Identifier.Text));
-                else typeExpression = propertyTypeName;
-
-                return
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        typeExpression,
-                        IdentifierName("Default"));
-            }
-            else if (sourcePropertyType is ArrayTypeSyntax arrayType)
+            // TODO: Implement this
+#if false
+            else if (propertyType is IArrayTypeSymbol arrayTypeSymbol)
             {
                 return
                     InvocationExpression(
@@ -268,26 +359,25 @@ namespace Microsoft.StandardUI.SourceGenerator
                                     TypeArgumentList(
                                         SingletonSeparatedList<TypeSyntax>(arrayType.ElementType)))));
             }
+#endif
 
-            throw new UserViewableException($"Property {propertyName} has no [DefaultValue] attribute nor hardcoded default");
+            throw new UserViewableException($"Property {fullPropertyName} has no [DefaultValue] attribute nor hardcoded default");
         }
 
-        public string GetSharedOutputDirectory(NameSyntax namespaceName)
+        public string GetSharedOutputDirectory(string? childNamespaceName)
         {
             string outputDirectory = Path.Combine(RootDirectory, "src", "StandardUI", "generated");
-            string? childNamespace = GetChildNamespace(namespaceName);
-            if (childNamespace != null)
-                outputDirectory = Path.Combine(outputDirectory, childNamespace);
+            if (childNamespaceName != null)
+                outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
 
             return outputDirectory;
         }
 
-        public string GetPlatformOutputDirectory(NameSyntax namespaceName)
+        public string GetPlatformOutputDirectory(string? childNamespaceName)
         {
             string outputDirectory = Path.Combine(RootDirectory, "src", OutputType.ProjectBaseDirectory, "generated");
-            string? childNamespace = GetChildNamespace(namespaceName);
-            if (childNamespace != null)
-                outputDirectory = Path.Combine(outputDirectory, childNamespace);
+            if (childNamespaceName != null)
+                outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
 
             return outputDirectory;
         }
@@ -309,6 +399,23 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return null;
 
             return sourceNamespaceString.Substring(sourceNamespaceString.LastIndexOf('.') + 1);
+        }
+
+        /// <summary>
+        /// Return the child namespace (e.g. "Shapes", "Transforms", etc. or null if there is no child
+        /// and classes should be at the root.
+        /// </summary>
+        /// <param name="sourceNamespace">source namespace</param>
+        /// <returns>child namespace</returns>
+        public static string? GetChildNamespaceName(string namespaceName)
+        {
+            if (!namespaceName.StartsWith(RootNamespace))
+                throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{RootNamespace}' as expected");
+
+            if (!namespaceName.StartsWith(RootNamespace + "."))
+                return null;
+
+            return namespaceName.Substring(namespaceName.LastIndexOf('.') + 1);
         }
     }
 }

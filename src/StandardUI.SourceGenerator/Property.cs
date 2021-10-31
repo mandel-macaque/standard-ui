@@ -10,30 +10,32 @@ namespace Microsoft.StandardUI.SourceGenerator
     {
         public Context Context { get; }
         public Interface Interface { get; }
-        public PropertyDeclarationSyntax Declaration { get; }
+        public IPropertySymbol SourceProperty { get; }
         public bool HasSetter { get; }
         public string Name { get; }
-        public TypeSyntax SourceType { get; }
-        public TypeSyntax DestinationType { get; }
-        public ExpressionSyntax DefaultValue { get; }
+        public ITypeSymbol Type { get; }
+        public string TypeName { get; }
+        public string FrameworkTypeName { get; }
+        public string DefaultValue { get; }
         public bool IsCollection { get; }
         public string? FieldNameIfExists { get; }
 
-        public Property(Context context, Interface intface, PropertyDeclarationSyntax declaration)
+        public Property(Context context, Interface intface, IPropertySymbol propertySymbol)
         {
             Context = context;
             Interface = intface;
-            Declaration = declaration;
-            HasSetter = declaration.AccessorList?.Accessors.Any((accessor) => accessor.Kind() == SyntaxKind.SetAccessorDeclaration) ?? false;
-            Name = declaration.Identifier.Text;
-            SourceType = declaration.Type.WithoutTrivia();
-            DestinationType = context.ToDestinationType(SourceType);
-            DefaultValue = context.GetDefaultValue(declaration.AttributeLists, Name, SourceType);
-            IsCollection = Context.IsCollectionType(SourceType) != null;
+            SourceProperty = propertySymbol;
+            HasSetter = !propertySymbol.IsReadOnly;
+            Name = propertySymbol.Name;
+            Type = propertySymbol.Type;
+            TypeName = context.ToTypeName(Type);
+            FrameworkTypeName = context.ToFrameworkTypeName(Type);
+            DefaultValue = context.GetDefaultValue(propertySymbol.GetAttributes(), $"{Interface.Name}.{Name}", propertySymbol.Type);
+            IsCollection = Context.IsCollectionType(Type) != null;
 
             // Only collections have a field currently
             if (IsCollection)
-                FieldNameIfExists = "_" + Context.TypeNameToVariableName(DestinationType.ToString());
+                FieldNameIfExists = "_" + Context.TypeNameToVariableName(FrameworkTypeName);
             else FieldNameIfExists = null;
         }
 
@@ -42,15 +44,10 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!(Context.OutputType is XamlOutputType xamlOutputType))
                 return;
 
-            TypeSyntax nonNullablePropertyType;
-            if (DestinationType is NullableTypeSyntax nullablePropertyType)
-                nonNullablePropertyType = nullablePropertyType.ElementType;
-            else nonNullablePropertyType = DestinationType;
-
+            string nonNullablePropertyType = Context.ToNonnullableType(FrameworkTypeName);
             string descriptorName = xamlOutputType.GetPropertyDescriptorName(Name);
-
             destinationStaticMembers.AddLine(
-                $"public static readonly {xamlOutputType.DependencyPropertyClassName} {descriptorName} = PropertyUtils.Register(nameof({Name}), typeof({nonNullablePropertyType}), typeof({Interface.DestinationClassName}), {DefaultValue});");
+                $"public static readonly {xamlOutputType.DependencyPropertyClassName} {descriptorName} = PropertyUtils.Register(nameof({Name}), typeof({nonNullablePropertyType}), typeof({Interface.FrameworkClassName}), {DefaultValue});");
         }
 
         public void GenerateFieldIfNeeded(Source nonstaticFields)
@@ -59,7 +56,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return;
 
             nonstaticFields.AddLine(
-                $"private {DestinationType} {FieldNameIfExists};");
+                $"private {FrameworkTypeName} {FieldNameIfExists};");
         }
 
         public void GenerateConstructorLinesIfNeeded(Source constuctorBody)
@@ -74,11 +71,11 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             // Add a special case to pass parent object to UIElementCollection constructor
             string constructorParameters = "";
-            if (DestinationType.ToString() == "UIElementCollection")
+            if (FrameworkTypeName.ToString() == "UIElementCollection")
                 constructorParameters = "this";
 
             constuctorBody.AddLines(
-                $"{FieldNameIfExists} = new {DestinationType}({constructorParameters});",
+                $"{FieldNameIfExists} = new {FrameworkTypeName}({constructorParameters});",
                 $"SetValue({descriptorName}, {FieldNameIfExists});");
         }
 
@@ -88,17 +85,19 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!IsCollection)
                 return null;
 
-            return "_" + Context.TypeNameToVariableName(DestinationType.ToString());
+            return "_" + Context.TypeNameToVariableName(FrameworkTypeName);
         }
 
         public void GenerateMethods(Source source)
         {
-            bool classPropertyTypeDiffersFromInterface = SourceType.ToString() != DestinationType.ToString();
+            bool classPropertyTypeDiffersFromInterface = TypeName != FrameworkTypeName;
 
+#if false
             SyntaxTrivia xmlCommentTrivia = Declaration.GetLeadingTrivia().FirstOrDefault(t =>
                 t.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia ||
                 t.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia);
             bool includeXmlComment = classPropertyTypeDiffersFromInterface && xmlCommentTrivia.Kind() != SyntaxKind.None;
+#endif
 
 #if LATER
             SyntaxTokenList modifiers;
@@ -121,14 +120,14 @@ namespace Microsoft.StandardUI.SourceGenerator
                 if (FieldNameIfExists != null)
                     getterValue = $"{FieldNameIfExists}";
                 else
-                    getterValue = $"({DestinationType}) GetValue({descriptorName})";
+                    getterValue = $"({FrameworkTypeName}) GetValue({descriptorName})";
 
                 if (!HasSetter)
-                    source.AddLine($"public {DestinationType} {Name} => {getterValue};");
+                    source.AddLine($"public {FrameworkTypeName} {Name} => {getterValue};");
                 else
                 {
                     source.AddLines(
-                        $"public {DestinationType} {Name}",
+                        $"public {FrameworkTypeName} {Name}",
                         "{");
                     using (source.Indent())
                     {
@@ -177,27 +176,26 @@ namespace Microsoft.StandardUI.SourceGenerator
             {
                 string getterValue;
                 string setterAssignment;
-                if (SourceType is IdentifierNameSyntax identifierName && Context.IsWrappedType(identifierName.Identifier.Text))
+                if (Context.IsWrappedType(Type))
                 {
-                    string wrapperTypeName = identifierName.Identifier.Text;
-                    getterValue = $"{Name}.{SourceType}";
-                    setterAssignment = $"{Name} = new {DestinationType}(value)";
+                    getterValue = $"{Name}.{TypeName}";
+                    setterAssignment = $"{Name} = new {FrameworkTypeName}(value)";
                 }
                 else
                 {
                     getterValue = Name;
-                    setterAssignment = $"{Name} = ({DestinationType}) value";
+                    setterAssignment = $"{Name} = ({FrameworkTypeName}) value";
                 }
 
                 if (!HasSetter)
                 {
                     source.AddLine(
-                        $"{SourceType} {Interface.Name}.{Name} => {getterValue};");
+                        $"{TypeName} {Interface.Name}.{Name} => {getterValue};");
                 }
                 else
                 {
                     source.AddLines(
-                        $"{SourceType} {Interface.Name}.{Name}",
+                        $"{TypeName} {Interface.Name}.{Name}",
                         "{");
                     using (source.Indent())
                     {
@@ -221,7 +219,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             source.AddBlankLineIfNonempty();
             source.AddLines(
-                $"public static T {Name}<T>(this T {interfaceVariableName}, {SourceType} value) where T : {Interface.Name}",
+                $"public static T {Name}<T>(this T {interfaceVariableName}, {TypeName} value) where T : {Interface.Name}",
                 "{");
             using (source.Indent())
             {
