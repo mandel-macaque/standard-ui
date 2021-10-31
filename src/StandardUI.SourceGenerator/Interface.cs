@@ -14,32 +14,18 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string? ChildNamespaceName { get; }
         public string FrameworkClassName { get; }
         public string FrameworkNamespaceName { get; }
-        public InterfaceDeclarationSyntax Declaration { get; }
-        public InterfaceDeclarationSyntax? AttachedInterfaceDeclaration { get; }
         public INamedTypeSymbol? AttachedType { get; }
         public string Name { get; }
         public string VariableName { get; }
 
-        public Interface(Context context, InterfaceDeclarationSyntax sourceInterfaceDeclaration, InterfaceDeclarationSyntax? sourceAttachedInterfaceDeclaration)
+        public Interface(Context context, INamedTypeSymbol type, INamedTypeSymbol? attachedType)
         {
             Context = context;
-            Declaration = sourceInterfaceDeclaration;
 
-            Name = sourceInterfaceDeclaration.Identifier.Text;
+            Type = type;
+            Name = type.Name;
             if (!Name.StartsWith("I"))
                 throw new UserViewableException($"Data model interface {Name} must start with 'I'");
-
-
-            if (!(sourceInterfaceDeclaration.Parent is NamespaceDeclarationSyntax interfaceNamespaceDeclaration))
-                throw new UserViewableException(
-                    $"Parent of ${sourceInterfaceDeclaration.Identifier.Text} interface should be namespace declaration, but it's a {sourceInterfaceDeclaration.Parent.GetType()} node instead");
-            string namespaceName = interfaceNamespaceDeclaration.Name.ToString();
-            string fullName = namespaceName + "." + sourceInterfaceDeclaration.Identifier.ToString();
-            INamedTypeSymbol? interfaceSymbol = Context.Compilation.GetTypeByMetadataName(fullName);
-            if (interfaceSymbol == null)
-                throw new UserViewableException($"No semantic data found for type {fullName}");
-            Type = interfaceSymbol;
-
 
             FrameworkClassName = Name.Substring(1);
 
@@ -48,22 +34,11 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             Namespace = Type.ContainingNamespace;
             NamespaceName = Context.GetNamespaceFullName(Namespace);
-            ChildNamespaceName = Context.GetChildNamespaceName(namespaceName);
-
-            if (!(interfaceNamespaceDeclaration.Parent is CompilationUnitSyntax compilationUnit))
-                throw new UserViewableException(
-                    $"Parent of ${interfaceNamespaceDeclaration} namespace should be compilation unit, but it's a {interfaceNamespaceDeclaration.Parent!.GetType()} node instead");
+            ChildNamespaceName = Context.GetChildNamespaceName(NamespaceName);
 
             FrameworkNamespaceName = Context.ToFrameworkNamespaceName(Namespace);
 
-            if (sourceAttachedInterfaceDeclaration != null)
-            {
-                string fullNameAttached = namespaceName + "." + sourceAttachedInterfaceDeclaration.Identifier.Text;
-                INamedTypeSymbol? interfaceSymbolAttached = context.Compilation.GetTypeByMetadataName(fullNameAttached);
-                if (interfaceSymbolAttached == null)
-                    throw new UserViewableException($"No semantic data found for attached type {fullNameAttached}");
-                AttachedType = interfaceSymbolAttached;
-            }
+            AttachedType = attachedType;
         }
 
         public void Generate()
@@ -95,7 +70,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 property.GenerateExtensionClassMethods(extensionClassMethods);
             }
 
-            if (Context.IncludeDraw(Declaration))
+            if (Context.IncludeDraw(Type))
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
                 mainClassNonstaticMethods.AddLine(
@@ -161,7 +136,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             else
                 mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
 
-            bool isPartial = Context.IsPanelSubclass(Declaration);
+            bool isPartial = Context.IsPanelSubclass(Type);
 
             Source mainClassSource = GenerateClassFile(usings, FrameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,

@@ -117,7 +117,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             string typeName = type.Name;
 
             string destinationTypeName;
-            if (TypeIs(type, "Microsoft.StandardUI.IUIElement"))
+            if (IsThisType(type, "Microsoft.StandardUI.IUIElement"))
                 destinationTypeName = OutputType.DefaultUIElementBaseClassName;
             else if (IsUIModelInterfaceType(type))
                 destinationTypeName = typeName.Substring(1);
@@ -180,26 +180,39 @@ namespace Microsoft.StandardUI.SourceGenerator
             return typeName == "Color" || typeName == "Point" || typeName == "Points" || typeName == "Size" || typeName == "DataSource" || typeName == "FontWeight";
         }
 
-        public bool TypeIs(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
+        public bool IsThisType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
 
         public string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
         public string GetNamespaceFullName(INamespaceSymbol namespce) => namespce.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
-        public static bool IsPanelSubclass(InterfaceDeclarationSyntax interfaceDeclaration)
+        public bool IsPanelSubclass(ITypeSymbol type)
         {
-            TypeSyntax? baseInterface = interfaceDeclaration.BaseList?.Types.FirstOrDefault()?.Type;
-            return baseInterface is IdentifierNameSyntax identifieName && identifieName.Identifier.Text == "IPanel";
+            if (!(type is INamedTypeSymbol namedType))
+                return false;
+
+            foreach (INamedTypeSymbol intface in namedType.Interfaces)
+            {
+                if (IsThisType(intface, "Microsoft.StandardUI.Controls.IPanel"))
+                    return true;
+            }
+
+            return false;
         }
 
-        public static bool IncludeDraw(InterfaceDeclarationSyntax interfaceDeclaration)
+        public bool IncludeDraw(ITypeSymbol type)
         {
-            TypeSyntax? baseInterface = interfaceDeclaration.BaseList?.Types.FirstOrDefault()?.Type;
-            if (baseInterface is IdentifierNameSyntax identifieName && identifieName.Identifier.Text == "IShape")
+            if (!(type is INamedTypeSymbol namedType))
+                return false;
+
+            if (IsThisType(type, "Microsoft.StandardUI.Controls.ITextBlock"))
                 return true;
 
-            if (interfaceDeclaration.Identifier.Text == "ITextBlock")
-                return true;
+            foreach (INamedTypeSymbol intface in namedType.Interfaces)
+            {
+                if (IsThisType(intface, "Microsoft.StandardUI.Shapes.IShape"))
+                    return true;
+            }
 
             return false;
         }
@@ -226,7 +239,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             else return type.Name;
         }
 
-        public bool IsUIElementType(ITypeSymbol type) => TypeIs(type, "Microsoft.StandardUI.IUIElement");
+        public bool IsUIElementType(ITypeSymbol type) => IsThisType(type, "Microsoft.StandardUI.IUIElement");
 
         public static string? IsCollectionType(ITypeSymbol type)
         {

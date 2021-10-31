@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
@@ -141,8 +140,30 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
 
                 Console.WriteLine($"Processing {intface.Identifier.Text}");
 
-                new Interface(wpfContext, intface, attachedInterface).Generate();
-                new Interface(xamarinFormsContext, intface, attachedInterface).Generate();
+
+                if (!(intface.Parent is NamespaceDeclarationSyntax interfaceNamespaceDeclaration))
+                    throw new UserViewableException(
+                        $"Parent of ${intface.Identifier.Text} interface should be namespace declaration, but it's a {intface.Parent.GetType()} node instead");
+                string namespaceName = interfaceNamespaceDeclaration.Name.ToString();
+                string fullName = namespaceName + "." + intface.Identifier.ToString();
+                INamedTypeSymbol? interfaceType = compilation.GetTypeByMetadataName(fullName);
+                if (interfaceType == null)
+                    throw new UserViewableException($"No semantic data found for type {fullName}");
+
+
+                INamedTypeSymbol? attachedInterfaceType = null;
+                if (attachedInterface != null)
+                {
+                    string fullNameAttached = namespaceName + "." + attachedInterface.Identifier.Text;
+                    INamedTypeSymbol? interfaceSymbolAttached = compilation.GetTypeByMetadataName(fullNameAttached);
+                    if (interfaceSymbolAttached == null)
+                        throw new UserViewableException($"No semantic data found for attached type {fullNameAttached}");
+                    attachedInterfaceType = interfaceSymbolAttached;
+                }
+
+
+                new Interface(wpfContext, interfaceType, attachedInterfaceType).Generate();
+                new Interface(xamarinFormsContext, interfaceType, attachedInterfaceType).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, XamarinFormsXamlOutputType.Instance).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, StandardModelOutputType.Instance).Generate();
             }
