@@ -1,21 +1,40 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
-	public class Source
+    public class Source
     {
         public static string LineEnding = "\r\n";
 
+        private Usings? _usings;
         private List<SourceLine> _lines = new List<SourceLine>();
         private int _indent = 0;
-        private Context Context { get; }
+
+        public Context Context { get; }
+
+        public Usings Usings
+        { 
+            get
+            {
+                if (_usings == null)
+                    throw new UserViewableException("Source doesn't contain usings");
+                return _usings;
+            }
+        }
+
+        public Source(Context context, Usings usings)
+        {
+            Context = context;
+            _usings = usings;
+        }
 
         public Source(Context context)
         {
             Context = context;
+            _usings = null;
         }
 
         public void AddBlankLine()

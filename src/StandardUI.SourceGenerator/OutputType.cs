@@ -9,15 +9,13 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public abstract class OutputType
     {
-        public static QualifiedNameSyntax MicrosoftStandardUI = QualifiedName(IdentifierName("Microsoft"), IdentifierName("StandardUI"));
-
         public abstract string ProjectBaseDirectory { get; }
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string? DefaultBaseClassName { get; }
         public abstract string DefaultUIElementBaseClassName { get; }
-        public virtual void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
-        public virtual void AddTypeAliasUsingIfNeeded(HashSet<string> usings, string destinationTypeName) { }
+        public virtual void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
+        public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationTypeName) { }
         public abstract bool EmitChangedNotifications { get; }
     }
 
@@ -43,14 +41,14 @@ namespace Microsoft.StandardUI.SourceGenerator
         public override string DefaultUIElementBaseClassName => "StandardUIFrameworkElement";
         public override string WrapperSuffix => "Wpf";
 
-        public override void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
+        public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {
 #if NOT_NEEDED
             if (hasPropertyDescriptors)
                 usings.Add(QualifiedName(IdentifierName("System"), IdentifierName("Windows")));
 #endif
             if (hasTypeConverterAttribute)
-                usings.Add("System.ComponentModel");
+                usings.AddNamespace("System.ComponentModel");
 
 #if NOT_NEEDED
             usings.Add(QualifiedName(
@@ -85,18 +83,18 @@ namespace Microsoft.StandardUI.SourceGenerator
         public override string DefaultUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
 
-        public override void AddUsings(HashSet<string> usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
+        public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {
-            usings.Add("Xamarin.Forms");
+            usings.AddNamespace("Xamarin.Forms");
         }
 
-        public override void AddTypeAliasUsingIfNeeded(HashSet<string> usings, string destinationTypeName)
+        public override void AddTypeAliasUsingIfNeeded(Usings usings, string destinationTypeName)
         {
             // These types are also defined in Xamarin.Forms, so add aliases to prefer the Standard UI type
             if (destinationTypeName == "Brush" || destinationTypeName == "Brush?")
-                usings.Add("Brush = Microsoft.StandardUI.XamarinForms.Media.Brush");
+                usings.AddTypeAlias("Brush = Microsoft.StandardUI.XamarinForms.Media.Brush");
             else if (destinationTypeName == "SweepDirection")
-                usings.Add("SweepDirection = Microsoft.StandardUI.Media.SweepDirection");
+                usings.AddTypeAlias("SweepDirection = Microsoft.StandardUI.Media.SweepDirection");
         }
     }
 

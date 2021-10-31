@@ -1,8 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -90,14 +87,16 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateMethods(Source source)
         {
-            bool classPropertyTypeDiffersFromInterface = TypeName != FrameworkTypeName;
+            var usings = source.Usings;
 
-#if false
-            SyntaxTrivia xmlCommentTrivia = Declaration.GetLeadingTrivia().FirstOrDefault(t =>
-                t.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia ||
-                t.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia);
-            bool includeXmlComment = classPropertyTypeDiffersFromInterface && xmlCommentTrivia.Kind() != SyntaxKind.None;
-#endif
+            // Add the type - for interface type and the framework type (if different)
+            usings.AddTypeNamespace(Type);
+            if (Context.IsWrappedType(Type) || Context.IsUIModelInterfaceType(Type))
+                usings.AddNamespace(Context.ToFrameworkNamespaceName(Type.ContainingNamespace));
+
+            Context.OutputType.AddTypeAliasUsingIfNeeded(usings, FrameworkTypeName);
+
+            bool classPropertyTypeDiffersFromInterface = TypeName != FrameworkTypeName;
 
 #if LATER
             SyntaxTokenList modifiers;
@@ -214,6 +213,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             if (!HasSetter)
                 return;
+
+            source.Usings.AddTypeNamespace(Type);
 
             string interfaceVariableName = Interface.VariableName;
 

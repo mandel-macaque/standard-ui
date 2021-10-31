@@ -5,7 +5,6 @@ using System.IO;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -24,18 +23,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             Compilation = compilation;
             RootDirectory = rootDirectory;
             OutputType = outputType;
-        }
-
-        public string ToFrameworkNamespaceName(NameSyntax sourceNamespace)
-        {
-            string frameworkRootNamespace = OutputType.RootNamespace;
-
-            // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
-            // If the source namespace is just Microsoft.StandardUI, don't change anything here
-            string? childNamespaceName = GetChildNamespace(sourceNamespace);
-            if (childNamespaceName == null)
-                return frameworkRootNamespace;
-            else return frameworkRootNamespace + "." + childNamespaceName;
         }
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
@@ -57,6 +44,38 @@ namespace Microsoft.StandardUI.SourceGenerator
             nullableAnnotation == NullableAnnotation.Annotated ? typeName + "?" : typeName;
 
         public string ToTypeNameNonNullable(ITypeSymbol type)
+        {
+            string? builtInTypeName = GetBuiltInTypeName(type);
+            if (builtInTypeName != null)
+                return builtInTypeName;
+
+            string typeName = type.Name;
+            if (typeName.Length == 0)
+                throw new UserViewableException($"Type {type} has no type name");
+
+            if (type is INamedTypeSymbol namedType && namedType.IsGenericType)
+            {
+                var buffer = new StringBuilder(typeName);
+                buffer.Append("<");
+
+                bool firstArgument = true;
+                foreach (ITypeSymbol typeArgument in namedType.TypeArguments)
+                {
+                    if (! firstArgument)
+                        buffer.Append(",");
+                    buffer.Append(typeArgument.Name);
+
+                    firstArgument = false;
+                }
+
+                buffer.Append(">");
+                return buffer.ToString();
+            }
+
+            return typeName;
+        }
+
+        public string? GetBuiltInTypeName(ITypeSymbol type)
         {
             switch (type.SpecialType)
             {
@@ -88,32 +107,9 @@ namespace Microsoft.StandardUI.SourceGenerator
                     return "object";
                 case SpecialType.System_String:
                     return "string";
+                default:
+                    return null;
             }
-
-            string typeName = type.Name;
-            if (typeName.Length == 0)
-                throw new UserViewableException($"Type {type} has no type name");
-
-            if (type is INamedTypeSymbol namedType && namedType.IsGenericType)
-            {
-                var buffer = new StringBuilder(typeName);
-                buffer.Append("<");
-
-                bool firstArgument = true;
-                foreach (ITypeSymbol typeArgument in namedType.TypeArguments)
-                {
-                    if (! firstArgument)
-                        buffer.Append(",");
-                    buffer.Append(typeArgument.Name);
-
-                    firstArgument = false;
-                }
-
-                buffer.Append(">");
-                return buffer.ToString();
-            }
-
-            return typeName;
         }
 
         public string ToFrameworkTypeName(ITypeSymbol type)
@@ -123,7 +119,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             string destinationTypeName;
             if (TypeIs(type, "Microsoft.StandardUI.IUIElement"))
                 destinationTypeName = OutputType.DefaultUIElementBaseClassName;
-            else if (type.TypeKind == TypeKind.Interface && typeName.StartsWith("I") && typeName != "IEnumerable")  // TODO: Use attribute check instead
+            else if (IsUIModelInterfaceType(type))
                 destinationTypeName = typeName.Substring(1);
             else if (IsWrappedType(type))
                 destinationTypeName = GetTypeNameWrapIfNeeded(type);
@@ -208,6 +204,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             return false;
         }
 
+        public bool IsUIModelInterfaceType(ITypeSymbol type)
+        {
+            return type.TypeKind == TypeKind.Interface && type.Name != "IEnumerable";  // TODO: Use attribute check instead
+        }
+
         public bool IsWrappedType(ITypeSymbol type)
         {
             return OutputType is XamlOutputType && IsWrappableType(type);
@@ -223,18 +224,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (IsWrappedType(type))
                 return type.Name + ((XamlOutputType)OutputType).WrapperSuffix;
             else return type.Name;
-        }
-
-        public bool IsNonwrappedObjectType(string typeName)
-        {
-            return typeName == "LoadedImage" || typeName == "Exception" || typeName == "ImageDecoder" || typeName == "Thickness" || typeName == "CornerRadius";
-        }
-
-        public static bool IsEnumType(string typeName)
-        {
-            return typeName == "SweepDirection" || typeName == "FillRule" || typeName == "GradientSpreadMethod" ||
-                   typeName == "BrushMappingMode" || typeName == "PenLineCap" || typeName == "PenLineJoin" || typeName == "LoadingStatus" ||
-                   typeName == "TextAlignment" || typeName == "FontStyle" || typeName == "BackgroundSizing";
         }
 
         public bool IsUIElementType(ITypeSymbol type) => TypeIs(type, "Microsoft.StandardUI.IUIElement");

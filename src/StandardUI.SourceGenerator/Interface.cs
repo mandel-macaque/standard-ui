@@ -2,14 +2,11 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Interface
     {
-        private readonly CompilationUnitSyntax _sourceCompilationUnit;
-
         public Context Context { get; }
         public INamedTypeSymbol Type { get; }
         public INamespaceSymbol Namespace { get; }
@@ -27,7 +24,6 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             Context = context;
             Declaration = sourceInterfaceDeclaration;
-            AttachedInterfaceDeclaration = sourceAttachedInterfaceDeclaration;
 
             Name = sourceInterfaceDeclaration.Identifier.Text;
             if (!Name.StartsWith("I"))
@@ -57,7 +53,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!(interfaceNamespaceDeclaration.Parent is CompilationUnitSyntax compilationUnit))
                 throw new UserViewableException(
                     $"Parent of ${interfaceNamespaceDeclaration} namespace should be compilation unit, but it's a {interfaceNamespaceDeclaration.Parent!.GetType()} node instead");
-            _sourceCompilationUnit = compilationUnit;
 
             FrameworkNamespaceName = Context.ToFrameworkNamespaceName(Namespace);
 
@@ -73,23 +68,24 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate()
         {
+            var usings = new Usings(Context, FrameworkNamespaceName);
+            var extensionsClassUsings = new Usings(Context, NamespaceName);
+
             var properties = new List<Property>();
 
-            var mainClassStaticFields = new Source(Context);
-            var mainClassStaticMethods = new Source(Context);
-            var mainClassNonstaticFields = new Source(Context);
-            var mainClassNonstaticMethods = new Source(Context);
+            var stubSourceForUsings = new Source(Context, usings);
+            var mainClassStaticFields = new Source(Context, usings);
+            var mainClassStaticMethods = new Source(Context, usings);
+            var mainClassNonstaticFields = new Source(Context, usings);
+            var mainClassNonstaticMethods = new Source(Context, usings);
 
-            var extensionClassMethods = new Source(Context);
-            var attachedClassStaticFields = new Source(Context);
-            var attachedClassMethods = new Source(Context);
+            var extensionClassMethods = new Source(Context, extensionsClassUsings);
+            var attachedClassStaticFields = new Source(Context, usings);
+            var attachedClassMethods = new Source(Context, usings);
 
             // Add the property descriptors and accessors
             foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
             {
-                PropertyDeclarationSyntax propertyDeclaration = (PropertyDeclarationSyntax)Declaration.Members.Where(
-                    member => member is PropertyDeclarationSyntax memberProperty && memberProperty.Identifier.Text == propertySymbol.Name).First();
-
                 var property = new Property(Context, this, propertySymbol);
                 properties.Add(property);
 
@@ -132,7 +128,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     {
                         if (!methodName.StartsWith("Set"))
                             throw new UserViewableException(
-                                $"Attached type method {AttachedInterfaceDeclaration.Identifier.Text}.{methodName} doesn't start with Get or Set");
+                                $"Attached type method {AttachedType.Name}.{methodName} doesn't start with Get or Set");
                         else continue;
                     }
 
@@ -142,14 +138,16 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                     var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
 
-
                     attachedProperty.GenerateMainClassDescriptor(mainClassStaticFields);
                     attachedProperty.GenerateMainClassMethods(mainClassStaticMethods);
                     attachedProperty.GenerateAttachedClassMethods(attachedClassMethods);
                 }
             }
 
-            Source usingDeclarations = GenerateUsingDeclarations(!mainClassStaticFields.IsEmpty);
+            usings.AddTypeNamespace(Type);
+            usings.AddNamespace(FrameworkNamespaceName);
+            OutputType.AddUsings(usings, !mainClassStaticFields.IsEmpty, DestinationTypeHasTypeConverterAttribute());
+            Source usingDeclarations = GenerateUsingDeclarations(usings);
 
             string? destinationBaseClass = GetDestinationBaseClass();
 
@@ -165,19 +163,19 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             bool isPartial = Context.IsPanelSubclass(Declaration);
 
-            Source mainClassSource = GenerateClassFile(usingDeclarations, FrameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
+            Source mainClassSource = GenerateClassFile(usings, FrameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
             mainClassSource.WriteToFile(platformOutputDirectory, FrameworkClassName + ".cs");
 
-            if (AttachedInterfaceDeclaration != null)
+            if (AttachedType != null)
             {
                 string attachedClassName = FrameworkClassName + "Attached";
-                string attachedClassDerivedFrom = AttachedInterfaceDeclaration.Identifier.Text;
+                string attachedClassDerivedFrom = AttachedType.Name;
 
                 attachedClassStaticFields.AddLine($"public static {attachedClassName} Instance = new {attachedClassName}();");
 
-                Source attachedClassSource = GenerateClassFile(usingDeclarations, FrameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
+                Source attachedClassSource = GenerateClassFile(usings, FrameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
                 attachedClassSource.WriteToFile(platformOutputDirectory, attachedClassName + ".cs");
             }
@@ -185,21 +183,22 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!extensionClassMethods.IsEmpty)
             {
                 string extensionsClassName = FrameworkClassName + "Extensions";
-                Source extensionsClassSource = GenerateStaticClassFile(GenerateExtensionsClassUsingDeclarations(), NamespaceName, extensionsClassName, extensionClassMethods);
+                Source extensionsClassSource = GenerateStaticClassFile(extensionsClassUsings, NamespaceName, extensionsClassName, extensionClassMethods);
                 extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), extensionsClassName + ".cs");
             }
         }
 
-        public Source GenerateClassFile(Source usingDeclarations, string namespaceName, string className, string derivedFrom, bool isPartial = false,
+        public Source GenerateClassFile(Usings usings, string namespaceName, string className, string derivedFrom, bool isPartial = false,
             Source? constructor = null, Source? staticFields = null, Source? staticMethods = null, Source? nonstaticFields = null, Source? nonstaticMethods = null)
         {
             Source fileSource = new Source(Context);
 
             GenerateFileHeader(fileSource);
 
-            if (!usingDeclarations.IsEmpty)
+            Source usingsDeclarations = usings.Generate();
+            if (!usingsDeclarations.IsEmpty)
             {
-                fileSource.AddSource(usingDeclarations);
+                fileSource.AddSource(usingsDeclarations);
                 fileSource.AddBlankLine();
             }
 
@@ -249,12 +248,13 @@ namespace Microsoft.StandardUI.SourceGenerator
             return fileSource;
         }
 
-        public Source GenerateStaticClassFile(Source usingDeclarations, string namespaceName, string className, Source staticMethods)
+        public Source GenerateStaticClassFile(Usings usings, string namespaceName, string className, Source staticMethods)
         {
             Source fileSource = new Source(Context);
 
             GenerateFileHeader(fileSource);
 
+            Source usingDeclarations = usings.Generate();
             if (!usingDeclarations.IsEmpty)
             {
                 fileSource.AddSource(usingDeclarations);
@@ -315,25 +315,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             return constructor;
         }
 
-        private Source GenerateUsingDeclarations(bool hasPropertyDescriptors)
+        private Source GenerateUsingDeclarations(Usings usings)
         {
-            Source source = new Source(Context);
+            if (DestinationTypeHasTypeConverterAttribute())
+                usings.AddNamespace(OutputType.RootNamespace + ".Converters");
 
-            var usings = new HashSet<string>();
-
-            foreach (UsingDirectiveSyntax sourceUsing in _sourceCompilationUnit.Usings)
-            {
-                NameSyntax sourceUsingName = sourceUsing.Name;
-                AddUsing(usings, sourceUsingName);
-
-                if (sourceUsingName.ToString().StartsWith("Microsoft.StandardUI."))
-                    AddUsing(usings, Context.ToFrameworkNamespaceName(sourceUsingName));
-            }
-
-            AddUsing(usings, NamespaceName);
-
-            OutputType.AddUsings(usings, hasPropertyDescriptors, DestinationTypeHasTypeConverterAttribute());
-
+#if false
             foreach (var member in Declaration.Members)
             {
                 if (!(member is PropertyDeclarationSyntax modelProperty))
@@ -343,42 +330,18 @@ namespace Microsoft.StandardUI.SourceGenerator
                 if (modelProperty.Type is ArrayTypeSyntax)
                     AddUsing(usings, IdentifierName("System"));
             }
+#endif
 
-            if (DestinationTypeHasTypeConverterAttribute())
-                AddUsing(usings, OutputType.RootNamespace + ".Converters");
-
+            /*
             foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
             {
-                PropertyDeclarationSyntax propertyDeclaration = (PropertyDeclarationSyntax)Declaration.Members.Where(
-                    member => member is PropertyDeclarationSyntax memberProperty && memberProperty.Identifier.Text == propertySymbol.Name).First();
-
                 var property = new Property(Context, this, propertySymbol);
                 OutputType.AddTypeAliasUsingIfNeeded(usings, property.FrameworkTypeName.ToString());
             }
+            */
 
-            foreach (string @using in usings)
-            {
-                source.AddLine($"using {@using};");
-            }
-
-            return source;
+            return usings.Generate();
         }
-
-        private Source GenerateExtensionsClassUsingDeclarations()
-        {
-            Source source = new Source(Context);
-
-            foreach (UsingDirectiveSyntax sourceUsing in _sourceCompilationUnit.Usings)
-            {
-                source.AddLine($"using {sourceUsing.Name};");
-            }
-
-            return source;
-        }
-
-        private static void AddUsing(HashSet<string> usings, NameSyntax name) => usings.Add(name.ToString());
-
-        private static void AddUsing(HashSet<string> usings, string @using) => usings.Add(@using);
 
         private bool DestinationTypeHasTypeConverterAttribute()
         {
@@ -388,7 +351,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         private string? GetDestinationBaseClass()
         {
-            string? elementType = Context.IsCollectionType(Declaration.Identifier.Text);
+            string? elementType = Context.IsCollectionType(Name);
             if (elementType != null)
                 return $"StandardUICollection<{elementType}>";
 
