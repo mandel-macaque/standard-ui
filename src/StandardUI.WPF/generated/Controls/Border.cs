@@ -9,7 +9,7 @@ namespace Microsoft.StandardUI.Wpf.Controls
     public class Border : StandardUIFrameworkElement, IBorder
     {
         public static readonly System.Windows.DependencyProperty BackgroundProperty = PropertyUtils.Register(nameof(Background), typeof(Brush), typeof(Border), null);
-        public static readonly System.Windows.DependencyProperty BackgroundSizingProperty = PropertyUtils.Register(nameof(BackgroundSizing), typeof(BackgroundSizing), typeof(Border), "");
+        public static readonly System.Windows.DependencyProperty BackgroundSizingProperty = PropertyUtils.Register(nameof(BackgroundSizing), typeof(BackgroundSizing), typeof(Border), BackgroundSizing.InnerBorderEdge);
         public static readonly System.Windows.DependencyProperty BorderBrushProperty = PropertyUtils.Register(nameof(BorderBrush), typeof(Brush), typeof(Border), null);
         public static readonly System.Windows.DependencyProperty BorderThicknessProperty = PropertyUtils.Register(nameof(BorderThickness), typeof(Thickness), typeof(Border), Thickness.Default);
         public static readonly System.Windows.DependencyProperty ChildProperty = PropertyUtils.Register(nameof(Child), typeof(StandardUIFrameworkElement), typeof(Border), null);

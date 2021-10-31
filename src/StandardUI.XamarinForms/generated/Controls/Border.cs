@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.XamarinForms.Controls
     public class Border : StandardUIView, IBorder
     {
         public static readonly BindableProperty BackgroundProperty = PropertyUtils.Register(nameof(Background), typeof(Brush), typeof(Border), null);
-        public static readonly BindableProperty BackgroundSizingProperty = PropertyUtils.Register(nameof(BackgroundSizing), typeof(BackgroundSizing), typeof(Border), "");
+        public static readonly BindableProperty BackgroundSizingProperty = PropertyUtils.Register(nameof(BackgroundSizing), typeof(BackgroundSizing), typeof(Border), BackgroundSizing.InnerBorderEdge);
         public static readonly BindableProperty BorderBrushProperty = PropertyUtils.Register(nameof(BorderBrush), typeof(Brush), typeof(Border), null);
         public static readonly BindableProperty BorderThicknessProperty = PropertyUtils.Register(nameof(BorderThickness), typeof(Thickness), typeof(Border), Thickness.Default);
         public static readonly BindableProperty ChildProperty = PropertyUtils.Register(nameof(Child), typeof(StandardUIView), typeof(Border), null);

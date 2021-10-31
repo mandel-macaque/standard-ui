@@ -14,7 +14,7 @@ namespace Microsoft.StandardUI.Controls
         /// <summary>
         /// Gets or sets a value that indicates how far the background extends in relation to this element's border.
         /// </summary>
-        [DefaultValue("")]
+        [DefaultValue(BackgroundSizing.InnerBorderEdge)]
         BackgroundSizing BackgroundSizing { get; set; }
 
         /// <summary>
