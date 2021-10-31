@@ -1,7 +1,6 @@
 // This file is generated from IPolygon.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
-using Microsoft.StandardUI.Wpf.Media;
 using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI.Wpf.Shapes

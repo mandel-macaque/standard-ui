@@ -2,9 +2,9 @@
 
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.XamarinForms.Media;
+using Brush = Microsoft.StandardUI.XamarinForms.Media.Brush;
 using Microsoft.StandardUI.Shapes;
 using Xamarin.Forms;
-using Brush = Microsoft.StandardUI.XamarinForms.Media.Brush;
 
 namespace Microsoft.StandardUI.XamarinForms.Shapes
 {

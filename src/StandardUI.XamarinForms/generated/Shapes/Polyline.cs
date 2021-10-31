@@ -1,7 +1,6 @@
 // This file is generated from IPolyline.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
-using Microsoft.StandardUI.XamarinForms.Media;
 using Microsoft.StandardUI.Shapes;
 using Xamarin.Forms;
 

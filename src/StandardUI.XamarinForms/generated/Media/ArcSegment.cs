@@ -1,8 +1,8 @@
 // This file is generated from IArcSegment.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
-using Xamarin.Forms;
 using SweepDirection = Microsoft.StandardUI.Media.SweepDirection;
+using Xamarin.Forms;
 
 namespace Microsoft.StandardUI.XamarinForms.Media
 {

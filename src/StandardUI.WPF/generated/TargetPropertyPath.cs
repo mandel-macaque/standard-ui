@@ -1,7 +1,5 @@
 // This file is generated from ITargetPropertyPath.cs. Update the source file to change its contents.
 
-using Microsoft.StandardUI;
-
 namespace Microsoft.StandardUI.Wpf
 {
     public class TargetPropertyPath : StandardUIDependencyObject, ITargetPropertyPath
