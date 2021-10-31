@@ -161,10 +161,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
                     attachedInterfaceType = interfaceSymbolAttached;
                 }
 
-
                 new Interface(wpfContext, interfaceType, attachedInterfaceType).Generate();
-                new Interface(xamarinFormsContext, interfaceType, attachedInterfaceType).Generate();
-                //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, XamarinFormsXamlOutputType.Instance).Generate();
+                //new Interface(xamarinFormsContext, interfaceType, attachedInterfaceType).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, StandardModelOutputType.Instance).Generate();
             }
         }
