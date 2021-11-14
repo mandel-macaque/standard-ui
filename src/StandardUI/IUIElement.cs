@@ -21,6 +21,11 @@
         public double MaxWidth { get; set; }
 
         /// <summary>
+        /// The horizontal alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
+        /// </summary>
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+
+        /// <summary>
         /// The height of the object, in pixels. The default is NaN. Except for the special NaN value, this value must be equal to or greater than 0.
         /// </summary>
         [DefaultValue(double.NaN)]
@@ -37,6 +42,19 @@
         /// </summary>
         [DefaultValue(double.PositiveInfinity)]
         public double MaxHeight { get; set; }
+
+        /// <summary>
+        /// The Vertical alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
+        /// </summary>
+        public VerticalAlignment VerticalAlignment { get; set; }
+
+        /// <summary>
+        /// THe direction in which text and other UI elements flow within any parent element that controls their layout. This property can be set to
+        /// either LeftToRight or RightToLeft. Setting FlowDirection to RightToLeft on any element sets the alignment to the right, the reading order
+        /// to right-to-left and the layout of the control to flow from right to left.
+        /// </summary>
+        [DefaultValue(FlowDirection.LeftToRight)]
+        public FlowDirection FlowDirection { get; set; }
 
         /// <summary>
         /// Gets the size that this UIElement computed during the measure pass of the layout process.
@@ -78,5 +96,12 @@
         /// Gets the rendered height of a UIElement
         /// </summary>
         public double ActualHeight { get; }
+
+        /// <summary>
+        /// The visibility of a UIElement. A UIElement that is not visible is not rendered, does not take up space in the
+        /// layout, and cannot receive focus or input events.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool IsVisible { get; set; }
     }
 }
