@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.SourceGenerator
     public class Context
     {
         public const string RootNamespace = "Microsoft.StandardUI";
-        public readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+        public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
         public int IndentSize { get; } = 4;
         public Compilation Compilation { get; }
@@ -182,7 +182,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public bool IsThisType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
 
-        public string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
+        public static string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
         public string GetNamespaceFullName(INamespaceSymbol namespce) => namespce.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 

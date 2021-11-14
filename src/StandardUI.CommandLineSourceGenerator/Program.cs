@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
 
@@ -92,18 +91,30 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
             return instance;
         }
 
-        private static bool HasModelObjectAttribute(InterfaceDeclarationSyntax interfaceDeclaration)
+        public class GatherInterfacesToGenerateFrom : SymbolVisitor
         {
-            foreach (AttributeListSyntax attributeList in interfaceDeclaration.AttributeLists)
+            private List<INamedTypeSymbol> _interfaces = new List<INamedTypeSymbol>();
+
+            public IEnumerable<INamedTypeSymbol> Interfaces => _interfaces;
+
+            public override void VisitNamespace(INamespaceSymbol symbol)
             {
-                foreach (AttributeSyntax attribute in attributeList.Attributes)
+                foreach (var childSymbol in symbol.GetMembers())
                 {
-                    if (attribute.Name.ToString() == "UIModelObject")
-                        return true;
+                    //We must implement the visitor pattern ourselves and 
+                    //accept the child symbols in order to visit their children
+                    childSymbol.Accept(this);
                 }
             }
 
-            return false;
+            public override void VisitNamedType(INamedTypeSymbol symbol)
+            {
+                InterfacePurpose? interfacePuprpose = Interface.IdentifyPurpose(symbol);
+                if (interfacePuprpose.HasValue)
+                {
+                    _interfaces.Add(symbol);
+                }
+            }
         }
 
         private static void GenerateClasses(string rootDirectory, Workspace workspace, Project project)
@@ -112,56 +123,17 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
             if (compilation == null)
                 return;
 
-            var interfaces = new Dictionary<string, InterfaceDeclarationSyntax>();
-            var attachedInterfaces = new Dictionary<string, InterfaceDeclarationSyntax>();
-            foreach (SyntaxTree? tree in compilation.SyntaxTrees)
-            {
-                foreach (InterfaceDeclarationSyntax? intface in tree.GetRoot().DescendantNodesAndSelf().OfType<InterfaceDeclarationSyntax>())
-                {
-                    if (!HasModelObjectAttribute(intface))
-                        continue;
-
-                    string name = intface.Identifier.Text;
-
-                    if (name.EndsWith("Attached"))
-                        attachedInterfaces.Add(name, intface);
-                    else interfaces.Add(name, intface);
-                }
-            }
+            var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
+            gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 
             var wpfContext = new Context(compilation, rootDirectory, WpfFrameworkType.Instance);
             var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsFrameworkType.Instance);
 
-            foreach (InterfaceDeclarationSyntax intface in interfaces.Values)
+            foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
             {
-                InterfaceDeclarationSyntax? attachedInterface = null;
-                if (attachedInterfaces.TryGetValue(intface.Identifier.Text + "Attached", out InterfaceDeclarationSyntax value))
-                    attachedInterface = value;
+                Console.WriteLine($"Processing {interfaceType.Name}");
 
-                Console.WriteLine($"Processing {intface.Identifier.Text}");
-
-
-                if (!(intface.Parent is NamespaceDeclarationSyntax interfaceNamespaceDeclaration))
-                    throw new UserViewableException(
-                        $"Parent of ${intface.Identifier.Text} interface should be namespace declaration, but it's a {intface.Parent.GetType()} node instead");
-                string namespaceName = interfaceNamespaceDeclaration.Name.ToString();
-                string fullName = namespaceName + "." + intface.Identifier.ToString();
-                INamedTypeSymbol? interfaceType = compilation.GetTypeByMetadataName(fullName);
-                if (interfaceType == null)
-                    throw new UserViewableException($"No semantic data found for type {fullName}");
-
-
-                INamedTypeSymbol? attachedInterfaceType = null;
-                if (attachedInterface != null)
-                {
-                    string fullNameAttached = namespaceName + "." + attachedInterface.Identifier.Text;
-                    INamedTypeSymbol? interfaceSymbolAttached = compilation.GetTypeByMetadataName(fullNameAttached);
-                    if (interfaceSymbolAttached == null)
-                        throw new UserViewableException($"No semantic data found for attached type {fullNameAttached}");
-                    attachedInterfaceType = interfaceSymbolAttached;
-                }
-
-                new Interface(wpfContext, interfaceType, attachedInterfaceType).Generate();
+                new Interface(wpfContext, interfaceType).Generate();
                 //new Interface(xamarinFormsContext, interfaceType, attachedInterfaceType).Generate();
                 //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, StandardModelOutputType.Instance).Generate();
             }

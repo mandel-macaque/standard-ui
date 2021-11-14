@@ -9,6 +9,7 @@ namespace Microsoft.StandardUI.SourceGenerator
     {
         public Context Context { get; }
         public INamedTypeSymbol Type { get; }
+        public InterfacePurpose Purpose { get; }
         public INamespaceSymbol Namespace { get; }
         public string NamespaceName { get; }
         public string? ChildNamespaceName { get; }
@@ -17,8 +18,31 @@ namespace Microsoft.StandardUI.SourceGenerator
         public INamedTypeSymbol? AttachedType { get; }
         public string Name { get; }
         public string VariableName { get; }
+        public INamedTypeSymbol? LayoutManagerType { get; }
 
-        public Interface(Context context, INamedTypeSymbol type, INamedTypeSymbol? attachedType)
+        public static InterfacePurpose? IdentifyPurpose(INamedTypeSymbol type)
+        {
+            // Skip ...Attached interfaces, processing them when their paired main interface is processed instead
+            if (type.Name.EndsWith("Attached"))
+                return null;
+
+            foreach (AttributeData attribute in type.GetAttributes())
+            {
+                var attributeTypeFullName = Context.GetTypeFullName(attribute.AttributeClass);
+
+                if (attributeTypeFullName == "Microsoft.StandardUI.StandardPanelAttribute")
+                    return InterfacePurpose.StandardPanel;
+                else if (attributeTypeFullName == "Microsoft.StandardUI.UIModelObjectAttribute")
+                    return InterfacePurpose.StandardUIObject;
+                else if (attributeTypeFullName == "Microsoft.StandardUI.StandardControlAttribute")
+                    return InterfacePurpose.StandardControl;
+                else continue;
+            }
+
+            return null;
+        }
+
+        public Interface(Context context, INamedTypeSymbol type)
         {
             Context = context;
 
@@ -26,6 +50,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             Name = type.Name;
             if (!Name.StartsWith("I"))
                 throw new UserViewableException($"Data model interface {Name} must start with 'I'");
+
+            InterfacePurpose? purpose = IdentifyPurpose(type);
+            if (! purpose.HasValue)
+                throw new UserViewableException($"Interface {type} doesn't have expected attributes indicating purpose");
+            Purpose = purpose.Value;
 
             FrameworkClassName = Name.Substring(1);
 
@@ -38,7 +67,20 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             FrameworkNamespaceName = Context.ToFrameworkNamespaceName(Namespace);
 
-            AttachedType = attachedType;
+            // Get attached type, if it exists
+            string fullNameAttached = Context.GetTypeFullName(type) + "Attached";
+            AttachedType = Context.Compilation.GetTypeByMetadataName(fullNameAttached);
+
+            if (Purpose == InterfacePurpose.StandardPanel)
+            {
+                string layoutManagerFullName = $"{NamespaceName}.{Name.Substring(1)}LayoutManager";
+                LayoutManagerType = Context.Compilation.GetTypeByMetadataName(layoutManagerFullName);
+
+                if (LayoutManagerType == null)
+                {
+                    throw new UserViewableException($"No type {layoutManagerFullName} found for StandardPanel interface {Name}");
+                }
+            }
         }
 
         public void Generate()
@@ -87,6 +129,11 @@ namespace Microsoft.StandardUI.SourceGenerator
                 mainClassNonstaticMethods.AddBlankLine();
                 mainClassNonstaticMethods.AddLine(
                     "protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _uiElementCollection[index];");
+            }
+
+            if (Purpose == InterfacePurpose.StandardPanel)
+            {
+                Context.OutputType.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
             }
 
             // If there are any attached properties, add the property descriptors and accessors for them

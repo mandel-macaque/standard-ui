@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -93,7 +92,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                 return;
             }
 
-            if (!ImportedControlGenerator.TryGetTypeNamesFromInterface(interfaceFullTypeName, out string interfaceNamespace, out string controlTypeName))
+            if (!TryGetTypeNamesFromInterface(interfaceFullTypeName, out string interfaceNamespace, out string controlTypeName))
             {
                 return;
             }

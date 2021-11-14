@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -16,6 +13,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public abstract string DefaultUIElementBaseClassName { get; }
         public virtual void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationTypeName) { }
+        public virtual void GenerateStandardPanelLayoutMethods(Source methodsSource, string layoutManagerTypeName) { }
         public abstract bool EmitChangedNotifications { get; }
     }
 
@@ -55,6 +53,26 @@ namespace Microsoft.StandardUI.SourceGenerator
                     QualifiedName(IdentifierName("System"), IdentifierName("Windows")),
                     IdentifierName("Markup")));
 #endif
+        }
+
+        public override void GenerateStandardPanelLayoutMethods(Source source, string layoutManagerTypeName)
+        {
+            if (!source.IsEmpty)
+                source.AddBlankLine();
+            source.AddLine($"protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>");
+            using (source.Indent())
+            {
+                source.AddLine(
+                    $"{layoutManagerTypeName}.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();");
+            }
+
+            source.AddBlankLine();
+            source.AddLine($"protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>");
+            using (source.Indent())
+            {
+                source.AddLine(
+                    $"{layoutManagerTypeName}.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();");
+            }
         }
     }
 
