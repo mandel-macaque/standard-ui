@@ -4,40 +4,64 @@ namespace Microsoft.StandardUI
 {
     public static class UIElementExtensions
     {
-        public static T Width<T>(this T uIElement, double value) where T : IUIElement
+        public static T Width<T>(this T uiElement, double value) where T : IUIElement
         {
-            uIElement.Width = value;
-            return uIElement;
+            uiElement.Width = value;
+            return uiElement;
         }
         
-        public static T MinWidth<T>(this T uIElement, double value) where T : IUIElement
+        public static T MinWidth<T>(this T uiElement, double value) where T : IUIElement
         {
-            uIElement.MinWidth = value;
-            return uIElement;
+            uiElement.MinWidth = value;
+            return uiElement;
         }
         
-        public static T MaxWidth<T>(this T uIElement, double value) where T : IUIElement
+        public static T MaxWidth<T>(this T uiElement, double value) where T : IUIElement
         {
-            uIElement.MaxWidth = value;
-            return uIElement;
+            uiElement.MaxWidth = value;
+            return uiElement;
         }
         
-        public static T Height<T>(this T uIElement, double value) where T : IUIElement
+        public static T HorizontalAlignment<T>(this T uiElement, HorizontalAlignment value) where T : IUIElement
         {
-            uIElement.Height = value;
-            return uIElement;
+            uiElement.HorizontalAlignment = value;
+            return uiElement;
         }
         
-        public static T MinHeight<T>(this T uIElement, double value) where T : IUIElement
+        public static T Height<T>(this T uiElement, double value) where T : IUIElement
         {
-            uIElement.MinHeight = value;
-            return uIElement;
+            uiElement.Height = value;
+            return uiElement;
         }
         
-        public static T MaxHeight<T>(this T uIElement, double value) where T : IUIElement
+        public static T MinHeight<T>(this T uiElement, double value) where T : IUIElement
         {
-            uIElement.MaxHeight = value;
-            return uIElement;
+            uiElement.MinHeight = value;
+            return uiElement;
+        }
+        
+        public static T MaxHeight<T>(this T uiElement, double value) where T : IUIElement
+        {
+            uiElement.MaxHeight = value;
+            return uiElement;
+        }
+        
+        public static T VerticalAlignment<T>(this T uiElement, VerticalAlignment value) where T : IUIElement
+        {
+            uiElement.VerticalAlignment = value;
+            return uiElement;
+        }
+        
+        public static T FlowDirection<T>(this T uiElement, FlowDirection value) where T : IUIElement
+        {
+            uiElement.FlowDirection = value;
+            return uiElement;
+        }
+        
+        public static T IsVisible<T>(this T uiElement, bool value) where T : IUIElement
+        {
+            uiElement.IsVisible = value;
+            return uiElement;
         }
     }
 }
