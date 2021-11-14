@@ -5,7 +5,7 @@ using System.Windows.Media;
 namespace Microsoft.StandardUI.Wpf
 {
     /// <summary>
-    /// This is the base for predefined standard UI controls. 
+    /// This is the base for predefined Standard UI controls. 
     /// </summary>
     public class StandardUIFrameworkElement : FrameworkElement, IUIElement
     {
@@ -23,9 +23,34 @@ namespace Microsoft.StandardUI.Wpf
 
         Size IUIElement.DesiredSize => SizeExtensions.FromWpfSize(DesiredSize);
 
-        public double ActualX => throw new NotImplementedException();
+        double IUIElement.ActualX => throw new NotImplementedException();
 
-        public double ActualY => throw new NotImplementedException();
+        double IUIElement.ActualY => throw new NotImplementedException();
+
+        HorizontalAlignment IUIElement.HorizontalAlignment
+        {
+            get => HorizontalAlignmentExtensions.FromWpfHorizontalAlignment(this.HorizontalAlignment);
+            set => this.HorizontalAlignment = value.ToWpfHorizontalAlignment();
+        }
+
+        VerticalAlignment IUIElement.VerticalAlignment
+        {
+            get => VerticalAlignmentExtensions.FromWpfVerticalAlignment(this.VerticalAlignment);
+            set => this.VerticalAlignment = value.ToWpfVerticalAlignment();
+        }
+
+        FlowDirection IUIElement.FlowDirection
+        {
+            get => FlowDirectionExtensions.FromWpfFlowDirection(this.FlowDirection);
+            set => this.FlowDirection = value.ToWpfFlowDirection();
+        }
+
+        // TODO: Error if appropriate when set to Visibility.Hidden
+        bool IUIElement.IsVisible
+        {
+            get => this.Visibility != Visibility.Collapsed;
+            set => this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
 
         protected override void OnRender(DrawingContext drawingContextWpf)
         {

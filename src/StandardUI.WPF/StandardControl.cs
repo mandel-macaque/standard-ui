@@ -34,8 +34,6 @@ namespace Microsoft.StandardUI.Wpf
             Arrange(finalRect.ToWpfRect());
         }
 
-        Size IUIElement.DesiredSize => SizeExtensions.FromWpfSize(DesiredSize);
-
         IUIPropertyObject? IStandardControl.GetTemplateChild(string childName)
         {
             throw new NotImplementedException();
@@ -59,9 +57,36 @@ namespace Microsoft.StandardUI.Wpf
             return arrangeSize;
         }
 
-        double IUIElement.ActualX => throw new System.NotImplementedException();
+        Size IUIElement.DesiredSize => SizeExtensions.FromWpfSize(DesiredSize);
 
-        double IUIElement.ActualY => throw new System.NotImplementedException();
+        double IUIElement.ActualX => throw new NotImplementedException();
+
+        double IUIElement.ActualY => throw new NotImplementedException();
+
+        HorizontalAlignment IUIElement.HorizontalAlignment
+        {
+            get => HorizontalAlignmentExtensions.FromWpfHorizontalAlignment(this.HorizontalAlignment);
+            set => this.HorizontalAlignment = value.ToWpfHorizontalAlignment();
+        }
+
+        VerticalAlignment IUIElement.VerticalAlignment
+        {
+            get => VerticalAlignmentExtensions.FromWpfVerticalAlignment(this.VerticalAlignment);
+            set => this.VerticalAlignment = value.ToWpfVerticalAlignment();
+        }
+
+        FlowDirection IUIElement.FlowDirection
+        {
+            get => FlowDirectionExtensions.FromWpfFlowDirection(this.FlowDirection);
+            set => this.FlowDirection = value.ToWpfFlowDirection();
+        }
+
+        // TODO: Error if appropriate when set to Visibility.Hidden
+        bool IUIElement.IsVisible
+        {
+            get => this.Visibility != System.Windows.Visibility.Collapsed;
+            set => this.Visibility = value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+        }
 
         public object GetValue(IUIProperty dp)
         {
