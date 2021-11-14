@@ -1,7 +1,8 @@
 ﻿namespace Microsoft.StandardUI.Controls
 {
-    [UIModelObject]
-    public interface IHortizontalStack : IPanel
+    [StandardPanel]
+
+    public interface IHorizontalStack : IStackBase
     {
     }
 }
