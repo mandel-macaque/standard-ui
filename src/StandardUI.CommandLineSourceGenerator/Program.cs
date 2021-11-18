@@ -126,8 +126,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 
-            var wpfContext = new Context(compilation, rootDirectory, WpfFrameworkType.Instance);
-            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsFrameworkType.Instance);
+            var wpfContext = new Context(compilation, rootDirectory, WpfUIFramework.Instance);
+            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsUIFramework.Instance);
 
             foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
             {

@@ -38,7 +38,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             FrameworkTypeName = context.ToFrameworkTypeName(Type);
             TargetType = targetParameter.Type;
             TargetTypeName = context.ToTypeName(TargetType);
-            TargetFrameworkTypeName =  Context.IsUIElementType(TargetType) ? context.OutputType.FrameworkTypeForUIElementAttachedTarget : context.ToFrameworkTypeName(TargetType);
+            TargetFrameworkTypeName =  Context.IsUIElementType(TargetType) ? context.UIFramework.FrameworkTypeForUIElementAttachedTarget : context.ToFrameworkTypeName(TargetType);
             TargetParameterName = targetParameter.Name;
             DefaultValue = context.GetDefaultValue(getterMethod.GetAttributes(), $"{SourceInterfaceAttached.Name}.{Name}", Type);
 
@@ -51,7 +51,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateMainClassDescriptor(Source source)
         {
-            if (!(Context.OutputType is XamlFrameworkType xamlOutputType))
+            if (!(Context.UIFramework is XamlUIFramework xamlOutputType))
                 return;
 
             string nonNullablePropertyType = Context.ToNonnullableType(FrameworkTypeName);
@@ -63,7 +63,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public void GenerateMainClassMethods(Source source)
         {
             source.AddBlankLineIfNonempty();
-            if (Context.OutputType is XamlFrameworkType xamlOutputType)
+            if (Context.UIFramework is XamlUIFramework xamlOutputType)
             {
                 string descriptorName = xamlOutputType.GetPropertyDescriptorName(Name);
 
@@ -91,7 +91,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             bool classPropertyTypeDiffersFromInterface = Type.ToString() != FrameworkTypeName;
 
             source.AddBlankLineIfNonempty();
-            if (Context.OutputType is XamlFrameworkType xamlOutputType)
+            if (Context.UIFramework is XamlUIFramework xamlOutputType)
             {
                 source.AddLine($"public {FrameworkTypeName} Get{Name}({TargetTypeName} {TargetParameterName}) => {Interface.FrameworkClassName}.Get{Name}(({TargetFrameworkTypeName}) {TargetParameterName});");
                 if (SetterMethod != null)

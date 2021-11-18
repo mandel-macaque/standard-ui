@@ -85,6 +85,8 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate()
         {
+            UIFramework frameworkType = Context.UIFramework;
+
             var usings = new Usings(Context, FrameworkNamespaceName);
             var extensionsClassUsings = new Usings(Context, NamespaceName);
 
@@ -106,9 +108,9 @@ namespace Microsoft.StandardUI.SourceGenerator
                 var property = new Property(Context, this, propertySymbol);
                 properties.Add(property);
 
-                property.GenerateDescriptor(mainClassStaticFields);
-                property.GenerateFieldIfNeeded(mainClassNonstaticFields);
-                property.GenerateMethods(mainClassNonstaticMethods);
+                UIFramework.GeneratePropertyDescriptor(property, mainClassStaticFields);
+                UIFramework.GeneratePropertyField(property, mainClassNonstaticFields);
+                UIFramework.GeneratePropertyMethods(property, mainClassNonstaticMethods);
                 property.GenerateExtensionClassMethods(extensionClassMethods);
             }
 
@@ -120,7 +122,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             // Add a special case for the WPF visual tree child methods for Panel; later we'll generalize this as needed
-            if (Name == "IPanel" && Context.OutputType is WpfFrameworkType)
+            if (Name == "IPanel" && Context.UIFramework is WpfUIFramework)
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
 
@@ -133,7 +135,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             if (Purpose == InterfacePurpose.StandardPanel)
             {
-                Context.OutputType.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
+                Context.UIFramework.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
             }
 
             // If there are any attached properties, add the property descriptors and accessors for them
@@ -168,7 +170,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             usings.AddTypeNamespace(Type);
             usings.AddNamespace(FrameworkNamespaceName);
-            OutputType.AddUsings(usings, !mainClassStaticFields.IsEmpty, DestinationTypeHasTypeConverterAttribute());
+            UIFramework.AddUsings(usings, !mainClassStaticFields.IsEmpty, DestinationTypeHasTypeConverterAttribute());
             Source usingDeclarations = GenerateUsingDeclarations(usings);
 
             string? destinationBaseClass = GetDestinationBaseClass();
@@ -313,13 +315,13 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        public FrameworkType OutputType => Context.OutputType;
+        public UIFramework UIFramework => Context.UIFramework;
 
         private Source? GenerateConstructor(List<Property> collectionProperties)
         {
             Source constructorBody = new Source(Context);
             foreach (Property property in collectionProperties)
-                property.GenerateConstructorLinesIfNeeded(constructorBody);
+                UIFramework.GeneratePropertyConstructorLines(property, constructorBody);
 
             if (constructorBody.IsEmpty)
                 return null;
@@ -340,7 +342,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         private Source GenerateUsingDeclarations(Usings usings)
         {
             if (DestinationTypeHasTypeConverterAttribute())
-                usings.AddNamespace(OutputType.RootNamespace + ".Converters");
+                usings.AddNamespace(UIFramework.RootNamespace + ".Converters");
 
 #if false
             foreach (var member in Declaration.Members)
@@ -367,7 +369,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         private bool DestinationTypeHasTypeConverterAttribute()
         {
-            return Context.OutputType is XamlFrameworkType &&
+            return Context.UIFramework is XamlUIFramework &&
                    (FrameworkClassName == "Geometry" || FrameworkClassName == "Brush");
         }
 
@@ -380,7 +382,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)
-                return OutputType.DefaultBaseClassName;
+                return UIFramework.DefaultBaseClassName;
             else
                 return Context.ToFrameworkTypeName(baseInterface);
         }

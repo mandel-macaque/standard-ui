@@ -16,18 +16,18 @@ namespace Microsoft.StandardUI.SourceGenerator
         public int IndentSize { get; } = 4;
         public Compilation Compilation { get; }
         public string RootDirectory { get; }
-        public FrameworkType OutputType { get; }
+        public UIFramework UIFramework { get; }
 
-        public Context(Compilation compilation, string rootDirectory, FrameworkType outputType)
+        public Context(Compilation compilation, string rootDirectory, UIFramework outputType)
         {
             Compilation = compilation;
             RootDirectory = rootDirectory;
-            OutputType = outputType;
+            UIFramework = outputType;
         }
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
         {
-            string frameworkRootNamespace = OutputType.RootNamespace;
+            string frameworkRootNamespace = UIFramework.RootNamespace;
 
             // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
             // If the source namespace is just Microsoft.StandardUI, don't change anything here
@@ -118,7 +118,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             string destinationTypeName;
             if (IsThisType(type, "Microsoft.StandardUI.IUIElement"))
-                destinationTypeName = OutputType.DefaultUIElementBaseClassName;
+                destinationTypeName = UIFramework.DefaultUIElementBaseClassName;
             else if (IsUIModelInterfaceType(type))
                 destinationTypeName = typeName.Substring(1);
             else if (IsWrappedType(type))
@@ -224,18 +224,18 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public bool IsWrappedType(ITypeSymbol type)
         {
-            return OutputType is XamlFrameworkType && IsWrappableType(type);
+            return UIFramework is XamlUIFramework && IsWrappableType(type);
         }
 
         public string GetWrapperTypeName(string typeName)
         {
-            return typeName + ((XamlFrameworkType)OutputType).WrapperSuffix;
+            return typeName + ((XamlUIFramework)UIFramework).WrapperSuffix;
         }
 
         public string GetTypeNameWrapIfNeeded(ITypeSymbol type)
         {
             if (IsWrappedType(type))
-                return type.Name + ((XamlFrameworkType)OutputType).WrapperSuffix;
+                return type.Name + ((XamlUIFramework)UIFramework).WrapperSuffix;
             else return type.Name;
         }
 
@@ -377,7 +377,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public string GetPlatformOutputDirectory(string? childNamespaceName)
         {
-            string outputDirectory = Path.Combine(RootDirectory, "src", OutputType.ProjectBaseDirectory, "generated");
+            string outputDirectory = Path.Combine(RootDirectory, "src", UIFramework.ProjectBaseDirectory, "generated");
             if (childNamespaceName != null)
                 outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
 
