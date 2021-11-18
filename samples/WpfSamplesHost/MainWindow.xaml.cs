@@ -18,14 +18,9 @@ namespace WpfHost
             WpfStandardUIEnvironment.Init(new SkiaVisualEnvironment());
             InitializeComponent();
 
-            var radialGauge = new RadialGauge()
-            {
-                Width = 100,
-                Height = 100,
-                HorizontalAlignment = HorizontalAlignment.Left
-            };
-            controlStack.Children.Add(radialGauge);
-
+            MyBarChart.Entries = CreateChartEntries();
+            MyPointChart.Entries = CreateChartEntries();
+#if false
             var barChart = new BarChart()
             {
                 Entries = CreateChartEntries(),
@@ -45,6 +40,7 @@ namespace WpfHost
                 Height = 300,
             };
             controlStack.Children.Add(pointChart);
+#endif
 
 #if false
             var radarChart = new RadarChart()
