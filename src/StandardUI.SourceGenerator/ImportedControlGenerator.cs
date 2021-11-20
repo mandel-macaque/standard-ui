@@ -145,12 +145,24 @@ using Microsoft.StandardUI;
 
 namespace Microcharts.Wpf
 {
-    public abstract class Chart : StandardControl, IChart
+    public class Chart : StandardControl, IChart
     {
+        public static readonly System.Windows.DependencyProperty ChartTypeProperty = PropertyUtils.Register(nameof(ChartType), typeof(ChartType), typeof(Chart), ChartType.BarChart);
         public static readonly System.Windows.DependencyProperty EntriesProperty = PropertyUtils.Register(nameof(Entries), typeof(IEnumerable<ChartEntry>), typeof(Chart), null);
         public static readonly System.Windows.DependencyProperty BackgroundColorProperty = PropertyUtils.Register(nameof(BackgroundColor), typeof(ColorWpf), typeof(Chart), ColorWpf.Default);
         public static readonly System.Windows.DependencyProperty LabelColorProperty = PropertyUtils.Register(nameof(LabelColor), typeof(ColorWpf), typeof(Chart), ColorWpf.Default);
 
+        public Chart()
+        {
+            InitImplementation(new Microcharts.ChartImplementation(this));
+        }
+
+        public ChartType ChartType
+        {
+            get => (ChartType) GetValue(ChartTypeProperty);
+            set => SetValue(ChartTypeProperty, value);
+        }
+        
         public IEnumerable<ChartEntry> Entries
         {
             get => (IEnumerable<ChartEntry>)GetValue(EntriesProperty);

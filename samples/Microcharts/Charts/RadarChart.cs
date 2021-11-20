@@ -7,7 +7,6 @@ using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Shapes;
 using static Microsoft.StandardUI.FactoryStatics;
-using SkiaSharp;
 using Microsoft.StandardUI.Media;
 
 namespace Microcharts
@@ -21,11 +20,11 @@ namespace Microcharts
     ///
     /// A radar chart.
     /// </summary>
-    public class RadarChartImplementation<T> : ChartImplementation<T> where T : IRadarChart
+    public class RadarChart : ChartBase
     {
         private const float Epsilon = 0.01f;
 
-        public RadarChartImplementation(T control) : base(control)
+        public RadarChart(IChart control) : base(control)
         {
         }
 
