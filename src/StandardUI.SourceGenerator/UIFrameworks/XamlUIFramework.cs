@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator
+﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public abstract class XamlUIFramework : UIFramework
     {

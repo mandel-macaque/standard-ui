@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 using System.Linq;
 
 namespace Microsoft.StandardUI.SourceGenerator
