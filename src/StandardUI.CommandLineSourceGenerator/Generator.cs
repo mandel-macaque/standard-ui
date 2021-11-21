@@ -11,7 +11,7 @@ using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
-    static class Program
+    public static class Generator
     {
         static async Task Main(string[] args)
         {
