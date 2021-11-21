@@ -1,9 +1,7 @@
 ﻿using Microcharts;
-using Microcharts.Wpf;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.SkiaVisualizer;
 using Microsoft.StandardUI.Wpf;
-using SimpleControls.Wpf;
 using System.Windows;
 
 namespace WpfHost

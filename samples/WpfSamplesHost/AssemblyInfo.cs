@@ -10,5 +10,4 @@ using System.Windows;
 )]
 
 [assembly: ImportStandardControl("SimpleControls.IRadialGauge")]
-[assembly: ImportStandardControl("Microcharts.IBarChart")]
-[assembly: ImportStandardControl("Microcharts.IPointChart")]
+[assembly: ImportStandardControl("Microcharts.IChart")]
