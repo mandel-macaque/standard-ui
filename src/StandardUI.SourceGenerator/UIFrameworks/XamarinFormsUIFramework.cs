@@ -2,7 +2,9 @@
 {
     public class XamarinFormsUIFramework : XamlUIFramework
     {
-        public static readonly XamarinFormsUIFramework Instance = new XamarinFormsUIFramework();
+        public XamarinFormsUIFramework(Context context) : base(context)
+        {
+        }
 
         public override string ProjectBaseDirectory => "StandardUI.XamarinForms";
         public override string RootNamespace => "Microsoft.StandardUI.XamarinForms";

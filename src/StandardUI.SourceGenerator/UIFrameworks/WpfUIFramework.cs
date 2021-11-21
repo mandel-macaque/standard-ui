@@ -2,7 +2,9 @@
 {
     public class WpfUIFramework : XamlUIFramework
     {
-        public static readonly WpfUIFramework Instance = new WpfUIFramework();
+        public WpfUIFramework(Context context) : base(context)
+        {
+        }
 
         public override string ProjectBaseDirectory => "StandardUI.Wpf";
         public override string RootNamespace => "Microsoft.StandardUI.Wpf";

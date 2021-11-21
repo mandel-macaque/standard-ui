@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -15,7 +14,6 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string NamespaceName { get; }
         public string? ChildNamespaceName { get; }
         public string FrameworkClassName { get; }
-        public string FrameworkNamespaceName { get; }
         public INamedTypeSymbol? AttachedType { get; }
         public string Name { get; }
         public string VariableName { get; }
@@ -29,7 +27,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             foreach (AttributeData attribute in type.GetAttributes())
             {
-                var attributeTypeFullName = Context.GetTypeFullName(attribute.AttributeClass);
+                var attributeTypeFullName = Utils.GetTypeFullName(attribute.AttributeClass);
 
                 if (attributeTypeFullName == "Microsoft.StandardUI.StandardPanelAttribute")
                     return InterfacePurpose.StandardPanel;
@@ -60,16 +58,14 @@ namespace Microsoft.StandardUI.SourceGenerator
             FrameworkClassName = Name.Substring(1);
 
             // Form the default variable name for the interface by dropping the "I" and lower casing the first letter(s) after (ICanvas => canvas)
-            VariableName = Context.TypeNameToVariableName(Name.Substring(1));
+            VariableName = Utils.TypeNameToVariableName(Name.Substring(1));
 
             Namespace = Type.ContainingNamespace;
-            NamespaceName = Context.GetNamespaceFullName(Namespace);
-            ChildNamespaceName = Context.GetChildNamespaceName(NamespaceName);
-
-            FrameworkNamespaceName = Context.ToFrameworkNamespaceName(Namespace);
+            NamespaceName = Utils.GetNamespaceFullName(Namespace);
+            ChildNamespaceName = Utils.GetChildNamespaceName(NamespaceName);
 
             // Get attached type, if it exists
-            string fullNameAttached = Context.GetTypeFullName(type) + "Attached";
+            string fullNameAttached = Utils.GetTypeFullName(type) + "Attached";
             AttachedType = Context.Compilation.GetTypeByMetadataName(fullNameAttached);
 
             if (Purpose == InterfacePurpose.StandardPanel)
@@ -84,11 +80,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
         }
 
-        public void Generate()
+        public void Generate(UIFramework uiFramework)
         {
-            UIFramework frameworkType = Context.UIFramework;
+            var frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
 
-            var usings = new Usings(Context, FrameworkNamespaceName);
+            var usings = new Usings(Context, frameworkNamespaceName);
             var extensionsClassUsings = new Usings(Context, NamespaceName);
 
             var properties = new List<Property>();
@@ -109,13 +105,13 @@ namespace Microsoft.StandardUI.SourceGenerator
                 var property = new Property(Context, this, propertySymbol);
                 properties.Add(property);
 
-                UIFramework.GeneratePropertyDescriptor(property, mainClassStaticFields);
-                UIFramework.GeneratePropertyField(property, mainClassNonstaticFields);
-                UIFramework.GeneratePropertyMethods(property, mainClassNonstaticMethods);
+                uiFramework.GeneratePropertyDescriptor(property, mainClassStaticFields);
+                uiFramework.GeneratePropertyField(property, mainClassNonstaticFields);
+                uiFramework.GeneratePropertyMethods(property, mainClassNonstaticMethods);
                 property.GenerateExtensionClassMethods(extensionClassMethods);
             }
 
-            if (Context.IncludeDraw(Type))
+            if (Utils.IncludeDraw(Type))
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
                 mainClassNonstaticMethods.AddLine(
@@ -123,7 +119,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             // Add a special case for the WPF visual tree child methods for Panel; later we'll generalize this as needed
-            if (Name == "IPanel" && Context.UIFramework is WpfUIFramework)
+            if (Name == "IPanel" && uiFramework is WpfUIFramework)
             {
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
 
@@ -136,7 +132,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             if (Purpose == InterfacePurpose.StandardPanel)
             {
-                Context.UIFramework.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
+                uiFramework.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
             }
 
             // If there are any attached properties, add the property descriptors and accessors for them
@@ -163,22 +159,22 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                     var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
 
-                    attachedProperty.GenerateMainClassDescriptor(mainClassStaticFields);
-                    attachedProperty.GenerateMainClassMethods(mainClassStaticMethods);
-                    attachedProperty.GenerateAttachedClassMethods(attachedClassMethods);
+                    uiFramework.GenerateAttachedPropertyDescriptor(attachedProperty, mainClassStaticFields);
+                    uiFramework.GenerateAttachedPropertyMethods(attachedProperty, mainClassStaticMethods);
+                    uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassMethods);
                 }
             }
 
             usings.AddTypeNamespace(Type);
-            usings.AddNamespace(FrameworkNamespaceName);
-            UIFramework.AddUsings(usings, !mainClassStaticFields.IsEmpty, DestinationTypeHasTypeConverterAttribute());
-            Source usingDeclarations = GenerateUsingDeclarations(usings);
+            usings.AddNamespace(frameworkNamespaceName);
+            uiFramework.AddUsings(usings, !mainClassStaticFields.IsEmpty, OutpuHasTypeConverterAttribute(uiFramework));
+            Source usingDeclarations = GenerateUsingDeclarations(uiFramework, usings);
 
-            string? destinationBaseClass = GetDestinationBaseClass();
+            string? destinationBaseClass = GetOutputBaseClass(uiFramework);
 
-            Source? constructor = GenerateConstructor(properties);
+            Source? constructor = GenerateConstructor(uiFramework, properties);
 
-            string platformOutputDirectory = Context.GetPlatformOutputDirectory(ChildNamespaceName);
+            string frameworkOutputDirectory = uiFramework.GetOutputDirectory(ChildNamespaceName);
 
             string mainClassDerviedFrom;
             if (destinationBaseClass == null)
@@ -186,12 +182,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             else
                 mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
 
-            bool isPartial = Context.IsPanelSubclass(Type);
+            bool isPartial = Utils.IsPanelSubclass(Type);
 
-            Source mainClassSource = GenerateClassFile(usings, FrameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
+            Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
-            mainClassSource.WriteToFile(platformOutputDirectory, FrameworkClassName + ".cs");
+            mainClassSource.WriteToFile(frameworkOutputDirectory, FrameworkClassName + ".cs");
 
             if (AttachedType != null)
             {
@@ -200,9 +196,9 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 attachedClassStaticFields.AddLine($"public static {attachedClassName} Instance = new {attachedClassName}();");
 
-                Source attachedClassSource = GenerateClassFile(usings, FrameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
+                Source attachedClassSource = GenerateClassFile(usings, frameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
-                attachedClassSource.WriteToFile(platformOutputDirectory, attachedClassName + ".cs");
+                attachedClassSource.WriteToFile(frameworkOutputDirectory, attachedClassName + ".cs");
             }
 
             if (!extensionClassMethods.IsEmpty)
@@ -316,13 +312,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        public UIFramework UIFramework => Context.UIFramework;
-
-        private Source? GenerateConstructor(List<Property> collectionProperties)
+        private Source? GenerateConstructor(UIFramework uiFramework, List<Property> collectionProperties)
         {
             Source constructorBody = new Source(Context);
             foreach (Property property in collectionProperties)
-                UIFramework.GeneratePropertyConstructorLines(property, constructorBody);
+                uiFramework.GeneratePropertyConstructorLines(property, constructorBody);
 
             if (constructorBody.IsEmpty)
                 return null;
@@ -340,10 +334,10 @@ namespace Microsoft.StandardUI.SourceGenerator
             return constructor;
         }
 
-        private Source GenerateUsingDeclarations(Usings usings)
+        private Source GenerateUsingDeclarations(UIFramework uiFramework, Usings usings)
         {
-            if (DestinationTypeHasTypeConverterAttribute())
-                usings.AddNamespace(UIFramework.RootNamespace + ".Converters");
+            if (OutpuHasTypeConverterAttribute(uiFramework))
+                usings.AddNamespace(uiFramework.RootNamespace + ".Converters");
 
 #if false
             foreach (var member in Declaration.Members)
@@ -368,24 +362,24 @@ namespace Microsoft.StandardUI.SourceGenerator
             return usings.Generate();
         }
 
-        private bool DestinationTypeHasTypeConverterAttribute()
+        private bool OutpuHasTypeConverterAttribute(UIFramework uiFramework)
         {
-            return Context.UIFramework is XamlUIFramework &&
+            return uiFramework is XamlUIFramework &&
                    (FrameworkClassName == "Geometry" || FrameworkClassName == "Brush");
         }
 
-        private string? GetDestinationBaseClass()
+        private string? GetOutputBaseClass(UIFramework uiFramework)
         {
-            string? elementType = Context.IsCollectionType(Name);
+            string? elementType = Utils.IsCollectionType(Name);
             if (elementType != null)
                 return $"StandardUICollection<{elementType}>";
 
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)
-                return UIFramework.DefaultBaseClassName;
+                return uiFramework.DefaultBaseClassName;
             else
-                return Context.ToFrameworkTypeName(baseInterface);
+                return uiFramework.OutputTypeName(baseInterface);
         }
     }
 }

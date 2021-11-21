@@ -2,38 +2,20 @@
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
-    public class Property
+    public class Property : PropertyBase
     {
-        public Context Context { get; }
-        public Interface Interface { get; }
         public IPropertySymbol SourceProperty { get; }
-        public bool HasSetter { get; }
-        public string Name { get; }
-        public ITypeSymbol Type { get; }
-        public string TypeName { get; }
-        public string FrameworkTypeName { get; }
-        public string DefaultValue { get; }
-        public bool IsCollection { get; }
-        public string FieldName { get; }
 
-        public Property(Context context, Interface intface, IPropertySymbol propertySymbol)
+        public Property(Context context, Interface intface, IPropertySymbol propertySymbol) :
+            base(context, intface, propertySymbol.Name, propertySymbol.Type, propertySymbol.IsReadOnly, intface.Name)
         {
-            Context = context;
-            Interface = intface;
             SourceProperty = propertySymbol;
-            HasSetter = !propertySymbol.IsReadOnly;
-            Name = propertySymbol.Name;
-            Type = propertySymbol.Type;
-            TypeName = context.ToTypeName(Type);
-            FrameworkTypeName = context.ToFrameworkTypeName(Type);
-            DefaultValue = context.GetDefaultValue(propertySymbol.GetAttributes(), $"{Interface.Name}.{Name}", propertySymbol.Type);
-            IsCollection = Context.IsCollectionType(Type) != null;
-            FieldName = "_" + Context.TypeNameToVariableName(FrameworkTypeName);
+            SpecifiedDefaultValue = GetSpecifiedDefaultValue(propertySymbol.GetAttributes());
         }
 
         public void GenerateExtensionClassMethods(Source source)
         {
-            if (!HasSetter)
+            if (IsReadOnly)
                 return;
 
             source.Usings.AddTypeNamespace(Type);

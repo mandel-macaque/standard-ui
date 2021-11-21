@@ -5,7 +5,9 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class StandardModelUIFramework : UIFramework
     {
-        public static readonly StandardModelUIFramework Instance = new StandardModelUIFramework();
+        public StandardModelUIFramework(Context context) : base(context)
+        {
+        }
 
         public override string ProjectBaseDirectory => Path.Combine("StandardUI", "StandardModel");
         public override string RootNamespace => "Microsoft.StandardUI.StandardModel";

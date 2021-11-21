@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
-namespace Microsoft.StandardUI.CommandLineSourceGeneratord
+namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
-    class Program
+    static class Program
     {
         static async Task Main(string[] args)
         {
@@ -127,17 +127,18 @@ namespace Microsoft.StandardUI.CommandLineSourceGeneratord
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 
-            var wpfContext = new Context(compilation, rootDirectory, WpfUIFramework.Instance);
-            var winFormsContext = new Context(compilation, rootDirectory, WinFormsUIFramework.Instance);
-            var xamarinFormsContext = new Context(compilation, rootDirectory, XamarinFormsUIFramework.Instance);
+            Context context = new Context(compilation, rootDirectory);
+
+            var wpfUIFramework = new WpfUIFramework(context);
+            var winFormsUIFramework = new WinFormsUIFramework(context);
 
             foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
             {
                 Console.WriteLine($"Processing {interfaceType.Name}");
 
-                new Interface(wpfContext, interfaceType).Generate();
-                //new Interface(winFormsContext, interfaceType).Generate();
-                //new SourceFileGenerator(workspace, interfaceDeclaration, rootDirectory, StandardModelOutputType.Instance).Generate();
+                var intface = new Interface(context, interfaceType);
+                intface.Generate(wpfUIFramework);
+                //intface.Generate(winFormsUIFramework);
             }
         }
 

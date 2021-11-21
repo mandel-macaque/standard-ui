@@ -19,10 +19,10 @@ namespace Microsoft.StandardUI.SourceGenerator
         public void AddTypeNamespace(ITypeSymbol type)
         {
             // Built in types don't need a "using System" - it's implicit
-            if (Context.GetBuiltInTypeName(type) != null)
+            if (Utils.GetBuiltInTypeName(type) != null)
                 return;
 
-            AddNamespace(Context.GetNamespaceFullName(type.ContainingNamespace));
+            AddNamespace(Utils.GetNamespaceFullName(type.ContainingNamespace));
         }
 
         public void AddNamespace(string namespaceName)

@@ -2,7 +2,9 @@
 {
     public class WinFormsUIFramework : UIFramework
     {
-        public static readonly WinFormsUIFramework Instance = new WinFormsUIFramework();
+        public WinFormsUIFramework(Context context) : base(context)
+        {
+        }
 
         public override string ProjectBaseDirectory => "StandardUI.WinForms";
         public override string RootNamespace => "Microsoft.StandardUI.WinForms";
@@ -13,7 +15,7 @@
         public override void GeneratePropertyField(Property property, Source nonstaticFields)
         {
             nonstaticFields.AddLine(
-                $"private {property.FrameworkTypeName} {property.FieldName};");
+                $"private {PropertyOutputTypeName(property)} {PropertyFieldName(property)};");
         }
 
         public override void GeneratePropertyMethods(Property property, Source source)
@@ -22,12 +24,13 @@
 
             // Add the type - for interface type and the framework type (if different)
             usings.AddTypeNamespace(property.Type);
-            if (property.Context.IsWrappedType(property.Type) || property.Context.IsUIModelInterfaceType(property.Type))
-                usings.AddNamespace(property.Context.ToFrameworkNamespaceName(property.Type.ContainingNamespace));
+            if (IsWrappedType(property.Type) || Utils.IsUIModelInterfaceType(property.Type))
+                usings.AddNamespace(ToFrameworkNamespaceName(property.Type.ContainingNamespace));
 
-            AddTypeAliasUsingIfNeeded(usings, property.FrameworkTypeName);
+            var propertyOutputTypeName = PropertyOutputTypeName(property);
+            AddTypeAliasUsingIfNeeded(usings, propertyOutputTypeName);
 
-            bool classPropertyTypeDiffersFromInterface = property.TypeName != property.FrameworkTypeName;
+            bool classPropertyTypeDiffersFromInterface = property.TypeName != propertyOutputTypeName;
 
 #if LATER
             SyntaxTokenList modifiers;
@@ -43,21 +46,21 @@
 
             source.AddBlankLineIfNonempty();
 
-            string getterValue = $"{property.FieldName}";
+            string propertyFieldName = PropertyFieldName(property);
 
-            if (!property.HasSetter)
-                source.AddLine($"public {property.FrameworkTypeName} {property.Name} => {getterValue};");
+            if (property.IsReadOnly)
+                source.AddLine($"public {propertyOutputTypeName} {property.Name} => {propertyFieldName};");
             else
             {
                 source.AddLines(
-                    $"public {property.FrameworkTypeName} {property.Name}",
+                    $"public {propertyOutputTypeName} {property.Name}",
                     "{");
                 using (source.Indent())
                 {
                     source.AddLine(
-                        $"get => {getterValue};");
+                        $"get => {propertyFieldName};");
                     source.AddLine(
-                        $"set => {property.FieldName} = value;");
+                        $"set => {propertyFieldName} = value;");
                 }
                 source.AddLine(
                     "}");
