@@ -36,7 +36,7 @@
             using (source.Indent())
             {
                 source.AddLine(
-                    $"{layoutManagerTypeName}.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();");
+                    $"{layoutManagerTypeName}.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();");
             }
         }
     }

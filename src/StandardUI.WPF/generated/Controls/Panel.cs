@@ -8,19 +8,19 @@ namespace Microsoft.StandardUI.Wpf.Controls
     {
         public static readonly System.Windows.DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection), typeof(Panel), null);
         
-        private UIElementCollection _uiElementCollection;
+        private UIElementCollection _children;
         
         public Panel()
         {
-            _uiElementCollection = new UIElementCollection(this);
-            SetValue(ChildrenProperty, _uiElementCollection);
+            _children = new UIElementCollection(this);
+            SetValue(ChildrenProperty, _children);
         }
         
-        public UIElementCollection Children => _uiElementCollection;
+        public UIElementCollection Children => _children;
         IUIElementCollection IPanel.Children => Children;
         
-        protected override int VisualChildrenCount => _uiElementCollection.Count;
+        protected override int VisualChildrenCount => _children.Count;
         
-        protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _uiElementCollection[index];
+        protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _children[index];
     }
 }
