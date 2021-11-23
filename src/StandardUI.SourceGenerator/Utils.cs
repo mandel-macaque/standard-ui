@@ -101,7 +101,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         /// AElement => aElement
         /// UIElement => uiElement
         /// </summary>
-        public static string TypeNameToVariableName(string typeName)
+        public static string PascalCaseToCamelCase(string typeName)
         {
             int upperCasePrefixCharCount = 0;
             int length = typeName.Length;

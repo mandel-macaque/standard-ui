@@ -58,7 +58,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             FrameworkClassName = Name.Substring(1);
 
             // Form the default variable name for the interface by dropping the "I" and lower casing the first letter(s) after (ICanvas => canvas)
-            VariableName = Utils.TypeNameToVariableName(Name.Substring(1));
+            VariableName = Utils.PascalCaseToCamelCase(Name.Substring(1));
 
             Namespace = Type.ContainingNamespace;
             NamespaceName = Utils.GetNamespaceFullName(Namespace);
@@ -124,10 +124,10 @@ namespace Microsoft.StandardUI.SourceGenerator
                 mainClassNonstaticMethods.AddBlankLineIfNonempty();
 
                 mainClassNonstaticMethods.AddLine(
-                    "protected override int VisualChildrenCount => _uiElementCollection.Count;");
+                    "protected override int VisualChildrenCount => _children.Count;");
                 mainClassNonstaticMethods.AddBlankLine();
                 mainClassNonstaticMethods.AddLine(
-                    "protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _uiElementCollection[index];");
+                    "protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _children[index];");
             }
 
             if (Purpose == InterfacePurpose.StandardPanel)
@@ -182,9 +182,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             else
                 mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
 
-            bool isPartial = Utils.IsPanelSubclass(Type);
-
-            Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom, isPartial: isPartial,
+            Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
             mainClassSource.WriteToFile(frameworkOutputDirectory, FrameworkClassName + ".cs");

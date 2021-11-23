@@ -71,7 +71,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public string PropertyFieldName(PropertyBase property)
         {
-            return "_" + Utils.TypeNameToVariableName(PropertyOutputTypeName(property));
+            return "_" + Utils.PascalCaseToCamelCase(property.Name);
         }
 
         public virtual string AttachedTargetOutputTypeName(AttachedProperty attachedProperty)

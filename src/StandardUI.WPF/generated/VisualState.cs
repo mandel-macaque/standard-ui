@@ -7,17 +7,17 @@ namespace Microsoft.StandardUI.Wpf
         public static readonly System.Windows.DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualState), "");
         public static readonly System.Windows.DependencyProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(SetterCollection), typeof(VisualState), null);
         
-        private SetterCollection _setterCollection;
+        private SetterCollection _setters;
         
         public VisualState()
         {
-            _setterCollection = new SetterCollection();
-            SetValue(SettersProperty, _setterCollection);
+            _setters = new SetterCollection();
+            SetValue(SettersProperty, _setters);
         }
         
         public string Name => (string) GetValue(NameProperty);
         
-        public SetterCollection Setters => _setterCollection;
+        public SetterCollection Setters => _setters;
         ISetterCollection IVisualState.Setters => Setters;
     }
 }
