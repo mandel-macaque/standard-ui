@@ -1,7 +1,9 @@
 ﻿using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
+using Microsoft.StandardUI.Wpf.Text;
 using System;
+using System.Globalization;
 using System.Windows.Media;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;
@@ -54,7 +56,12 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
         public void DrawLine(ILine line)
         {
             Pen? wpfPen = ToWpfNativePen(line);
-            _drawingContext!.DrawLine(ToWpfNativePen(line), new System.Windows.Point(line.X1, line.Y1), new System.Windows.Point(line.X2, line.Y2));
+            if (wpfPen != null)
+            {
+                _drawingContext!.DrawLine(wpfPen,
+                    new System.Windows.Point(line.X1, line.Y1),
+                    new System.Windows.Point(line.X2, line.Y2));
+            }
         }
 
         public void DrawPath(IPath path)
@@ -99,7 +106,26 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 
         public void DrawTextBlock(ITextBlock textBlock)
         {
-            throw new NotImplementedException();
+            Brush? brush = ToWpfNativeBrush(textBlock.Foreground);
+            if (brush == null)
+                return;
+
+            var typeface = new Typeface( textBlock.FontFamily.ToWpfFontFamily(),
+                textBlock.FontStyle.ToWpfFontStyle(),
+                textBlock.FontWeight.ToWpfFontWeight(),
+                textBlock.FontStretch.ToWpfFontStretch());
+
+            // Create the initial formatted text string.
+            FormattedText formattedText = new FormattedText(
+                textBlock.Text,
+                CultureInfo.GetCultureInfo("en-us"),  // TODO: Set this appropriately
+                textBlock.FlowDirection.ToWpfFlowDirection(),
+                typeface,
+                textBlock.FontSize,  // TODO: Set this appropriately
+                brush,
+                1.0); // TODO: Set this appropriately
+
+            _drawingContext!.DrawText(formattedText, new System.Windows.Point(0, 0));
         }
 
         public IVisual End()
@@ -207,8 +233,6 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 
             return pen;
         }
-
-        private static System.Windows.Point ToWpfPoint(Point point) => new System.Windows.Point(point.X, point.Y);
 
 #if LATER
         private static SKPathFillType FillRuleToSkiaPathFillType(FillRule fillRule)
