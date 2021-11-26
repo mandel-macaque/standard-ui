@@ -1,7 +1,7 @@
 ﻿using Microcharts;
 using Microsoft.StandardUI;
-using Microsoft.StandardUI.SkiaVisualizer;
 using Microsoft.StandardUI.Wpf;
+using Microsoft.StandardUI.Wpf.NativeVisualEnvironment;
 using System.Windows;
 
 namespace WpfHost
@@ -13,7 +13,7 @@ namespace WpfHost
     {
         public MainWindow()
         {
-            WpfStandardUIEnvironment.Init(new SkiaVisualEnvironment());
+            WpfStandardUIEnvironment.Init(new WpfNativeVisualEnvironment());
             InitializeComponent();
 
             MyBarChart.Entries = CreateChartEntries();
