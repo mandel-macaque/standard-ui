@@ -21,7 +21,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string? DefaultBaseClassName { get; }
         public abstract string DefaultUIElementBaseClassName { get; }
         public virtual void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
-        public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationTypeName) { }
+        public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
         public virtual void GenerateStandardPanelLayoutMethods(Source methodsSource, string layoutManagerTypeName) { }
 
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }
@@ -156,18 +156,20 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             if (Utils.IsCollectionType(propertyType) != null)
                 return "null";
 
-            if (propertyType is INamedTypeSymbol namedTypeSymbol &&
-                namedTypeSymbol.Name is string typeName &&
-                (typeName == "Color" ||
-                typeName == "Point" ||
-                typeName == "Points" ||
-                typeName == "Size" ||
-                typeName == "Thickness" ||
-                typeName == "CornerRadius" ||
-                typeName == "FontWeight"))
+            if (typeFullName == "Microsoft.StandardUI.Color" ||
+                typeFullName == "Microsoft.StandardUI.Point" ||
+                typeFullName == "Microsoft.StandardUI.Points" ||
+                typeFullName == "Microsoft.StandardUI.Size" ||
+                typeFullName == "Microsoft.StandardUI.Thickness" ||
+                typeFullName == "Microsoft.StandardUI.CornerRadius" ||
+                typeFullName == "Microsoft.StandardUI.Text.FontWeight")
             {
                 return $"{GetTypeNameWrapIfNeeded(propertyType)}.Default";
             }
+
+            if (typeFullName == "Microsoft.StandardUI.Media.FontFamily")
+                return FontFamilyDefaultValue;
+
             // TODO: Implement this
 #if false
             else if (propertyType is IArrayTypeSymbol arrayTypeSymbol)
@@ -187,5 +189,27 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
             throw new UserViewableException($"Property {property.FullPropertyName} has no [DefaultValue] attribute nor hardcoded default");
         }
+
+        protected virtual string? PropertyTypeDefaultValue(INamedTypeSymbol propertyType)
+        {
+            string typeFullName = Utils.GetTypeFullName(propertyType);
+
+            if (propertyType is INamedTypeSymbol namedTypeSymbol &&
+                namedTypeSymbol.Name is string typeName &&
+                (typeName == "Microsoft.StandardUI.Color" ||
+                typeName == "Microsoft.StandardUI.Point" ||
+                typeName == "Microsoft.StandardUI.Points" ||
+                typeName == "Microsoft.StandardUI.Size" ||
+                typeName == "Microsoft.StandardUI.Thickness" ||
+                typeName == "Microsoft.StandardUI.CornerRadius" ||
+                typeName == "Microsoft.StandardUI.FontWeight"))
+            {
+                return $"{GetTypeNameWrapIfNeeded(propertyType)}.Default";
+            }
+
+            return null;
+        }
+
+        protected abstract string FontFamilyDefaultValue { get; }
     }
 }

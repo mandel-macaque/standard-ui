@@ -11,6 +11,7 @@
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.WinForms.Control";
         public override string? DefaultBaseClassName => null;
         public override string DefaultUIElementBaseClassName => "StandardUIControl";
+        protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
 
         public override void GeneratePropertyField(Property property, Source nonstaticFields)
         {

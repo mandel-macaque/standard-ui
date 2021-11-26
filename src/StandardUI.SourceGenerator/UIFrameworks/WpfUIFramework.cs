@@ -13,6 +13,7 @@
         public override string? DefaultBaseClassName => "StandardUIDependencyObject";
         public override string DefaultUIElementBaseClassName => "StandardUIFrameworkElement";
         public override string WrapperSuffix => "Wpf";
+        protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";
 
         public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {

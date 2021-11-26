@@ -13,6 +13,7 @@
         public override string? DefaultBaseClassName => "StandardUIBindableObject";
         public override string DefaultUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
+        protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
 
         public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
         {
