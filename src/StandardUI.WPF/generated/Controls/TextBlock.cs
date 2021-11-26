@@ -12,9 +12,11 @@ namespace Microsoft.StandardUI.Wpf.Controls
     {
         public static readonly System.Windows.DependencyProperty ForegroundProperty = PropertyUtils.Register(nameof(Foreground), typeof(Brush), typeof(TextBlock), null);
         public static readonly System.Windows.DependencyProperty TextProperty = PropertyUtils.Register(nameof(Text), typeof(string), typeof(TextBlock), "");
+        public static readonly System.Windows.DependencyProperty FontFamilyProperty = PropertyUtils.Register(nameof(FontFamily), typeof(FontFamily), typeof(TextBlock), FontFamilyExtensions.DefaultFontFamily);
         public static readonly System.Windows.DependencyProperty FontStyleProperty = PropertyUtils.Register(nameof(FontStyle), typeof(FontStyle), typeof(TextBlock), FontStyle.Normal);
         public static readonly System.Windows.DependencyProperty FontWeightProperty = PropertyUtils.Register(nameof(FontWeight), typeof(FontWeightWpf), typeof(TextBlock), FontWeightWpf.Default);
         public static readonly System.Windows.DependencyProperty FontSizeProperty = PropertyUtils.Register(nameof(FontSize), typeof(double), typeof(TextBlock), 11.0);
+        public static readonly System.Windows.DependencyProperty FontStretchProperty = PropertyUtils.Register(nameof(FontStretch), typeof(FontStretch), typeof(TextBlock), FontStretch.Normal);
         public static readonly System.Windows.DependencyProperty TextAlignmentProperty = PropertyUtils.Register(nameof(TextAlignment), typeof(TextAlignment), typeof(TextBlock), TextAlignment.Left);
         
         public Brush Foreground
@@ -32,6 +34,12 @@ namespace Microsoft.StandardUI.Wpf.Controls
         {
             get => (string) GetValue(TextProperty);
             set => SetValue(TextProperty, value);
+        }
+        
+        public FontFamily FontFamily
+        {
+            get => (FontFamily) GetValue(FontFamilyProperty);
+            set => SetValue(FontFamilyProperty, value);
         }
         
         public FontStyle FontStyle
@@ -55,6 +63,12 @@ namespace Microsoft.StandardUI.Wpf.Controls
         {
             get => (double) GetValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
+        }
+        
+        public FontStretch FontStretch
+        {
+            get => (FontStretch) GetValue(FontStretchProperty);
+            set => SetValue(FontStretchProperty, value);
         }
         
         public TextAlignment TextAlignment

@@ -10,6 +10,6 @@ namespace Microsoft.StandardUI.Wpf.Controls
             VerticalStackLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();
         
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>
-            VerticalStackLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();
+            VerticalStackLayoutManager.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();
     }
 }
