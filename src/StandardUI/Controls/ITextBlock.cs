@@ -18,6 +18,8 @@ namespace Microsoft.StandardUI.Controls
         [DefaultValue("")]
         string Text { get; set; }
 
+        FontFamily FontFamily { get; set; }
+
         /// <summary>
         /// Gets or sets the font style for the content in this element.
         /// </summary>
@@ -25,15 +27,21 @@ namespace Microsoft.StandardUI.Controls
         FontStyle FontStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the top-level font weight for the TextBlock.
+        /// The top-level font weight for the TextBlock.
         /// </summary>
         FontWeight FontWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the font size for the text content in this element.
+        /// The font size for the text content in this element
         /// </summary>
         [DefaultValue(11.0)]
         double FontSize { get; set; }
+
+        /// <summary>
+        /// The font stretch for the text content in this element
+        /// </summary>
+        [DefaultValue(FontStretch.Normal)]
+        FontStretch FontStretch { get; set; }
 
         /// <summary>
         /// Gets or sets a value that indicates the horizontal alignment of text content.

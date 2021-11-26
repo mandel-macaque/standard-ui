@@ -19,6 +19,12 @@ namespace Microsoft.StandardUI.Controls
             return textBlock;
         }
         
+        public static T FontFamily<T>(this T textBlock, FontFamily value) where T : ITextBlock
+        {
+            textBlock.FontFamily = value;
+            return textBlock;
+        }
+        
         public static T FontStyle<T>(this T textBlock, FontStyle value) where T : ITextBlock
         {
             textBlock.FontStyle = value;
@@ -34,6 +40,12 @@ namespace Microsoft.StandardUI.Controls
         public static T FontSize<T>(this T textBlock, double value) where T : ITextBlock
         {
             textBlock.FontSize = value;
+            return textBlock;
+        }
+        
+        public static T FontStretch<T>(this T textBlock, FontStretch value) where T : ITextBlock
+        {
+            textBlock.FontStretch = value;
             return textBlock;
         }
         
