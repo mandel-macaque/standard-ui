@@ -8,7 +8,6 @@ namespace Microsoft.StandardUI.Wpf.Text
 
         public static FontWeightWpf FromFontWeight(FontWeight fontWeight) => new FontWeightWpf(fontWeight);
 
-        // Auto properties
         public FontWeight FontWeight { get; }
 
         public FontWeightWpf(FontWeight fontWeight)
