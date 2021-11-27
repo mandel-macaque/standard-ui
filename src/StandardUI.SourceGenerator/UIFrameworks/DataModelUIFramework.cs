@@ -1,16 +1,15 @@
-﻿using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
-using System.IO;
+﻿using System.IO;
 
-namespace Microsoft.StandardUI.SourceGenerator
+namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
-    public class StandardModelUIFramework : UIFramework
+    public class DataModelUIFramework : UIFramework
     {
-        public StandardModelUIFramework(Context context) : base(context)
+        public DataModelUIFramework(Context context) : base(context)
         {
         }
 
-        public override string ProjectBaseDirectory => Path.Combine("StandardUI", "StandardModel");
-        public override string RootNamespace => "Microsoft.StandardUI.StandardModel";
+        public override string ProjectBaseDirectory => Path.Combine("StandardUI", "DataModel");
+        public override string RootNamespace => "Microsoft.StandardUI.DataModel";
         public override string FrameworkTypeForUIElementAttachedTarget => "ObjectWithCascadingNotifications";
         public override string? DefaultBaseClassName => "ObjectWithCascadingNotifications";
         public override string DefaultUIElementBaseClassName => "ObjectWithCascadingNotifications";
