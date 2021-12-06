@@ -11,6 +11,8 @@ namespace Microsoft.StandardUI
 
         public static ICanvas Canvas() => Factory.CreateCanvas();
         public static IStackPanel StackPanel() => Factory.CreateStackPanel();
+        public static IVerticalStack VerticalStack() => Factory.CreateVerticalStack();
+        public static IHorizontalStack HorizontalStack() => Factory.CreateHorizontalStack();
         public static IGrid Grid() => Factory.CreateGrid();
 
         public static IEllipse Ellipse() => Factory.CreateEllipse();

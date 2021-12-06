@@ -11,9 +11,12 @@ namespace Microsoft.StandardUI
         /*** UI Elements ***/
 
         ICanvas CreateCanvas();
-        ICanvasAttached CanvasAttached { get; }
+        ICanvasAttached CanvasAttachedInstance { get; }
         IStackPanel CreateStackPanel();
-        IGrid CreateGrid();
+        IVerticalStack CreateVerticalStack();
+        IHorizontalStack CreateHorizontalStack();
+		IGrid CreateGrid ();
+        IGridAttached GridAttachedInstance { get; }
 
         IEllipse CreateEllipse();
         ILine CreateLine();
