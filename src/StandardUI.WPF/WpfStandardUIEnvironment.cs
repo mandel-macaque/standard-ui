@@ -2,8 +2,8 @@
 {
     public class WpfStandardUIEnvironment : IStandardUIEnvironment
     {
-        private StandardUIFactory _uiElementFactory = new StandardUIFactory();
-        private IVisualEnvironment _visualEnvironment;
+        private readonly StandardUIFactory _uiElementFactory = new StandardUIFactory();
+        private readonly IVisualEnvironment _visualEnvironment;
 
         public static void Init(IVisualEnvironment visualEnvironment)
         {

@@ -43,7 +43,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 
         public void DrawEllipse(IEllipse ellipse)
         {
-            Brush? wpfBrush = ToWpfNativeBrush(ellipse.Fill);
+            Brush? wpfBrush = ellipse.Fill.ToWpfBrush();
             Pen? wpfPen = ToWpfNativePen(ellipse);
 
             double radiusX = ellipse.Width / 2;
@@ -95,7 +95,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
         {
             System.Windows.Rect wpfRect = new System.Windows.Rect(0, 0, rectangle.Width, rectangle.Height);
 
-            Brush? wpfBurush = ToWpfNativeBrush(rectangle.Fill);
+            Brush? wpfBurush = rectangle.Fill.ToWpfBrush();
             Pen? wpfPen = ToWpfNativePen(rectangle);
 
             if (rectangle.RadiusX > 0 || rectangle.RadiusY > 0)
@@ -106,7 +106,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 
         public void DrawTextBlock(ITextBlock textBlock)
         {
-            Brush? brush = ToWpfNativeBrush(textBlock.Foreground);
+            Brush? brush = textBlock.Foreground.ToWpfBrush();
             if (brush == null)
                 return;
 
@@ -186,22 +186,6 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
         }
 #endif
 
-        public static System.Windows.Media.Color ToWpfNativeColor(Color color) => System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
-
-        public static Brush? ToWpfNativeBrush(IBrush? brush)
-        {
-            if (brush is null)
-                return null;
-            else if (brush is ISolidColorBrush solidColorBrush)
-                return new System.Windows.Media.SolidColorBrush(ToWpfNativeColor(solidColorBrush.Color));
-            else if (brush is IGradientBrush gradientBrush)
-            {
-                // TODO: Complete this
-                throw new InvalidOperationException($"Brush type {brush.GetType()} isn't currently supported");
-            }
-            else throw new InvalidOperationException($"Brush type {brush.GetType()} isn't currently supported");
-        }
-
         public static Pen? ToWpfNativePen(IShape shape)
         {
             IBrush? strokeBrush = shape.Stroke;
@@ -209,7 +193,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
             if (strokeBrush == null)
                 return null;
 
-            var pen = new System.Windows.Media.Pen(ToWpfNativeBrush(strokeBrush), shape.StrokeThickness);
+            var pen = new Pen(strokeBrush.ToWpfBrush(), shape.StrokeThickness);
 
             pen.MiterLimit = shape.StrokeMiterLimit;
 
