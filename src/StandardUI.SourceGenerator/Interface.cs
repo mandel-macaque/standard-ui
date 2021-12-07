@@ -86,6 +86,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             var usings = new Usings(Context, frameworkNamespaceName);
             var extensionsClassUsings = new Usings(Context, NamespaceName);
+            var attachedExtensionsClassUsings = new Usings(Context, NamespaceName);
 
             var properties = new List<Property>();
 
@@ -94,10 +95,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             var mainClassStaticMethods = new Source(Context, usings);
             var mainClassNonstaticFields = new Source(Context, usings);
             var mainClassNonstaticMethods = new Source(Context, usings);
-
             var extensionClassMethods = new Source(Context, extensionsClassUsings);
+
             var attachedClassStaticFields = new Source(Context, usings);
             var attachedClassMethods = new Source(Context, usings);
+            var attachedExtensionClassStaticFields = new Source(Context, attachedExtensionsClassUsings);
+            var attachedExtensionClassMethods = new Source(Context, attachedExtensionsClassUsings);
 
             // Add the property descriptors and accessors
             foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
@@ -162,6 +165,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     uiFramework.GenerateAttachedPropertyDescriptor(attachedProperty, mainClassStaticFields);
                     uiFramework.GenerateAttachedPropertyMethods(attachedProperty, mainClassStaticMethods);
                     uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassMethods);
+                    attachedProperty.GenerateExtensionClassMethods(attachedExtensionClassMethods);
                 }
             }
 
@@ -187,6 +191,13 @@ namespace Microsoft.StandardUI.SourceGenerator
                 nonstaticMethods: mainClassNonstaticMethods);
             mainClassSource.WriteToFile(frameworkOutputDirectory, FrameworkClassName + ".cs");
 
+            if (!extensionClassMethods.IsEmpty)
+            {
+                string extensionsClassName = FrameworkClassName + "Extensions";
+                Source extensionsClassSource = GenerateStaticClassFile(extensionsClassUsings, NamespaceName, extensionsClassName, extensionClassMethods);
+                extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), extensionsClassName + ".cs");
+            }
+
             if (AttachedType != null)
             {
                 string attachedClassName = FrameworkClassName + "Attached";
@@ -197,13 +208,20 @@ namespace Microsoft.StandardUI.SourceGenerator
                 Source attachedClassSource = GenerateClassFile(usings, frameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
                 attachedClassSource.WriteToFile(frameworkOutputDirectory, attachedClassName + ".cs");
-            }
 
-            if (!extensionClassMethods.IsEmpty)
-            {
-                string extensionsClassName = FrameworkClassName + "Extensions";
-                Source extensionsClassSource = GenerateStaticClassFile(extensionsClassUsings, NamespaceName, extensionsClassName, extensionClassMethods);
-                extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), extensionsClassName + ".cs");
+                if (!attachedExtensionClassMethods.IsEmpty)
+                {
+                    attachedExtensionsClassUsings.AddNamespace("System");
+
+                    attachedExtensionClassStaticFields.AddLines(
+                        $"private static readonly Lazy<{AttachedType.Name}> s_lazy{attachedClassName} = new Lazy<{AttachedType.Name}>(() => StandardUIEnvironment.Instance.Factory.{attachedClassName}Instance);",
+                        $"public static {AttachedType.Name} {attachedClassName}Instance => s_lazy{attachedClassName}.Value;");
+
+                    string attachedExtensionsClassName = FrameworkClassName + "AttachedExtensions";
+                    Source extensionsClassSource = GenerateStaticClassFile(attachedExtensionsClassUsings, NamespaceName, attachedExtensionsClassName, attachedExtensionClassMethods,
+                        staticFields: attachedExtensionClassStaticFields);
+                    extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), attachedExtensionsClassName + ".cs");
+                }
             }
         }
 
@@ -267,7 +285,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             return fileSource;
         }
 
-        public Source GenerateStaticClassFile(Usings usings, string namespaceName, string className, Source staticMethods)
+        public Source GenerateStaticClassFile(Usings usings, string namespaceName, string className, Source staticMethods, Source? staticFields = null)
         {
             Source fileSource = new Source(Context);
 
@@ -291,6 +309,12 @@ namespace Microsoft.StandardUI.SourceGenerator
                     "{");
                 using (fileSource.Indent())
                 {
+                    if (staticFields != null)
+                    {
+                        fileSource.AddSource(staticFields);
+                        fileSource.AddBlankLine();
+                    }
+
                     fileSource.AddSource(
                         staticMethods);
                 }
@@ -357,7 +381,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
             */
 
-            return usings.Generate();
+                    return usings.Generate();
         }
 
         private bool OutpuHasTypeConverterAttribute(UIFramework uiFramework)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI
 {
@@ -40,5 +41,7 @@ namespace Microsoft.StandardUI
         /// <param name="arg3">environment/platform specific argument</param>
         /// <returns>visual host control</returns>
         public IVisualHostControl CreateHostControl(object? arg1 = null, object? arg2 = null, object? arg3 = null);
+
+        public Size MeasureTextBlock(ITextBlock textBlock);
     }
 }

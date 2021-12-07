@@ -4,12 +4,12 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Property : PropertyBase
     {
-        public IPropertySymbol SourceProperty { get; }
+        public IPropertySymbol PropertySymbol { get; }
 
         public Property(Context context, Interface intface, IPropertySymbol propertySymbol) :
             base(context, intface, propertySymbol.Name, propertySymbol.Type, propertySymbol.IsReadOnly, intface.Name)
         {
-            SourceProperty = propertySymbol;
+            PropertySymbol = propertySymbol;
             SpecifiedDefaultValue = GetSpecifiedDefaultValue(propertySymbol.GetAttributes());
         }
 

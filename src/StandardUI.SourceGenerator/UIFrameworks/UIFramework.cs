@@ -119,9 +119,19 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                     }
                     else if (value is double doubleArgumentValue)
                     {
-                        if (doubleArgumentValue - Math.Truncate(doubleArgumentValue) == 0)
+                        if (double.IsPositiveInfinity(doubleArgumentValue))
+                            return "double.PositiveInfinity";
+                        else if (double.IsNegativeInfinity(doubleArgumentValue))
+                            return "double.NegativeInfinity";
+                        else if (double.IsNaN(doubleArgumentValue))
+                            return "double.NaN";
+                        else if (doubleArgumentValue - Math.Truncate(doubleArgumentValue) == 0)
                             return doubleArgumentValue.ToString("F1", CultureInfo.InvariantCulture);
                         else return doubleArgumentValue.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else if (value is int intArgumentValue)
+                    {
+                        return intArgumentValue.ToString(CultureInfo.InvariantCulture);
                     }
                     else if (value is bool boolArgumentValue)
                     {
@@ -162,7 +172,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 typeFullName == "Microsoft.StandardUI.Size" ||
                 typeFullName == "Microsoft.StandardUI.Thickness" ||
                 typeFullName == "Microsoft.StandardUI.CornerRadius" ||
-                typeFullName == "Microsoft.StandardUI.Text.FontWeight")
+                typeFullName == "Microsoft.StandardUI.Text.FontWeight" ||
+                typeFullName == "Microsoft.StandardUI.GridLength")
             {
                 return $"{GetTypeNameWrapIfNeeded(propertyType)}.Default";
             }

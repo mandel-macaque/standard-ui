@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Microsoft.StandardUI.Controls;
+using SkiaSharp;
 using System;
 
 namespace Microsoft.StandardUI.SkiaVisualizer
@@ -20,6 +21,11 @@ namespace Microsoft.StandardUI.SkiaVisualizer
         }
 
         public IVisualHostControl CreateHostControl(object? arg1 = null, object? arg2 = null, object? arg3 = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Size MeasureTextBlock(ITextBlock textBlock)
         {
             throw new NotImplementedException();
         }

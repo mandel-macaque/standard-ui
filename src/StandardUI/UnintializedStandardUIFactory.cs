@@ -13,9 +13,12 @@ namespace Microsoft.StandardUI
         /*** UI Elements ***/
 
         public ICanvas CreateCanvas() => throw CreateInitNotCalledException();
-        public ICanvasAttached CanvasAttached => throw CreateInitNotCalledException();
+        public ICanvasAttached CanvasAttachedInstance => throw CreateInitNotCalledException();
         public IStackPanel CreateStackPanel() => throw CreateInitNotCalledException();
-        public IGrid CreateGrid() => throw CreateInitNotCalledException();
+		public IVerticalStack CreateVerticalStack() => throw CreateInitNotCalledException ();
+		public IHorizontalStack CreateHorizontalStack() => throw CreateInitNotCalledException ();
+		public IGrid CreateGrid() => throw CreateInitNotCalledException();
+        public IGridAttached GridAttachedInstance => throw CreateInitNotCalledException();
 
         public IEllipse CreateEllipse() => throw CreateInitNotCalledException();
         public ILine CreateLine() => throw CreateInitNotCalledException();

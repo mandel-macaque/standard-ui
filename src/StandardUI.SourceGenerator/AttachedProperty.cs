@@ -5,22 +5,22 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class AttachedProperty : PropertyBase
     {
-        public INamedTypeSymbol SourceInterfaceAttached { get; }
+        public INamedTypeSymbol AttachedType { get; }
         public IMethodSymbol GetterMethod { get; }
         public IMethodSymbol? SetterMethod { get; }
         public ITypeSymbol TargetType { get; }
         public string TargetTypeName { get; }
         public string? TargetParameterName { get; }
 
-        public AttachedProperty(Context context, Interface intface, INamedTypeSymbol sourceInterfaceAttached, IMethodSymbol getterMethod, IMethodSymbol? setterMethod) :
-            base(context, intface, getterMethod.Name.Substring("Get".Length), getterMethod.ReturnType, setterMethod == null, sourceInterfaceAttached.Name)
+        public AttachedProperty(Context context, Interface intface, INamedTypeSymbol attachedType, IMethodSymbol getterMethod, IMethodSymbol? setterMethod) :
+            base(context, intface, getterMethod.Name.Substring("Get".Length), getterMethod.ReturnType, setterMethod == null, attachedType.Name)
         {
             if (getterMethod.Parameters.Length != 1)
                 throw new UserViewableException(
-                        $"Attached type getter method {sourceInterfaceAttached.Name}.{getterMethod.Name} doesn't take a single parameter");
+                        $"Attached type getter method {attachedType.Name}.{getterMethod.Name} doesn't take a single parameter");
             IParameterSymbol targetParameter = getterMethod.Parameters.First();
 
-            SourceInterfaceAttached = sourceInterfaceAttached;
+            AttachedType = attachedType;
             GetterMethod = getterMethod;
             SetterMethod = setterMethod;
             TargetType = targetParameter.Type;
@@ -31,7 +31,22 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (setterMethod != null && setterMethod.Parameters.Length != 2)
             {
                 throw new UserViewableException(
-                    $"Attached type setter method {sourceInterfaceAttached.Name}.{setterMethod.Name} doesn't take two parameters as expected");
+                    $"Attached type setter method {attachedType.Name}.{setterMethod.Name} doesn't take two parameters as expected");
+            }
+        }
+
+        public void GenerateExtensionClassMethods(Source source)
+        {
+            // Get the type base name, without the "I" nor "Attached" suffix
+            string typeBaseName = Interface.Name.Substring(1);
+
+            source.AddBlankLineIfNonempty();
+            source.AddLine(
+                $"public static {TypeName} Get{typeBaseName}{Name}(this IUIElement element) => {typeBaseName}AttachedInstance.Get{Name}(element);");
+            if (!IsReadOnly)
+            {
+                source.AddLine(
+                    $"public static void Set{typeBaseName}{Name}(this IUIElement element, {TypeName} value) => {typeBaseName}AttachedInstance.Set{Name}(element, value);");
             }
         }
     }
