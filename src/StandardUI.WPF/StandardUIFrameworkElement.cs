@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -9,7 +9,7 @@ namespace Microsoft.StandardUI.Wpf
     /// </summary>
     public class StandardUIFrameworkElement : FrameworkElement, IUIElement
     {
-        StandardUIFrameworkElementHelper _helper = new StandardUIFrameworkElementHelper();
+        private StandardUIFrameworkElementHelper _helper = new();
 
         void IUIElement.Measure(Size availableSize)
         {
@@ -29,27 +29,27 @@ namespace Microsoft.StandardUI.Wpf
 
         HorizontalAlignment IUIElement.HorizontalAlignment
         {
-            get => HorizontalAlignmentExtensions.FromWpfHorizontalAlignment(this.HorizontalAlignment);
-            set => this.HorizontalAlignment = value.ToWpfHorizontalAlignment();
+            get => HorizontalAlignmentExtensions.FromWpfHorizontalAlignment(HorizontalAlignment);
+            set => HorizontalAlignment = value.ToWpfHorizontalAlignment();
         }
 
         VerticalAlignment IUIElement.VerticalAlignment
         {
-            get => VerticalAlignmentExtensions.FromWpfVerticalAlignment(this.VerticalAlignment);
-            set => this.VerticalAlignment = value.ToWpfVerticalAlignment();
+            get => VerticalAlignmentExtensions.FromWpfVerticalAlignment(VerticalAlignment);
+            set => VerticalAlignment = value.ToWpfVerticalAlignment();
         }
 
         FlowDirection IUIElement.FlowDirection
         {
-            get => FlowDirectionExtensions.FromWpfFlowDirection(this.FlowDirection);
-            set => this.FlowDirection = value.ToWpfFlowDirection();
+            get => FlowDirectionExtensions.FromWpfFlowDirection(FlowDirection);
+            set => FlowDirection = value.ToWpfFlowDirection();
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
         bool IUIElement.IsVisible
         {
-            get => this.Visibility != Visibility.Collapsed;
-            set => this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            get => Visibility != Visibility.Collapsed;
+            set => Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         protected override void OnRender(DrawingContext drawingContextWpf)
