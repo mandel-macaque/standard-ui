@@ -21,23 +21,51 @@
                 usings.AddNamespace("System.ComponentModel");
         }
 
-        public override void GenerateStandardPanelLayoutMethods(Source source, string layoutManagerTypeName)
+        public override void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods)
         {
-            if (!source.IsEmpty)
-                source.AddBlankLine();
-            source.AddLine($"protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>");
-            using (source.Indent())
+            methods.AddBlankLineIfNonempty();
+            methods.AddLine($"protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>");
+            using (methods.Indent())
             {
-                source.AddLine(
+                methods.AddLine(
                     $"{layoutManagerTypeName}.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();");
             }
 
-            source.AddBlankLine();
-            source.AddLine($"protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>");
-            using (source.Indent())
+            methods.AddBlankLine();
+            methods.AddLine($"protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>");
+            using (methods.Indent())
             {
-                source.AddLine(
+                methods.AddLine(
                     $"{layoutManagerTypeName}.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();");
+            }
+        }
+
+        public override void GeneratePanelMethods(Source methods)
+        {
+            methods.AddBlankLineIfNonempty();
+
+            methods.AddLine(
+                "protected override int VisualChildrenCount => _children.Count;");
+            methods.AddBlankLine();
+            methods.AddLine(
+                "protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _children[index];");
+        }
+
+        public override void GenerateDrawableObjectMethods(Interface intface, Source methods)
+        {
+            methods.AddBlankLineIfNonempty();
+            methods.AddLine(
+                $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{intface.FrameworkClassName}(this);");
+
+            if (intface.IsThisType(KnownTypes.ITextBlock))
+            {
+                methods.AddLine(
+                    $"protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>");
+                using (methods.Indent())
+                {
+                    methods.AddLine(
+                        $"StandardUIEnvironment.Instance.VisualEnvironment.MeasureTextBlock(this).ToWpfSize();");
+                }
             }
         }
     }

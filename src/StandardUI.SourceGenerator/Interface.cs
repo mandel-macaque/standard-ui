@@ -19,6 +19,28 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string VariableName { get; }
         public INamedTypeSymbol? LayoutManagerType { get; }
 
+        public bool IsThisType(string typeName) => Utils.IsThisType(Type, typeName);
+
+        public bool IsDrawableObject
+        {
+            get
+            {
+                if (IsThisType(KnownTypes.ITextBlock))
+                    return true;
+
+                if (Type is not INamedTypeSymbol namedType)
+                    return false;
+
+                foreach (INamedTypeSymbol intface in namedType.Interfaces)
+                {
+                    if (Utils.IsThisType(intface, KnownTypes.IShape))
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
         public static InterfacePurpose? IdentifyPurpose(INamedTypeSymbol type)
         {
             // Skip ...Attached interfaces, processing them when their paired main interface is processed instead
@@ -27,13 +49,17 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             foreach (AttributeData attribute in type.GetAttributes())
             {
-                var attributeTypeFullName = Utils.GetTypeFullName(attribute.AttributeClass);
+                INamedTypeSymbol? attributeClass = attribute.AttributeClass;
+                if (attributeClass == null)
+                    continue;
 
-                if (attributeTypeFullName == "Microsoft.StandardUI.StandardPanelAttribute")
-                    return InterfacePurpose.StandardPanel;
-                else if (attributeTypeFullName == "Microsoft.StandardUI.UIModelObjectAttribute")
+                string attributeTypeFullName = Utils.GetTypeFullName(attributeClass);
+
+                if (attributeTypeFullName == KnownTypes.UIModelAttribute)
                     return InterfacePurpose.StandardUIObject;
-                else if (attributeTypeFullName == "Microsoft.StandardUI.StandardControlAttribute")
+                else if (attributeTypeFullName == KnownTypes.StandardPanelAttribute)
+                    return InterfacePurpose.StandardPanel;
+                else if (attributeTypeFullName == KnownTypes.StandardControlAttribute)
                     return InterfacePurpose.StandardControl;
                 else continue;
             }
@@ -82,7 +108,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
-            var frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
+            string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
 
             var usings = new Usings(Context, frameworkNamespaceName);
             var extensionsClassUsings = new Usings(Context, NamespaceName);
@@ -114,30 +140,6 @@ namespace Microsoft.StandardUI.SourceGenerator
                 property.GenerateExtensionClassMethods(extensionClassMethods);
             }
 
-            if (Utils.IncludeDraw(Type))
-            {
-                mainClassNonstaticMethods.AddBlankLineIfNonempty();
-                mainClassNonstaticMethods.AddLine(
-                    $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{FrameworkClassName}(this);");
-            }
-
-            // Add a special case for the WPF visual tree child methods for Panel; later we'll generalize this as needed
-            if (Name == "IPanel" && uiFramework is WpfUIFramework)
-            {
-                mainClassNonstaticMethods.AddBlankLineIfNonempty();
-
-                mainClassNonstaticMethods.AddLine(
-                    "protected override int VisualChildrenCount => _children.Count;");
-                mainClassNonstaticMethods.AddBlankLine();
-                mainClassNonstaticMethods.AddLine(
-                    "protected override System.Windows.Media.Visual GetVisualChild(int index) => (System.Windows.Media.Visual) _children[index];");
-            }
-
-            if (Purpose == InterfacePurpose.StandardPanel)
-            {
-                uiFramework.GenerateStandardPanelLayoutMethods(mainClassNonstaticMethods, LayoutManagerType!.Name);
-            }
-
             // If there are any attached properties, add the property descriptors and accessors for them
             if (AttachedType != null)
             {
@@ -167,6 +169,22 @@ namespace Microsoft.StandardUI.SourceGenerator
                     uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassMethods);
                     attachedProperty.GenerateExtensionClassMethods(attachedExtensionClassMethods);
                 }
+            }
+
+            // Add any other methods needed for particular special types
+            if (IsDrawableObject)
+            {
+                uiFramework.GenerateDrawableObjectMethods(this, mainClassNonstaticMethods);
+            }
+
+            if (IsThisType(KnownTypes.IPanel))
+            {
+                uiFramework.GeneratePanelMethods(mainClassNonstaticMethods);
+            }
+
+            if (Purpose == InterfacePurpose.StandardPanel)
+            {
+                uiFramework.GenerateStandardPanelLayoutMethods(LayoutManagerType!.Name, mainClassNonstaticMethods);
             }
 
             usings.AddTypeNamespace(Type);

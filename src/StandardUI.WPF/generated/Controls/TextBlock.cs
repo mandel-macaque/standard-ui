@@ -78,5 +78,7 @@ namespace Microsoft.StandardUI.Wpf.Controls
         }
         
         public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
+        protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>
+            StandardUIEnvironment.Instance.VisualEnvironment.MeasureTextBlock(this).ToWpfSize();
     }
 }

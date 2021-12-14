@@ -8,7 +8,8 @@ namespace Microsoft.StandardUI.SourceGenerator
     public static class Utils
     {
         public const string RootNamespace = "Microsoft.StandardUI";
-        public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+        public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat =
+            new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
         public static string ToTypeName(ITypeSymbol type) =>
             AddNullableSuffixIfNeeded(ToTypeNameNonNullable(type), type.NullableAnnotation);
@@ -130,27 +131,15 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public static bool IsThisType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
 
+        public static bool IsPanelType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == "Microsoft.StandardUI.Controls.IPanel";
+
         public static string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
         public static string GetNamespaceFullName(INamespaceSymbol namespce) => namespce.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
-        public static bool IsPanelSubclass(ITypeSymbol type)
-        {
-            if (!(type is INamedTypeSymbol namedType))
-                return false;
-
-            foreach (INamedTypeSymbol intface in namedType.Interfaces)
-            {
-                if (IsThisType(intface, "Microsoft.StandardUI.Controls.IPanel"))
-                    return true;
-            }
-
-            return false;
-        }
-
         public static bool IncludeDraw(ITypeSymbol type)
         {
-            if (!(type is INamedTypeSymbol namedType))
+            if (type is not INamedTypeSymbol namedType)
                 return false;
 
             if (IsThisType(type, "Microsoft.StandardUI.Controls.ITextBlock"))

@@ -22,7 +22,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string DefaultUIElementBaseClassName { get; }
         public virtual void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
-        public virtual void GenerateStandardPanelLayoutMethods(Source methodsSource, string layoutManagerTypeName) { }
 
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }
         public virtual void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers) { }
@@ -31,6 +30,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public virtual void GeneratePropertyMethods(Property property, Source methods) { }
         public virtual void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods) { }
         public virtual void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods) { }
+        public virtual void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods) { }
+        public virtual void GeneratePanelMethods(Source methods) { }
+        public virtual void GenerateDrawableObjectMethods(Interface intface, Source methods) { }
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
         {
