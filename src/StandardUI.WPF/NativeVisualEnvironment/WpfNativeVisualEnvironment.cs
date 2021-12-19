@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows.Media;
 using Microsoft.StandardUI.Controls;
@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
 {
     public class WpfNativeVisualEnvironment : IVisualEnvironment
     {
-        public IDrawingContext CreateDrawingContext(in Rect cullingRect) => new WpfNativeDrawingContext(cullingRect);
+        public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new WpfNativeDrawingContext();
 
         public void RenderToBuffer(IVisual visual, IntPtr pixels, int width, int height, int rowBytes)
         {

@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Shapes;
+using Microsoft.StandardUI.Shapes;
 using System;
 using Microsoft.StandardUI.Controls;
 
@@ -19,6 +19,6 @@ namespace Microsoft.StandardUI
         void DrawPolyline(IPolyline polyline);
         void DrawRectangle(IRectangle rectangle);
         void DrawTextBlock(ITextBlock textBlock);
-        IVisual End();
+        IVisual? Close();
     }
 }

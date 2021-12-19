@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -63,10 +63,10 @@ namespace Microsoft.StandardUI.Wpf
 
             Rect cullingRect = new Rect(0, 0, 200, 200);
 
-            IVisual visual;
-            using (IDrawingContext drawingContext = visualEnvironment.CreateDrawingContext(cullingRect)) {
+            IVisual? visual;
+            using (IDrawingContext drawingContext = visualEnvironment.CreateDrawingContext(this)) {
                 Draw(drawingContext);
-                visual = drawingContext.End();
+                visual = drawingContext.Close();
             }
 
             _helper.OnRender(visual, Width, Height, drawingContextWpf);

@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 using Microsoft.StandardUI.Wpf.Text;
@@ -15,7 +15,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
         private DrawingGroup _drawingGroup;
         private DrawingContext? _drawingContext;
 
-        public WpfNativeDrawingContext(in Rect cullingRect)
+        public WpfNativeDrawingContext()
         {
             _drawingGroup = new DrawingGroup();
             _drawingContext = _drawingGroup.Open();
@@ -128,8 +128,9 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
             _drawingContext!.DrawText(formattedText, new System.Windows.Point(0, 0));
         }
 
-        public IVisual End()
+        public IVisual? Close()
         {
+            // TODO: Return null if didn't draw anything
             _drawingContext!.Close();
             _drawingContext = null;
             return new WpfNativeVisual(_drawingGroup);

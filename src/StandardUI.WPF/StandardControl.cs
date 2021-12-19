@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Wpf.NativeVisualEnvironment;
 using System;
 using System.Windows.Media;

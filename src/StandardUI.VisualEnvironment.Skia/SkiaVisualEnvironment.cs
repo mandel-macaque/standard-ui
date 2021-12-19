@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Controls;
 using SkiaSharp;
 using System;
 
@@ -6,7 +6,7 @@ namespace Microsoft.StandardUI.SkiaVisualizer
 {
     public class SkiaVisualEnvironment : IVisualEnvironment
     {
-        public IDrawingContext CreateDrawingContext(in Rect cullingRect) => new SkiaDrawingContext(cullingRect);
+        public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new SkiaDrawingContext();
 
         public void RenderToBuffer(IVisual visual, IntPtr pixels, int width, int height, int rowBytes)
         {

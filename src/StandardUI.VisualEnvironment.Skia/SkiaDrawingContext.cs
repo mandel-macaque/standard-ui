@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 using SkiaSharp;
 using System;
@@ -12,11 +12,11 @@ namespace Microsoft.StandardUI.SkiaVisualizer
         private SKPictureRecorder? _skPictureRecorder;
         private SKCanvas _skCanvas;
 
-        public SkiaDrawingContext(in Rect cullingRect)
+        public SkiaDrawingContext()
         {
             _skPictureRecorder = new SKPictureRecorder();
 
-            SKRect skCullingRect = SKRect.Create((float)cullingRect.X, (float)cullingRect.Y, (float)cullingRect.Width, (float)cullingRect.Height);
+            SKRect skCullingRect = SKRect.Create(float.NegativeInfinity, float.NegativeInfinity, float.PositiveInfinity, float.PositiveInfinity);
             _skCanvas = _skPictureRecorder.BeginRecording(skCullingRect);
         }
 
@@ -112,7 +112,7 @@ namespace Microsoft.StandardUI.SkiaVisualizer
             }
         }
 
-        public IVisual End()
+        public IVisual Close()
         {
             SKPicture skPicture = _skPictureRecorder!.EndRecording();
             return new SkiaVisual(skPicture);

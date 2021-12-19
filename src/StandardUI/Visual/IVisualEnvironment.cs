@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI
@@ -20,7 +20,7 @@ namespace Microsoft.StandardUI
     /// </summary>
     public interface IVisualEnvironment
     {
-        IDrawingContext CreateDrawingContext(in Rect cullingRect);
+        IDrawingContext CreateDrawingContext(IUIElement uiElement);
 
         /// <summary>
         /// Render the visual to the specified bitmap memory buffer.
