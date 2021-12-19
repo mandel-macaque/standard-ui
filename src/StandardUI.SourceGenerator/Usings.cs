@@ -1,11 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Usings
     {
-        private HashSet<string> _usings = new HashSet<string>();
+        private HashSet<string> _usings = new();
+        private HashSet<string> _typeAliases = new();
         private string _fileNamespaceName;
 
         public Context Context { get; }
@@ -36,7 +37,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void AddTypeAlias(string alias)
         {
-            _usings.Add(alias);
+            _typeAliases.Add(alias);
         }
 
         public Source Generate()
@@ -46,6 +47,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             foreach (string usingLine in _usings)
             {
                 source.AddLine($"using {usingLine};");
+            }
+
+            foreach (string typeAliasLine in _typeAliases)
+            {
+                source.AddLine($"using {typeAliasLine};");
             }
 
             return source;

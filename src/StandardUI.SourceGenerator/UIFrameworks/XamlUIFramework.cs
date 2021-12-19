@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
@@ -8,12 +8,19 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         {
         }
 
+        public virtual string? DependencyPropertyTypeAlias => null;
         public abstract string DependencyPropertyClassName { get; }
         public virtual string PropertyDescriptorName(string propertyName) => propertyName + "Property";
         public virtual void GeneratePanelSubclassMethods(Source methods) { }
 
         public override void GeneratePropertyDescriptor(Property property, Source staticMembers)
         {
+            string? usingTypeAlias = DependencyPropertyTypeAlias;
+            if (usingTypeAlias != null)
+            {
+                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
+            }
+
             string nonNullablePropertyType = Utils.ToNonnullableType(PropertyOutputTypeName(property));
             string descriptorName = PropertyDescriptorName(property.Name);
             string defaultValue = DefaultValue(property);
@@ -23,6 +30,12 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
         {
+            string? usingTypeAlias = DependencyPropertyTypeAlias;
+            if (usingTypeAlias != null)
+            {
+                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
+            }
+
             string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
             string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
             string nonNullablePropertyType = Utils.ToNonnullableType(propertyOutputTypeName);

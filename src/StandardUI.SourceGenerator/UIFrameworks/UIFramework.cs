@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -78,7 +78,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public virtual string AttachedTargetOutputTypeName(AttachedProperty attachedProperty)
         {
-            return Utils.IsUIElementType(attachedProperty.TargetType) ? FrameworkTypeForUIElementAttachedTarget : OutputTypeName(attachedProperty.TargetType);
+            return Utils.IsThisType(attachedProperty.TargetType, KnownTypes.IUIElement) ?
+                FrameworkTypeForUIElementAttachedTarget :
+                OutputTypeName(attachedProperty.TargetType);
         }
 
         public virtual string WrapperSuffix => throw new NotImplementedException("WrapperSuffix doesn't have a default implementation; implement it if IsWrappedType can ever return true");
