@@ -24,11 +24,5 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.100-rc.2.21505.57
-        include-prerelease: true
-
     - name: Build
       run: msbuild StandardUI.sln /restore /p:Configuration=Release
