@@ -32,4 +32,4 @@ jobs:
 
     - name: Build
       run: msbuild StandardUI.sln /restore /p:Configuration=Release
-      run: dotnet build --no-restore $env:Solution_Name
+      
