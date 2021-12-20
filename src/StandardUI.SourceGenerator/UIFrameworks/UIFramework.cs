@@ -20,7 +20,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string? DefaultBaseClassName { get; }
         public abstract string DefaultUIElementBaseClassName { get; }
-        public virtual void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute) { }
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
 
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -189,7 +189,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             usings.AddTypeNamespace(Type);
             usings.AddNamespace(frameworkNamespaceName);
-            uiFramework.AddUsings(usings, !mainClassStaticFields.IsEmpty, OutpuHasTypeConverterAttribute(uiFramework));
             Source usingDeclarations = GenerateUsingDeclarations(uiFramework, usings);
 
             string? destinationBaseClass = GetOutputBaseClass(uiFramework);
@@ -376,9 +375,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         private Source GenerateUsingDeclarations(UIFramework uiFramework, Usings usings)
         {
-            if (OutpuHasTypeConverterAttribute(uiFramework))
-                usings.AddNamespace(uiFramework.RootNamespace + ".Converters");
-
 #if false
             foreach (var member in Declaration.Members)
             {
@@ -399,13 +395,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
             */
 
-                    return usings.Generate();
-        }
-
-        private bool OutpuHasTypeConverterAttribute(UIFramework uiFramework)
-        {
-            return uiFramework is XamlUIFramework &&
-                   (FrameworkClassName == "Geometry" || FrameworkClassName == "Brush");
+            return usings.Generate();
         }
 
         private string? GetOutputBaseClass(UIFramework uiFramework)

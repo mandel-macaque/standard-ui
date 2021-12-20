@@ -16,12 +16,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string WrapperSuffix => "WinUI";
         protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";
 
-        public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
-        {
-            if (hasTypeConverterAttribute)
-                usings.AddNamespace("System.ComponentModel");
-        }
-
         public override void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods)
         {
             methods.AddBlankLineIfNonempty();

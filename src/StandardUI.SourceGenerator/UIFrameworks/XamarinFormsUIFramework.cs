@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class XamarinFormsUIFramework : XamlUIFramework
     {
@@ -14,11 +14,6 @@
         public override string DefaultUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
-
-        public override void AddUsings(Usings usings, bool hasPropertyDescriptors, bool hasTypeConverterAttribute)
-        {
-            usings.AddNamespace("Xamarin.Forms");
-        }
 
         public override void AddTypeAliasUsingIfNeeded(Usings usings, string destinationTypeName)
         {
