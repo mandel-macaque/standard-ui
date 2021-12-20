@@ -1,4 +1,4 @@
-﻿// Copyright (c) Aloïs DENIEL. All rights reserved.
+// Copyright (c) Aloïs DENIEL. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
@@ -30,7 +30,7 @@ namespace Microcharts
         private bool isAnimated = true, isAnimating = false;
         private TimeSpan animationDuration = TimeSpan.FromSeconds(1.5f);
         private Task invalidationPlanification;
-        private CancellationTokenSource animationCancellation;
+        //private CancellationTokenSource animationCancellation;
 
         public IChart Control { get; }
 
