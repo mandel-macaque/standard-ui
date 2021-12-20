@@ -1,12 +1,13 @@
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.WinUI.NativeVisualEnvironment;
 using System;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace Microsoft.StandardUI.WinUI
 {
     public class StandardControl : Microsoft.UI.Xaml.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
-        private StandardControlImplementation _implementation;
+        private StandardControlImplementation? _implementation;
         private StandardUIFrameworkElement? _buildContent;
         private bool _invalid = true;
 
@@ -46,13 +47,13 @@ namespace Microsoft.StandardUI.WinUI
                 _invalid = false;
             }
 
-            _implementation.Measure(new Size(constraint.Width, constraint.Height));
+            _implementation!.Measure(new Size(constraint.Width, constraint.Height));
             return _implementation.DesiredSize.ToWindowsFoundationSize();
         }
 
         protected override global::Windows.Foundation.Size ArrangeOverride(global::Windows.Foundation.Size arrangeSize)
         {
-            _implementation.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
+            _implementation!.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
             return arrangeSize;
         }
 
@@ -83,8 +84,8 @@ namespace Microsoft.StandardUI.WinUI
         // TODO: Error if appropriate when set to Visibility.Hidden
         bool IUIElement.IsVisible
         {
-            get => this.Visibility != Microsoft.UI.Xaml.Visibility.Collapsed;
-            set => this.Visibility = value ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+            get => this.Visibility != Visibility.Collapsed;
+            set => this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object GetValue(IUIProperty dp)

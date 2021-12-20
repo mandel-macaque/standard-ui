@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -51,7 +51,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
             HashSet<string> generatedInterfaces = new HashSet<string>();
             foreach (string interfaceFullTypeName in rx.InterfacesToGenerate)
             {
-                INamedTypeSymbol interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
+                INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
                 if (interfaceSymbol == null)
                 {
                     continue;
@@ -66,7 +66,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                 generatedInterfaces.Add(interfaceFullTypeName);
 
                 // Generate any ancestor types
-                INamedTypeSymbol ancestorType = GetBaseInterface(interfaceSymbol);
+                INamedTypeSymbol? ancestorType = GetBaseInterface(interfaceSymbol);
                 while (ancestorType != null)
                 {
                     var symbolDisplayFormat = new SymbolDisplayFormat(
@@ -86,7 +86,7 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
 
         private static void GenerateSourceFile(GeneratorExecutionContext context, string interfaceFullTypeName)
         {
-            INamedTypeSymbol interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
+            INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
             if (interfaceSymbol == null)
             {
                 return;
@@ -201,7 +201,7 @@ namespace Microcharts.Wpf
         /// <summary>
         /// Return the first base interface or null if there aren't any
         /// </summary>
-        private static INamedTypeSymbol GetBaseInterface(INamedTypeSymbol interfaceSymbol)
+        private static INamedTypeSymbol? GetBaseInterface(INamedTypeSymbol interfaceSymbol)
         {
             foreach (INamedTypeSymbol baseInterface in interfaceSymbol.Interfaces)
             {
@@ -299,8 +299,8 @@ namespace Microcharts.Wpf
             int lastDotIndex = interfaceFullTypeName.LastIndexOf('.');
             if (lastDotIndex < 3)
             {
-                interfaceNamespace = null;
-                controlTypeName = null;
+                interfaceNamespace = "";
+                controlTypeName = "";
                 return false;
             }
 

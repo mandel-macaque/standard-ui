@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.Wpf
 {
     public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
-        private StandardControlImplementation _implementation;
+        private StandardControlImplementation? _implementation;
         private StandardUIFrameworkElement? _buildContent;
         private bool _invalid = true;
 
@@ -47,13 +47,13 @@ namespace Microsoft.StandardUI.Wpf
                 _invalid = false;
             }
 
-            _implementation.Measure(new Size(constraint.Width, constraint.Height));
+            _implementation!.Measure(new Size(constraint.Width, constraint.Height));
             return _implementation.DesiredSize.ToWpfSize();
         }
 
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize)
         {
-            _implementation.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
+            _implementation!.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
             return arrangeSize;
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.StandardUI.Wpf
                 _buildContent = null;
             }
 
-            _buildContent = (StandardUIFrameworkElement?)_implementation.Build();
+            _buildContent = (StandardUIFrameworkElement?)_implementation!.Build();
 
             if (_buildContent != null)
             {

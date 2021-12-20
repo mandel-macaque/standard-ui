@@ -151,7 +151,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
                     foreach (IFieldSymbol enumFieldMember in enumMembers)
                     {
-                        if (enumFieldMember.ConstantValue.Equals(value))
+                        object? enumFieldValue = enumFieldMember.ConstantValue;
+                        if (enumFieldValue != null && enumFieldValue.Equals(value))
                             return $"{type.Name}.{enumFieldMember.Name}";
                     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Controls
 {
@@ -38,7 +38,7 @@ namespace Microsoft.StandardUI.Controls
         /// <param name="childName">The name of the element to find.</param>
         /// <returns>The named element from the template, if the element is found. Can
         /// return null if no element with name childName was found in the template.</returns>
-        protected IUIPropertyObject GetTemplateChild(string childName)
+        protected IUIPropertyObject? GetTemplateChild(string childName)
         {
             // TODO: Finish this
             return null;

@@ -69,7 +69,10 @@ namespace Microsoft.StandardUI.Wpf
                 visual = drawingContext.Close();
             }
 
-            _helper.OnRender(visual, Width, Height, drawingContextWpf);
+            if (visual != null)
+            {
+                _helper.OnRender(visual, Width, Height, drawingContextWpf);
+            }
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
