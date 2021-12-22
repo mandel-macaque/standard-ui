@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Wpf
 {
@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.Wpf
             };
         }
 
-        public static HorizontalAlignment FromWpfHorizontalAlignment(System.Windows.HorizontalAlignment horizontalAlignment)
+        public static HorizontalAlignment ToStandardUIHorizontalAlignment(this System.Windows.HorizontalAlignment horizontalAlignment)
         {
             return horizontalAlignment switch
             {

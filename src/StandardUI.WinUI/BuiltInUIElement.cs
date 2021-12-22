@@ -22,7 +22,7 @@ namespace Microsoft.StandardUI.WinUI
             Arrange(finalRect.ToWindowsFoundationRect());
         }
 
-        Size IUIElement.DesiredSize => SizeExtensions.FromWindowsFoundationSize(DesiredSize);
+        Size IUIElement.DesiredSize => SizeExtensions.ToStandardUISize(DesiredSize);
 
         double IUIElement.ActualX => throw new NotImplementedException();
 
@@ -36,13 +36,13 @@ namespace Microsoft.StandardUI.WinUI
 
         VerticalAlignment IUIElement.VerticalAlignment
         {
-            get => VerticalAlignmentExtensions.FromWinUIVerticalAlignment(VerticalAlignment);
+            get => VerticalAlignmentExtensions.ToStandardUIVerticalAlignment(VerticalAlignment);
             set => VerticalAlignment = value.ToWinUIVerticalAlignment();
         }
 
         FlowDirection IUIElement.FlowDirection
         {
-            get => FlowDirectionExtensions.FromWinUIFlowDirection(FlowDirection);
+            get => FlowDirectionExtensions.ToStandardUIFlowDirection(FlowDirection);
             set => FlowDirection = value.ToWinUIFlowDirection();
         }
 

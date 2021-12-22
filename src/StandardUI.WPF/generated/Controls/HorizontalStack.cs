@@ -7,9 +7,9 @@ namespace Microsoft.StandardUI.Wpf.Controls
     public class HorizontalStack : StackBase, IHorizontalStack
     {
         protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>
-            HorizontalStackLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();
+            HorizontalStackLayoutManager.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWpfSize();
         
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>
-            HorizontalStackLayoutManager.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();
+            HorizontalStackLayoutManager.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWpfSize();
     }
 }

@@ -16,9 +16,9 @@ namespace Microsoft.StandardUI.WinUI.Controls
         }
         
         protected override global::Windows.Foundation.Size MeasureOverride(global::Windows.Foundation.Size constraint) =>
-            StackLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWindowsFoundationSize(constraint)).ToWindowsFoundationSize();
+            StackLayoutManager.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWindowsFoundationSize();
         
         protected override global::Windows.Foundation.Size ArrangeOverride(global::Windows.Foundation.Size arrangeSize) =>
-            StackLayoutManager.Instance.ArrangeOverride(this, SizeExtensions.FromWindowsFoundationSize(arrangeSize)).ToWindowsFoundationSize();
+            StackLayoutManager.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWindowsFoundationSize();
     }
 }

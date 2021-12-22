@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Media;
 using System;
 using System.Windows;
 
@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.Wpf.Text
         public static System.Windows.Media.FontFamily ToWpfFontFamily(this FontFamily fontFamily) =>
             new System.Windows.Media.FontFamily(fontFamily.Source);
 
-        public static FontFamily FromWpfFontFamily(System.Windows.Media.FontFamily fontFamily) =>
+        public static FontFamily ToStandardUIFontFamily(System.Windows.Media.FontFamily fontFamily) =>
             new FontFamily(fontFamily.Source);
     }
 }

@@ -7,9 +7,9 @@ namespace Microsoft.StandardUI.Wpf.Controls
     public class VerticalStack : StackBase, IVerticalStack
     {
         protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>
-            VerticalStackLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();
+            VerticalStackLayoutManager.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWpfSize();
         
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>
-            VerticalStackLayoutManager.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();
+            VerticalStackLayoutManager.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWpfSize();
     }
 }

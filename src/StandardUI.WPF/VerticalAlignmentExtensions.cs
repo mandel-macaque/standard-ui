@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Wpf
 {
@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.Wpf
             };
         }
 
-        public static VerticalAlignment FromWpfVerticalAlignment(System.Windows.VerticalAlignment verticalAlignment)
+        public static VerticalAlignment FromWpfVerticalAlignment(this System.Windows.VerticalAlignment verticalAlignment)
         {
             return verticalAlignment switch
             {

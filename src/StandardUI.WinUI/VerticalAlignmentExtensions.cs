@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.WinUI
             };
         }
 
-        public static VerticalAlignment FromWinUIVerticalAlignment(Microsoft.UI.Xaml.VerticalAlignment verticalAlignment)
+        public static VerticalAlignment ToStandardUIVerticalAlignment(this Microsoft.UI.Xaml.VerticalAlignment verticalAlignment)
         {
             return verticalAlignment switch
             {

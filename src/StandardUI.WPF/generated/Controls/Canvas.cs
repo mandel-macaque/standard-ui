@@ -16,9 +16,9 @@ namespace Microsoft.StandardUI.Wpf.Controls
         public static void SetTop(System.Windows.UIElement element, double value) => element.SetValue(TopProperty, value);
         
         protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>
-            CanvasLayoutManager.Instance.MeasureOverride(this, SizeExtensions.FromWpfSize(constraint)).ToWpfSize();
+            CanvasLayoutManager.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWpfSize();
         
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>
-            CanvasLayoutManager.Instance.ArrangeOverride(this, SizeExtensions.FromWpfSize(arrangeSize)).ToWpfSize();
+            CanvasLayoutManager.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWpfSize();
     }
 }

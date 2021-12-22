@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Text;
+using Microsoft.StandardUI.Text;
 
 namespace Microsoft.StandardUI.Wpf.Text
 {
@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.Wpf.Text
         public static System.Windows.FontWeight ToWpfFontWeight(this FontWeight fontWeight) =>
             System.Windows.FontWeight.FromOpenTypeWeight(fontWeight.Weight);
 
-        public static FontWeight FromWpfFontWeight(System.Windows.FontWeight fontWeight) =>
+        public static FontWeight ToStandardUIFontWeight(this System.Windows.FontWeight fontWeight) =>
             new FontWeight((ushort) fontWeight.ToOpenTypeWeight());
     }
 }

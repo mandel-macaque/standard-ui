@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Text;
+using Microsoft.StandardUI.Text;
 
 namespace Microsoft.StandardUI.Wpf.Text
 {

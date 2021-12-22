@@ -21,7 +21,7 @@ namespace Microsoft.StandardUI.Wpf
             Arrange(finalRect.ToWpfRect());
         }
 
-        Size IUIElement.DesiredSize => SizeExtensions.FromWpfSize(DesiredSize);
+        Size IUIElement.DesiredSize => SizeExtensions.ToStandardUISize(DesiredSize);
 
         double IUIElement.ActualX => throw new NotImplementedException();
 
@@ -29,7 +29,7 @@ namespace Microsoft.StandardUI.Wpf
 
         HorizontalAlignment IUIElement.HorizontalAlignment
         {
-            get => HorizontalAlignmentExtensions.FromWpfHorizontalAlignment(HorizontalAlignment);
+            get => HorizontalAlignmentExtensions.ToStandardUIHorizontalAlignment(HorizontalAlignment);
             set => HorizontalAlignment = value.ToWpfHorizontalAlignment();
         }
 
@@ -41,7 +41,7 @@ namespace Microsoft.StandardUI.Wpf
 
         FlowDirection IUIElement.FlowDirection
         {
-            get => FlowDirectionExtensions.FromWpfFlowDirection(FlowDirection);
+            get => FlowDirectionExtensions.ToStandardUIFlowDirection(FlowDirection);
             set => FlowDirection = value.ToWpfFlowDirection();
         }
 

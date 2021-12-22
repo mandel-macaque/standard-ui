@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Wpf
 {
@@ -14,7 +14,7 @@ namespace Microsoft.StandardUI.Wpf
             };
         }
 
-        public static FlowDirection FromWpfFlowDirection(System.Windows.FlowDirection flowDirection)
+        public static FlowDirection ToStandardUIFlowDirection(this System.Windows.FlowDirection flowDirection)
         {
             return flowDirection switch
             {

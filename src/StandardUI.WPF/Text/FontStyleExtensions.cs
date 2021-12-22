@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Text;
+using Microsoft.StandardUI.Text;
 using System;
 
 namespace Microsoft.StandardUI.Wpf.Text
@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.Wpf.Text
             };
         }
 
-        public static FontStyle FromWpfFontStyle(System.Windows.FontStyle fontStyle)
+        public static FontStyle ToStandardUIFontStyle(this System.Windows.FontStyle fontStyle)
         {
             if (fontStyle == System.Windows.FontStyles.Normal)
                 return FontStyle.Normal;

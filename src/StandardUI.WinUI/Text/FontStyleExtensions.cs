@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.WinUI.Text
             };
         }
 
-        public static FontStyle FromWinUIFontStyle(global::Windows.UI.Text.FontStyle fontStyle)
+        public static FontStyle ToStandardUIFontStyle(global::Windows.UI.Text.FontStyle fontStyle)
         {
             if (fontStyle == global::Windows.UI.Text.FontStyle.Normal)
                 return FontStyle.Normal;

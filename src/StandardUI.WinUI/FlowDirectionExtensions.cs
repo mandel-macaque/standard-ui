@@ -14,7 +14,7 @@ namespace Microsoft.StandardUI.WinUI
             };
         }
 
-        public static FlowDirection FromWinUIFlowDirection(Microsoft.UI.Xaml.FlowDirection flowDirection)
+        public static FlowDirection ToStandardUIFlowDirection(Microsoft.UI.Xaml.FlowDirection flowDirection)
         {
             return flowDirection switch
             {

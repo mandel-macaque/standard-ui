@@ -23,7 +23,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             using (methods.Indent())
             {
                 methods.AddLine(
-                    $"{layoutManagerTypeName}.Instance.MeasureOverride(this, SizeExtensions.FromWindowsFoundationSize(constraint)).ToWindowsFoundationSize();");
+                    $"{layoutManagerTypeName}.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWindowsFoundationSize();");
             }
 
             methods.AddBlankLine();
@@ -31,7 +31,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             using (methods.Indent())
             {
                 methods.AddLine(
-                    $"{layoutManagerTypeName}.Instance.ArrangeOverride(this, SizeExtensions.FromWindowsFoundationSize(arrangeSize)).ToWindowsFoundationSize();");
+                    $"{layoutManagerTypeName}.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWindowsFoundationSize();");
             }
         }
 
