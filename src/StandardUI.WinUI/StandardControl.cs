@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.WinUI
     public class StandardControl : Microsoft.UI.Xaml.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
         private StandardControlImplementation? _implementation;
-        private StandardUIFrameworkElement? _buildContent;
+        private BuiltInUIElement? _buildContent;
         private bool _invalid = true;
 
         public StandardControl()
@@ -132,7 +132,7 @@ namespace Microsoft.StandardUI.WinUI
                 _buildContent = null;
             }
 
-            _buildContent = (StandardUIFrameworkElement?)_implementation.Build();
+            _buildContent = (BuiltInUIElement?)_implementation.Build();
 
             if (_buildContent != null)
             {

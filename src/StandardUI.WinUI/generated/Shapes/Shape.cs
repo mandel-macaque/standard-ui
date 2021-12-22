@@ -7,7 +7,7 @@ using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI.Shapes
 {
-    public class Shape : StandardUIFrameworkElement, IShape
+    public class Shape : BuiltInUIElement, IShape
     {
         public static readonly DependencyProperty FillProperty = PropertyUtils.Register(nameof(Fill), typeof(Brush), typeof(Shape), null);
         public static readonly DependencyProperty StrokeProperty = PropertyUtils.Register(nameof(Stroke), typeof(Brush), typeof(Shape), null);

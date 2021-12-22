@@ -9,7 +9,7 @@ using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI.Controls
 {
-    public class TextBlock : StandardUIFrameworkElement, ITextBlock
+    public class TextBlock : BuiltInUIElement, ITextBlock
     {
         public static readonly DependencyProperty ForegroundProperty = PropertyUtils.Register(nameof(Foreground), typeof(Brush), typeof(TextBlock), null);
         public static readonly DependencyProperty TextProperty = PropertyUtils.Register(nameof(Text), typeof(string), typeof(TextBlock), "");

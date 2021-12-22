@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.WinUI
     /// <summary>
     /// This is the base for predefined Standard UI controls. 
     /// </summary>
-    public class StandardUIFrameworkElement : FrameworkElement, IUIElement
+    public class BuiltInUIElement : FrameworkElement, IUIElement
     {
         private StandardUIFrameworkElementHelper _helper = new();
 
@@ -81,7 +81,7 @@ namespace Microsoft.StandardUI.WinUI
                 _buildContent = null;
             }
 
-            _buildContent = (StandardUIFrameworkElement?)_implementation.Build();
+            _buildContent = (BuiltInUIElement?)_implementation.Build();
 
             if (_buildContent != null)
             {

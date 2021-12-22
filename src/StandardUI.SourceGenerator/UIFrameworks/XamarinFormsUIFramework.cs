@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string DependencyPropertyClassName => "BindableProperty";
         public override string FrameworkTypeForUIElementAttachedTarget => "VisualElement";
         public override string? DefaultBaseClassName => "StandardUIBindableObject";
-        public override string DefaultUIElementBaseClassName => "StandardUIView";
+        public override string BuiltInUIElementBaseClassName => "StandardUIView";
         public override string WrapperSuffix => "XamarinForms";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
 

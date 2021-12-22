@@ -10,7 +10,7 @@
         public override string RootNamespace => "Microsoft.StandardUI.WinForms";
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.WinForms.Control";
         public override string? DefaultBaseClassName => null;
-        public override string DefaultUIElementBaseClassName => "StandardUIControl";
+        public override string BuiltInUIElementBaseClassName => "StandardUIControl";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
 
         public override void GeneratePropertyField(Property property, Source nonstaticFields)

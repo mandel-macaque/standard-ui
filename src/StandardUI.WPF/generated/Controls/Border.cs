@@ -6,13 +6,13 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class Border : StandardUIFrameworkElement, IBorder
+    public class Border : BuiltInUIElement, IBorder
     {
         public static readonly System.Windows.DependencyProperty BackgroundProperty = PropertyUtils.Register(nameof(Background), typeof(Brush), typeof(Border), null);
         public static readonly System.Windows.DependencyProperty BackgroundSizingProperty = PropertyUtils.Register(nameof(BackgroundSizing), typeof(BackgroundSizing), typeof(Border), BackgroundSizing.InnerBorderEdge);
         public static readonly System.Windows.DependencyProperty BorderBrushProperty = PropertyUtils.Register(nameof(BorderBrush), typeof(Brush), typeof(Border), null);
         public static readonly System.Windows.DependencyProperty BorderThicknessProperty = PropertyUtils.Register(nameof(BorderThickness), typeof(Thickness), typeof(Border), Thickness.Default);
-        public static readonly System.Windows.DependencyProperty ChildProperty = PropertyUtils.Register(nameof(Child), typeof(StandardUIFrameworkElement), typeof(Border), null);
+        public static readonly System.Windows.DependencyProperty ChildProperty = PropertyUtils.Register(nameof(Child), typeof(BuiltInUIElement), typeof(Border), null);
         public static readonly System.Windows.DependencyProperty CornerRadiusProperty = PropertyUtils.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(Border), CornerRadius.Default);
         public static readonly System.Windows.DependencyProperty PaddingProperty = PropertyUtils.Register(nameof(Padding), typeof(Thickness), typeof(Border), Thickness.Default);
         
@@ -50,15 +50,15 @@ namespace Microsoft.StandardUI.Wpf.Controls
             set => SetValue(BorderThicknessProperty, value);
         }
         
-        public StandardUIFrameworkElement Child
+        public BuiltInUIElement Child
         {
-            get => (StandardUIFrameworkElement) GetValue(ChildProperty);
+            get => (BuiltInUIElement) GetValue(ChildProperty);
             set => SetValue(ChildProperty, value);
         }
         IUIElement IBorder.Child
         {
             get => Child;
-            set => Child = (StandardUIFrameworkElement) value;
+            set => Child = (BuiltInUIElement) value;
         }
         
         public CornerRadius CornerRadius

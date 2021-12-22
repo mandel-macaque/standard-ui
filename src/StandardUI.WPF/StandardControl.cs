@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.Wpf
     public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
         private StandardControlImplementation? _implementation;
-        private StandardUIFrameworkElement? _buildContent;
+        private BuiltInUIElement? _buildContent;
         private bool _invalid = true;
 
         public StandardControl()
@@ -129,7 +129,7 @@ namespace Microsoft.StandardUI.Wpf
                 _buildContent = null;
             }
 
-            _buildContent = (StandardUIFrameworkElement?)_implementation!.Build();
+            _buildContent = (BuiltInUIElement?)_implementation!.Build();
 
             if (_buildContent != null)
             {

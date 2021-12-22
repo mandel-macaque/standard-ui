@@ -8,7 +8,7 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class TextBlock : StandardUIFrameworkElement, ITextBlock
+    public class TextBlock : BuiltInUIElement, ITextBlock
     {
         public static readonly System.Windows.DependencyProperty ForegroundProperty = PropertyUtils.Register(nameof(Foreground), typeof(Brush), typeof(TextBlock), null);
         public static readonly System.Windows.DependencyProperty TextProperty = PropertyUtils.Register(nameof(Text), typeof(string), typeof(TextBlock), "");

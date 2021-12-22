@@ -5,7 +5,7 @@ using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI.Controls
 {
-    public class Panel : StandardUIFrameworkElement, IPanel
+    public class Panel : BuiltInUIElement, IPanel
     {
         public static readonly DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection), typeof(Panel), null);
         

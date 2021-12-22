@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.Wpf
     /// <summary>
     /// This is the base for predefined Standard UI controls. 
     /// </summary>
-    public class StandardUIFrameworkElement : FrameworkElement, IUIElement
+    public class BuiltInUIElement : FrameworkElement, IUIElement
     {
         private StandardUIFrameworkElementHelper _helper = new();
 

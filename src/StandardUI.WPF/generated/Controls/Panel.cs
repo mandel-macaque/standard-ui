@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class Panel : StandardUIFrameworkElement, IPanel
+    public class Panel : BuiltInUIElement, IPanel
     {
         public static readonly System.Windows.DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection), typeof(Panel), null);
         

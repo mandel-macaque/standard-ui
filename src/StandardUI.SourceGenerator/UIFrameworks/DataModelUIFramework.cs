@@ -12,7 +12,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string RootNamespace => "Microsoft.StandardUI.DataModel";
         public override string FrameworkTypeForUIElementAttachedTarget => "ObjectWithCascadingNotifications";
         public override string? DefaultBaseClassName => "ObjectWithCascadingNotifications";
-        public override string DefaultUIElementBaseClassName => "ObjectWithCascadingNotifications";
+        public override string BuiltInUIElementBaseClassName => "ObjectWithCascadingNotifications";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
     }
 }

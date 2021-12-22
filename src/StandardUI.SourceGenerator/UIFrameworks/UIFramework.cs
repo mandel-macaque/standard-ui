@@ -19,7 +19,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string? DefaultBaseClassName { get; }
-        public abstract string DefaultUIElementBaseClassName { get; }
+        public abstract string BuiltInUIElementBaseClassName { get; }
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
 
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }
@@ -58,7 +58,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
             string destinationTypeName;
             if (Utils.IsThisType(type, "Microsoft.StandardUI.IUIElement"))
-                destinationTypeName = DefaultUIElementBaseClassName;
+                destinationTypeName = BuiltInUIElementBaseClassName;
             else if (Utils.IsUIModelInterfaceType(type))
                 destinationTypeName = typeName.Substring(1);
             else if (IsWrappedType(type))
