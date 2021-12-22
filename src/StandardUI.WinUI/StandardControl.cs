@@ -84,8 +84,10 @@ namespace Microsoft.StandardUI.WinUI
         // TODO: Error if appropriate when set to Visibility.Hidden
         bool IUIElement.IsVisible
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get => this.Visibility != Visibility.Collapsed;
             set => this.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
         }
 
         public object GetValue(IUIProperty dp)
@@ -106,7 +108,9 @@ namespace Microsoft.StandardUI.WinUI
             SetValue(wpfDependencyProperty, value);
         }
 
+#pragma warning disable CA1033 // Interface methods should be callable by child types
         IUIElement? IStandardControlEnvironmentPeer.BuildContent => _buildContent;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
 
 #if LATER
         protected override int VisualChildrenCount => _buildContent != null ? 1 : 0;

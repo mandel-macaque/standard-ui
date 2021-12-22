@@ -49,8 +49,10 @@ namespace Microsoft.StandardUI.WinUI
         // TODO: Error if appropriate when set to Visibility.Hidden
         bool IUIElement.IsVisible
         {
+#pragma warning disable CA1033 // Interface methods should be callable by child types
             get => Visibility != Visibility.Collapsed;
             set => Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+#pragma warning restore CA1033 // Interface methods should be callable by child types
         }
 
 #if false
