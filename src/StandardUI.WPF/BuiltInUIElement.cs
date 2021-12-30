@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.Wpf
     /// <summary>
     /// This is the base for predefined Standard UI controls. 
     /// </summary>
-    public class BuiltInUIElement : FrameworkElement, IUIElement
+    public class BuiltInUIElement : FrameworkElement, IUIElement, ILogicalParent
     {
         private StandardUIFrameworkElementHelper _helper = new();
 
@@ -102,5 +102,9 @@ namespace Microsoft.StandardUI.Wpf
             DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
             SetValue(dependencyProperty, value);
         }
+
+        void ILogicalParent.AddLogicalChild(object child) => this.AddLogicalChild(child);
+
+        void ILogicalParent.RemoveLogicalChild(object child) => this.RemoveLogicalChild(child);
     }
 }

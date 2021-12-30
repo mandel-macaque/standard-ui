@@ -1,13 +1,14 @@
 // This file is generated from ILinearGradientBrush.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
     public class LinearGradientBrush : GradientBrush, ILinearGradientBrush
     {
-        public static readonly System.Windows.DependencyProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointWpf), typeof(LinearGradientBrush), PointWpf.Default);
-        public static readonly System.Windows.DependencyProperty EndPointProperty = PropertyUtils.Register(nameof(EndPoint), typeof(PointWpf), typeof(LinearGradientBrush), PointWpf.Default);
+        public static readonly DependencyProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointWpf), typeof(LinearGradientBrush), PointWpf.Default);
+        public static readonly DependencyProperty EndPointProperty = PropertyUtils.Register(nameof(EndPoint), typeof(PointWpf), typeof(LinearGradientBrush), PointWpf.Default);
         
         public PointWpf StartPoint
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.Controls
@@ -120,7 +120,7 @@ namespace Microsoft.StandardUI.Controls
                     }
                 }
 
-                IUIElementCollection gridChildren = grid.Children;
+                IUICollection<IUIElement> gridChildren = grid.Children;
 
                 // We could work out the _childrenToLayOut array (with the Collapsed items filtered out) with a Linq 1-liner
                 // but doing it the hard way means we don't allocate extra enumerators, especially if we're in the 

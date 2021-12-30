@@ -18,6 +18,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string ProjectBaseDirectory { get; }
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
+        public abstract string NativeUIElementType { get; }
         public abstract string? DefaultBaseClassName { get; }
         public abstract string BuiltInUIElementBaseClassName { get; }
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
@@ -25,7 +26,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }
         public virtual void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers) { }
         public virtual void GeneratePropertyField(Property property, Source nonstaticFields) { }
-        public virtual void GeneratePropertyConstructorLines(Property property, Source constuctorBody) { }
+        public virtual void GeneratePropertyInit(Property property, Source constuctorBody) { }
         public virtual void GeneratePropertyMethods(Property property, Source methods) { }
         public virtual void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods) { }
         public virtual void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods) { }
@@ -57,8 +58,16 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             string typeName = type.Name;
 
             string destinationTypeName;
-            if (Utils.IsThisType(type, "Microsoft.StandardUI.IUIElement"))
+            if (Utils.IsThisType(type, KnownTypes.IUIElement))
                 destinationTypeName = BuiltInUIElementBaseClassName;
+            else if (Utils.IsUICollectionType(type, out ITypeSymbol elementType))
+            {
+                if (Utils.IsThisType(elementType, KnownTypes.IUIElement))
+                    destinationTypeName = $"UIElementCollection<{NativeUIElementType},{elementType}>";
+                else if (Utils.IsSubtypeOf(elementType, KnownTypes.IUIElement))
+                    destinationTypeName = $"UIElementCollection<{OutputTypeName(elementType)},{elementType.Name}>";
+                else destinationTypeName = $"UICollection<{elementType.Name}>";
+            }
             else if (Utils.IsUIModelInterfaceType(type))
                 destinationTypeName = typeName.Substring(1);
             else if (IsWrappedType(type))
@@ -167,7 +176,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             if (typeFullName == "System.Collections.Generic.IEnumerable")
                 return "null";
 
-            if (Utils.IsCollectionType(propertyType) != null)
+            if (Utils.IsUICollectionType(propertyType))
                 return "null";
 
             if (typeFullName == "Microsoft.StandardUI.Color" ||

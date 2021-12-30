@@ -351,11 +351,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        private Source? GenerateConstructor(UIFramework uiFramework, List<Property> collectionProperties)
+        private Source? GenerateConstructor(UIFramework uiFramework, List<Property> properties)
         {
             Source constructorBody = new Source(Context);
-            foreach (Property property in collectionProperties)
-                uiFramework.GeneratePropertyConstructorLines(property, constructorBody);
+            foreach (Property property in properties)
+                uiFramework.GeneratePropertyInit(property, constructorBody);
 
             if (constructorBody.IsEmpty)
                 return null;
@@ -400,9 +400,11 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         private string? GetOutputBaseClass(UIFramework uiFramework)
         {
-            string? elementType = Utils.IsCollectionType(Name);
+#if NOMORE
+            string? elementType = Utils.IsCollectionType(Type);
             if (elementType != null)
                 return $"StandardUICollection<{elementType}>";
+#endif
 
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 

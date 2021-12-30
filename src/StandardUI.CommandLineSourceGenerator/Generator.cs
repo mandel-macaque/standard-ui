@@ -46,7 +46,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             try
             {
-                GenerateClasses(rootDirectory, workspace, project);
+                GenerateClasses(rootDirectory, project);
             }
             catch (UserViewableException e)
             {
@@ -118,11 +118,13 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             }
         }
 
-        private static void GenerateClasses(string rootDirectory, Workspace workspace, Project project)
+        private static void GenerateClasses(string rootDirectory, Project project)
         {
 			Compilation? compilation = project.GetCompilationAsync().Result;
             if (compilation == null)
                 return;
+
+            Utils.Init(compilation);
 
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);

@@ -1,6 +1,7 @@
 // This file is generated from IGrid.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Controls;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {

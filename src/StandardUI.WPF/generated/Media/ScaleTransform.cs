@@ -1,15 +1,16 @@
 // This file is generated from IScaleTransform.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
     public class ScaleTransform : Transform, IScaleTransform
     {
-        public static readonly System.Windows.DependencyProperty CenterXProperty = PropertyUtils.Register(nameof(CenterX), typeof(double), typeof(ScaleTransform), 0.0);
-        public static readonly System.Windows.DependencyProperty CenterYProperty = PropertyUtils.Register(nameof(CenterY), typeof(double), typeof(ScaleTransform), 0.0);
-        public static readonly System.Windows.DependencyProperty ScaleXProperty = PropertyUtils.Register(nameof(ScaleX), typeof(double), typeof(ScaleTransform), 1.0);
-        public static readonly System.Windows.DependencyProperty ScaleYProperty = PropertyUtils.Register(nameof(ScaleY), typeof(double), typeof(ScaleTransform), 1.0);
+        public static readonly DependencyProperty CenterXProperty = PropertyUtils.Register(nameof(CenterX), typeof(double), typeof(ScaleTransform), 0.0);
+        public static readonly DependencyProperty CenterYProperty = PropertyUtils.Register(nameof(CenterY), typeof(double), typeof(ScaleTransform), 0.0);
+        public static readonly DependencyProperty ScaleXProperty = PropertyUtils.Register(nameof(ScaleX), typeof(double), typeof(ScaleTransform), 1.0);
+        public static readonly DependencyProperty ScaleYProperty = PropertyUtils.Register(nameof(ScaleY), typeof(double), typeof(ScaleTransform), 1.0);
         
         public double CenterX
         {

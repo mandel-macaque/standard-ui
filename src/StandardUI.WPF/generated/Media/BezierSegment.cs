@@ -1,14 +1,15 @@
 // This file is generated from IBezierSegment.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
     public class BezierSegment : PathSegment, IBezierSegment
     {
-        public static readonly System.Windows.DependencyProperty Point1Property = PropertyUtils.Register(nameof(Point1), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
-        public static readonly System.Windows.DependencyProperty Point2Property = PropertyUtils.Register(nameof(Point2), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
-        public static readonly System.Windows.DependencyProperty Point3Property = PropertyUtils.Register(nameof(Point3), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
+        public static readonly DependencyProperty Point1Property = PropertyUtils.Register(nameof(Point1), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
+        public static readonly DependencyProperty Point2Property = PropertyUtils.Register(nameof(Point2), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
+        public static readonly DependencyProperty Point3Property = PropertyUtils.Register(nameof(Point3), typeof(PointWpf), typeof(BezierSegment), PointWpf.Default);
         
         public PointWpf Point1
         {

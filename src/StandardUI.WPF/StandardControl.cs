@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
+    public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
     {
         private StandardControlImplementation? _implementation;
         private BuiltInUIElement? _buildContent;
@@ -119,6 +119,10 @@ namespace Microsoft.StandardUI.Wpf
 
             return _buildContent;
         }
+
+        void ILogicalParent.AddLogicalChild(object child) => this.AddLogicalChild(child);
+
+        void ILogicalParent.RemoveLogicalChild(object child) => this.RemoveLogicalChild(child);
 
         private void Rebuild()
         {

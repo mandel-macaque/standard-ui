@@ -8,13 +8,13 @@ namespace Microsoft.StandardUI.WinUI
     {
         public static readonly DependencyProperty CurrentStateProperty = PropertyUtils.Register(nameof(CurrentState), typeof(VisualState), typeof(VisualStateGroup), null);
         public static readonly DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualStateGroup), "");
-        public static readonly DependencyProperty StatesProperty = PropertyUtils.Register(nameof(States), typeof(VisualStateCollection), typeof(VisualStateGroup), null);
+        public static readonly DependencyProperty StatesProperty = PropertyUtils.Register(nameof(States), typeof(UICollection<IVisualState>), typeof(VisualStateGroup), null);
         
-        private VisualStateCollection _states;
+        private UICollection<IVisualState> _states;
         
         public VisualStateGroup()
         {
-            _states = new VisualStateCollection();
+            _states = new UICollection<IVisualState>(this);
             SetValue(StatesProperty, _states);
         }
         
@@ -23,7 +23,7 @@ namespace Microsoft.StandardUI.WinUI
         
         public string Name => (string) GetValue(NameProperty);
         
-        public VisualStateCollection States => _states;
-        IVisualStateCollection IVisualStateGroup.States => States;
+        public UICollection<IVisualState> States => _states;
+        IUICollection<IVisualState> IVisualStateGroup.States => States;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,6 +8,13 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public static class Utils
     {
+        public static INamedTypeSymbol? VoidType { get; private set; }
+
+        public static void Init(Compilation compilation)
+        {
+            VoidType = compilation.GetSpecialType(SpecialType.System_Void);
+        }
+
         public const string RootNamespace = "Microsoft.StandardUI";
         public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat =
             new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
@@ -131,7 +139,27 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public static bool IsThisType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == typeFullName;
 
-        public static bool IsPanelType(ITypeSymbol type, string typeFullName) => GetTypeFullName(type) == "Microsoft.StandardUI.Controls.IPanel";
+        public static bool IsSubtypeOf(INamedTypeSymbol type, string potentialAncestorType)
+        {
+            if (type.TypeKind != TypeKind.Interface)
+                throw new InvalidOperationException("Currently IsSubtypeOf can only be called on interface types");
+
+            foreach (INamedTypeSymbol intface in type.Interfaces)
+            {
+                if (IsThisType(intface, potentialAncestorType) || IsSubtypeOf(intface, potentialAncestorType))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsSubtypeOf(ITypeSymbol type, string potentialAncestorType)
+        {
+            if (type is not INamedTypeSymbol namedTypeSymbol)
+                return false;
+
+            return IsSubtypeOf(namedTypeSymbol, potentialAncestorType);
+        }
 
         public static string GetTypeFullName(ITypeSymbol type) => type.ToDisplayString(TypeFullNameSymbolDisplayFormat);
 
@@ -142,12 +170,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (type is not INamedTypeSymbol namedType)
                 return false;
 
-            if (IsThisType(type, "Microsoft.StandardUI.Controls.ITextBlock"))
+            if (IsThisType(type, KnownTypes.ITextBlock))
                 return true;
 
             foreach (INamedTypeSymbol intface in namedType.Interfaces)
             {
-                if (IsThisType(intface, "Microsoft.StandardUI.Shapes.IShape"))
+                if (IsThisType(intface, KnownTypes.IShape))
                     return true;
             }
 
@@ -161,28 +189,28 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public static bool IsUIElementType(ITypeSymbol type) => IsThisType(type, KnownTypes.IUIElement);
 
-        public static string? IsCollectionType(ITypeSymbol type)
+        public static bool IsUICollectionType(ITypeSymbol type, out ITypeSymbol elementType)
         {
-            string typeName = type.Name;
-            const string collectionSuffix = "Collection";
+            if (VoidType == null)
+                throw new InvalidOperationException("Utils.Init must be called to set VoidType");
 
-            if (typeName.EndsWith(collectionSuffix))
-                return typeName.Substring(0, typeName.Length - collectionSuffix.Length);
-            else
-                return null;
+            elementType = VoidType;
+
+            if (! IsThisType(type, KnownTypes.IUICollection))
+                return false;
+
+            if (type is not INamedTypeSymbol namedTypeSymbol)
+                return false;
+
+            ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+            if (typeArguments.Length != 1)
+                return false;
+
+            elementType = typeArguments[0];
+            return true;
         }
 
-        // TODO: Remove when no longer used
-        public static string? IsCollectionType(string typeName)
-        {
-            const string collectionSuffix = "Collection";
-
-            if (typeName.EndsWith(collectionSuffix))
-                return typeName.Substring(0, typeName.Length - collectionSuffix.Length);
-            else
-                return null;
-
-        }
+        public static bool IsUICollectionType(ITypeSymbol type) => IsUICollectionType(type, out ITypeSymbol _);
 
         /// <summary>
         /// Return the child namespace (e.g. "Shapes", "Transforms", etc. or null if there is no child

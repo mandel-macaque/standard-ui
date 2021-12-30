@@ -11,6 +11,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string? DependencyPropertyTypeAlias => "DependencyProperty = Microsoft.UI.Xaml.DependencyProperty";
         public override string DependencyPropertyClassName => "DependencyProperty";
         public override string FrameworkTypeForUIElementAttachedTarget => "Microsoft.UI.Xaml.FrameworkElement";
+        public override string NativeUIElementType => "Microsoft.UI.Xaml.FrameworkElement";
         public override string? DefaultBaseClassName => "StandardUIDependencyObject";
         public override string BuiltInUIElementBaseClassName => "BuiltInUIElement";
         public override string WrapperSuffix => "WinUI";

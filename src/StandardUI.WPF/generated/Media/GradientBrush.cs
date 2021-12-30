@@ -2,14 +2,15 @@
 
 using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
     public class GradientBrush : Brush, IGradientBrush
     {
-        public static readonly System.Windows.DependencyProperty GradientStopsProperty = PropertyUtils.Register(nameof(GradientStops), typeof(IEnumerable<IGradientStop>), typeof(GradientBrush), null);
-        public static readonly System.Windows.DependencyProperty MappingModeProperty = PropertyUtils.Register(nameof(MappingMode), typeof(BrushMappingMode), typeof(GradientBrush), BrushMappingMode.RelativeToBoundingBox);
-        public static readonly System.Windows.DependencyProperty SpreadMethodProperty = PropertyUtils.Register(nameof(SpreadMethod), typeof(GradientSpreadMethod), typeof(GradientBrush), GradientSpreadMethod.Pad);
+        public static readonly DependencyProperty GradientStopsProperty = PropertyUtils.Register(nameof(GradientStops), typeof(IEnumerable<IGradientStop>), typeof(GradientBrush), null);
+        public static readonly DependencyProperty MappingModeProperty = PropertyUtils.Register(nameof(MappingMode), typeof(BrushMappingMode), typeof(GradientBrush), BrushMappingMode.RelativeToBoundingBox);
+        public static readonly DependencyProperty SpreadMethodProperty = PropertyUtils.Register(nameof(SpreadMethod), typeof(GradientSpreadMethod), typeof(GradientBrush), GradientSpreadMethod.Pad);
         
         public IEnumerable<IGradientStop> GradientStops
         {

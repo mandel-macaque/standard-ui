@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Controls
 {
@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.Controls
 			double measuredWidth = 0;
 			double measuredHeight = 0;
 
-			IUIElementCollection children = stack.Children;
+			IUICollection<IUIElement> children = stack.Children;
 			int count = stack.Children.Count;
 			for (int i = 0; i < count; i++)
 			{
@@ -44,7 +44,7 @@ namespace Microsoft.StandardUI.Controls
 			double measuredHeight = 0;
 			double measuredWidth = 0;
 
-			IUIElementCollection children = stack.Children;
+			IUICollection<IUIElement> children = stack.Children;
 			int count = stack.Children.Count;
 			for (int i = 0; i < count; i++)
 			{

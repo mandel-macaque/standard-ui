@@ -1,12 +1,14 @@
 // This file is generated from ISetter.cs. Update the source file to change its contents.
 
+using DependencyProperty = System.Windows.DependencyProperty;
+
 namespace Microsoft.StandardUI.Wpf
 {
     public class Setter : UIPropertyObject, ISetter
     {
-        public static readonly System.Windows.DependencyProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(UIProperty), typeof(Setter), null);
-        public static readonly System.Windows.DependencyProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);
-        public static readonly System.Windows.DependencyProperty ValueProperty = PropertyUtils.Register(nameof(Value), typeof(object), typeof(Setter), null);
+        public static readonly DependencyProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(UIProperty), typeof(Setter), null);
+        public static readonly DependencyProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);
+        public static readonly DependencyProperty ValueProperty = PropertyUtils.Register(nameof(Value), typeof(object), typeof(Setter), null);
         
         public UIProperty? Property
         {

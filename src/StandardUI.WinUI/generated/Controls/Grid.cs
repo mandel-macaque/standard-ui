@@ -9,8 +9,8 @@ namespace Microsoft.StandardUI.WinUI.Controls
     {
         public static readonly DependencyProperty ColumnSpacingProperty = PropertyUtils.Register(nameof(ColumnSpacing), typeof(double), typeof(Grid), 0.0);
         public static readonly DependencyProperty RowSpacingProperty = PropertyUtils.Register(nameof(RowSpacing), typeof(double), typeof(Grid), 0.0);
-        public static readonly DependencyProperty ColumnDefinitionsProperty = PropertyUtils.Register(nameof(ColumnDefinitions), typeof(ColumnDefinitionCollection), typeof(Grid), null);
-        public static readonly DependencyProperty RowDefinitionsProperty = PropertyUtils.Register(nameof(RowDefinitions), typeof(RowDefinitionCollection), typeof(Grid), null);
+        public static readonly DependencyProperty ColumnDefinitionsProperty = PropertyUtils.Register(nameof(ColumnDefinitions), typeof(UICollection<IColumnDefinition>), typeof(Grid), null);
+        public static readonly DependencyProperty RowDefinitionsProperty = PropertyUtils.Register(nameof(RowDefinitions), typeof(UICollection<IRowDefinition>), typeof(Grid), null);
         public static readonly DependencyProperty RowProperty = PropertyUtils.RegisterAttached("Row", typeof(int), typeof(Microsoft.UI.Xaml.FrameworkElement), 0);
         public static readonly DependencyProperty ColumnProperty = PropertyUtils.RegisterAttached("Column", typeof(int), typeof(Microsoft.UI.Xaml.FrameworkElement), 0);
         public static readonly DependencyProperty RowSpanProperty = PropertyUtils.RegisterAttached("RowSpan", typeof(int), typeof(Microsoft.UI.Xaml.FrameworkElement), 1);
@@ -28,14 +28,14 @@ namespace Microsoft.StandardUI.WinUI.Controls
         public static int GetColumnSpan(Microsoft.UI.Xaml.FrameworkElement element) => (int) element.GetValue(ColumnSpanProperty);
         public static void SetColumnSpan(Microsoft.UI.Xaml.FrameworkElement element, int value) => element.SetValue(ColumnSpanProperty, value);
         
-        private ColumnDefinitionCollection _columnDefinitions;
-        private RowDefinitionCollection _rowDefinitions;
+        private UICollection<IColumnDefinition> _columnDefinitions;
+        private UICollection<IRowDefinition> _rowDefinitions;
         
         public Grid()
         {
-            _columnDefinitions = new ColumnDefinitionCollection();
+            _columnDefinitions = new UICollection<IColumnDefinition>(this);
             SetValue(ColumnDefinitionsProperty, _columnDefinitions);
-            _rowDefinitions = new RowDefinitionCollection();
+            _rowDefinitions = new UICollection<IRowDefinition>(this);
             SetValue(RowDefinitionsProperty, _rowDefinitions);
         }
         
@@ -51,10 +51,10 @@ namespace Microsoft.StandardUI.WinUI.Controls
             set => SetValue(RowSpacingProperty, value);
         }
         
-        public ColumnDefinitionCollection ColumnDefinitions => _columnDefinitions;
-        IColumnDefinitionCollection IGrid.ColumnDefinitions => ColumnDefinitions;
+        public UICollection<IColumnDefinition> ColumnDefinitions => _columnDefinitions;
+        IUICollection<IColumnDefinition> IGrid.ColumnDefinitions => ColumnDefinitions;
         
-        public RowDefinitionCollection RowDefinitions => _rowDefinitions;
-        IRowDefinitionCollection IGrid.RowDefinitions => RowDefinitions;
+        public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
+        IUICollection<IRowDefinition> IGrid.RowDefinitions => RowDefinitions;
     }
 }

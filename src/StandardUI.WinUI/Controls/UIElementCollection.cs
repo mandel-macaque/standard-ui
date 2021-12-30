@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.WinUI
 {
-    public class UIElementCollection : IUIElementCollection
+    public class UIElementCollection<TNativeUIElment, TStandardUIElement> : IList, IList<TNativeUIElment>
+        where TNativeUIElment : UIElement where TStandardUIElement : IUIElement
     {
         private Microsoft.UI.Xaml.Controls.UIElementCollection _collection;
 
@@ -18,6 +19,19 @@ namespace Microsoft.StandardUI.WinUI
         {
             get => (IUIElement)_collection[index];
             set => _collection[index] = (Microsoft.UI.Xaml.UIElement)value;
+        }
+
+        T IList<T>.this[int index]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public int Count => _collection.Count;
@@ -55,7 +69,42 @@ namespace Microsoft.StandardUI.WinUI
 
         public void RemoveAt(int index) => _collection.RemoveAt(index);
 
+        void ICollection<T>.Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICollection<T>.Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
         IEnumerator IEnumerable.GetEnumerator() => _collection.GetEnumerator();
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IList<T>.IndexOf(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IList<T>.Insert(int index, T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICollection<T>.Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
 
         private class Enumerator : IEnumerator<IUIElement>
         {

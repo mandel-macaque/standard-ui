@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class WinFormsUIFramework : UIFramework
     {
@@ -9,6 +9,7 @@
         public override string ProjectBaseDirectory => "StandardUI.WinForms";
         public override string RootNamespace => "Microsoft.StandardUI.WinForms";
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.WinForms.Control";
+        public override string NativeUIElementType => "System.Windows.WinForms.Control";
         public override string? DefaultBaseClassName => null;
         public override string BuiltInUIElementBaseClassName => "StandardUIControl";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();

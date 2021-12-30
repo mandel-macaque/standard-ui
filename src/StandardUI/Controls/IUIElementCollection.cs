@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
 namespace Microsoft.StandardUI
 {
-    public interface IUIElementCollection : IStandardUICollection<IUIElement>
+    public interface IUIElementCollection<T> : IUICollection<T> where T : IUIElement
     {
     }
 }

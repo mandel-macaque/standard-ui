@@ -1,15 +1,16 @@
 // This file is generated from ILine.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Shapes;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Shapes
 {
     public class Line : Shape, ILine
     {
-        public static readonly System.Windows.DependencyProperty X1Property = PropertyUtils.Register(nameof(X1), typeof(double), typeof(Line), 0.0);
-        public static readonly System.Windows.DependencyProperty Y1Property = PropertyUtils.Register(nameof(Y1), typeof(double), typeof(Line), 0.0);
-        public static readonly System.Windows.DependencyProperty X2Property = PropertyUtils.Register(nameof(X2), typeof(double), typeof(Line), 0.0);
-        public static readonly System.Windows.DependencyProperty Y2Property = PropertyUtils.Register(nameof(Y2), typeof(double), typeof(Line), 0.0);
+        public static readonly DependencyProperty X1Property = PropertyUtils.Register(nameof(X1), typeof(double), typeof(Line), 0.0);
+        public static readonly DependencyProperty Y1Property = PropertyUtils.Register(nameof(Y1), typeof(double), typeof(Line), 0.0);
+        public static readonly DependencyProperty X2Property = PropertyUtils.Register(nameof(X2), typeof(double), typeof(Line), 0.0);
+        public static readonly DependencyProperty Y2Property = PropertyUtils.Register(nameof(Y2), typeof(double), typeof(Line), 0.0);
         
         public double X1
         {

@@ -7,19 +7,19 @@ namespace Microsoft.StandardUI.WinUI
     public class VisualState : UIPropertyObject, IVisualState
     {
         public static readonly DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualState), "");
-        public static readonly DependencyProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(SetterCollection), typeof(VisualState), null);
+        public static readonly DependencyProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(UICollection<ISetter>), typeof(VisualState), null);
         
-        private SetterCollection _setters;
+        private UICollection<ISetter> _setters;
         
         public VisualState()
         {
-            _setters = new SetterCollection();
+            _setters = new UICollection<ISetter>(this);
             SetValue(SettersProperty, _setters);
         }
         
         public string Name => (string) GetValue(NameProperty);
         
-        public SetterCollection Setters => _setters;
-        ISetterCollection IVisualState.Setters => Setters;
+        public UICollection<ISetter> Setters => _setters;
+        IUICollection<ISetter> IVisualState.Setters => Setters;
     }
 }

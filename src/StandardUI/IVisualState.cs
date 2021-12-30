@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI
 {
     [UIModelObject]
     public interface IVisualState : IUIPropertyObject
@@ -12,6 +12,6 @@
         /// <summary>
         /// Gets a collection of ISetter objects that define discrete property values that control the appearance of IUIElements when this IVisualState is applied.
         /// </summary>
-        public ISetterCollection Setters { get; }
+        public IUICollection<ISetter> Setters { get; }
     }
 }

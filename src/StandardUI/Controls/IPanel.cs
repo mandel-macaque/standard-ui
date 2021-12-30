@@ -1,8 +1,8 @@
-﻿namespace Microsoft.StandardUI.Controls
+namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
     public interface IPanel : IUIElement
     {
-        IUIElementCollection Children { get; }
+        IUICollection<IUIElement> Children { get; }
     }
 }

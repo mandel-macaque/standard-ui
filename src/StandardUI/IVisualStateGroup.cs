@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI
 {
     [UIModelObject]
     public interface IVisualStateGroup : IUIPropertyObject
@@ -18,6 +18,6 @@
         /// <summary>
         /// Gets the collection of mutually exclusive VisualState objects.
         /// </summary>
-        public IVisualStateCollection States { get; }
+        public IUICollection<IVisualState> States { get; }
     }
 }

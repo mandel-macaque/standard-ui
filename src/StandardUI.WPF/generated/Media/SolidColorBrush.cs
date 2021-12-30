@@ -1,12 +1,13 @@
 // This file is generated from ISolidColorBrush.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Media;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
     public class SolidColorBrush : Brush, ISolidColorBrush
     {
-        public static readonly System.Windows.DependencyProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorWpf), typeof(SolidColorBrush), ColorWpf.Default);
+        public static readonly DependencyProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorWpf), typeof(SolidColorBrush), ColorWpf.Default);
         
         public ColorWpf Color
         {

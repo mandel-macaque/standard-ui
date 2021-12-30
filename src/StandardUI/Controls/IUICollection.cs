@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI
 {
-    public interface IStandardUICollection<T> : IList<T>
+    public interface IUICollection<T> : IList<T>
     {
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.Controls
+namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
     public interface IGrid : IPanel
@@ -18,11 +18,11 @@
         /// <summary>
         /// List of column definitions defined on this instance of the grid.
         /// </summary>
-        public IColumnDefinitionCollection ColumnDefinitions { get; }
+        public IUICollection<IColumnDefinition> ColumnDefinitions { get; }
 
         /// <summary>
         /// List of row definitions defined on this instance of the grid.
         /// </summary>
-        public IRowDefinitionCollection RowDefinitions { get; }
+        public IUICollection<IRowDefinition> RowDefinitions { get; }
     }
 }

@@ -1,12 +1,13 @@
 // This file is generated from IStack.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.Controls;
+using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
     public class Stack : StackBase, IStack
     {
-        public static readonly System.Windows.DependencyProperty OrientationProperty = PropertyUtils.Register(nameof(Orientation), typeof(Orientation), typeof(Stack), Orientation.Vertical);
+        public static readonly DependencyProperty OrientationProperty = PropertyUtils.Register(nameof(Orientation), typeof(Orientation), typeof(Stack), Orientation.Vertical);
         
         public Orientation Orientation
         {

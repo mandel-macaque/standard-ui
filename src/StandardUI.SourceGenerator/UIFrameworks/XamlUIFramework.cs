@@ -48,26 +48,22 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public override void GeneratePropertyField(Property property, Source nonstaticFields)
         {
-            if (property.IsCollection)
+            if (property.IsUICollection)
                 nonstaticFields.AddLine(
                     $"private {PropertyOutputTypeName(property)} {PropertyFieldName(property)};");
+
+            // private readonly UIElementCollection<UIElement, IUIElement> _children;
         }
 
-        public override void GeneratePropertyConstructorLines(Property property, Source constuctorBody)
+        public override void GeneratePropertyInit(Property property, Source constuctorBody)
         {
-            if (property.IsCollection)
+            if (property.IsUICollection)
             {
                 string descriptorName = PropertyDescriptorName(property.Name);
-                string propertyOutputTypeName = PropertyOutputTypeName(property);
                 string propertyFieldName = PropertyFieldName(property);
 
-                // Add a special case to pass parent object to UIElementCollection constructor
-                string constructorParameters = "";
-                if (propertyOutputTypeName == "UIElementCollection")
-                    constructorParameters = "this";
-
                 constuctorBody.AddLines(
-                    $"{propertyFieldName} = new {propertyOutputTypeName}({constructorParameters});",
+                    $"{propertyFieldName} = new {PropertyOutputTypeName(property)}(this);",
                     $"SetValue({descriptorName}, {propertyFieldName});");
             }
         }
@@ -102,7 +98,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             string descriptorName = PropertyDescriptorName(property.Name);
 
             string getterValue;
-            if (property.IsCollection)
+            if (property.IsUICollection)
                 getterValue = $"{PropertyFieldName(property)}";
             else
                 getterValue = $"({propertyOutputTypeName}) GetValue({descriptorName})";
@@ -142,6 +138,11 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 {
                     otherGetterValue = $"{property.Name}.{property.TypeName}";
                     setterAssignment = $"{property.Name} = new {propertyOutputTypeName}(value)";
+                }
+                else if (Utils.IsUICollectionType(property.Type, out var elementType) && propertyOutputTypeName.StartsWith("UIElementCollection<"))
+                {
+                    otherGetterValue = $"{property.Name}.ToStandardUIElementCollection()";
+                    setterAssignment = ""; // Not used
                 }
                 else
                 {
