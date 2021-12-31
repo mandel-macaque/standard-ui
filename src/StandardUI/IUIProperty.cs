@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI
 {
     public interface IUIProperty
     {

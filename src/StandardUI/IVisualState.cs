@@ -1,7 +1,7 @@
 namespace Microsoft.StandardUI
 {
     [UIModelObject]
-    public interface IVisualState : IUIPropertyObject
+    public interface IVisualState : IUIObject
     {
         /// <summary>
         /// Gets the name of the VisualState.

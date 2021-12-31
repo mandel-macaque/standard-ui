@@ -5,5 +5,5 @@
     /// </summary>
     /// <param name="d">The DependencyObject on which the property has changed value.</param>
     /// <param name="e">Event data that is issued by any event that tracks changes to the effective value of this property.</param>
-    public delegate void UIPropertyChangedCallback(IUIPropertyObject d, IUIPropertyChangedEventArgs e);
+    public delegate void UIPropertyChangedCallback(IUIObject d, IUIPropertyChangedEventArgs e);
 }

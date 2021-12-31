@@ -1,6 +1,6 @@
-﻿namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI
 {
-    public interface IUIElement : IUIPropertyObject
+    public interface IUIElement : IUIObject
     {
         /// <summary>
         /// The width of the object, in pixels. The default is NaN. Except for the special NaN value, this value must be equal to or greater than 0.

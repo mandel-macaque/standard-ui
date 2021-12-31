@@ -1,7 +1,7 @@
-﻿namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI
 {
     [UIModelObject]
-    public interface IUIPropertyObject
+    public interface IUIObject
     {
         /// <summary>
         /// Returns the current effective value of a UI property from this object.

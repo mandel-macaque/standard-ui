@@ -1,7 +1,7 @@
 namespace Microsoft.StandardUI
 {
     [UIModelObject]
-    public interface IVisualStateGroup : IUIPropertyObject
+    public interface IVisualStateGroup : IUIObject
     {
         /// <summary>
         /// Gets the most recently set VisualState from a successful call to the GoToState method.

@@ -8,6 +8,6 @@
         /// <param name="childName">The name of the element to find.</param>
         /// <returns>The named element from the template, if the element is found. Can return null if no
         /// element with name childName was found in the template.</returns>
-        IUIPropertyObject? GetTemplateChild(string childName);
+        IUIObject? GetTemplateChild(string childName);
     }
 }

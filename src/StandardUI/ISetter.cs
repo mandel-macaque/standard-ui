@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI
 {
     [UIModelObject]
-    public interface ISetter : IUIPropertyObject
+    public interface ISetter : IUIObject
     {
         /// <summary>
         /// Gets or sets the property to apply the Value to.
