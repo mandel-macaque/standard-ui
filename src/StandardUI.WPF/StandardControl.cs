@@ -34,7 +34,7 @@ namespace Microsoft.StandardUI.Wpf
             Arrange(finalRect.ToWpfRect());
         }
 
-        IUIPropertyObject? IStandardControl.GetTemplateChild(string childName)
+        IUIObject? IStandardControl.GetTemplateChild(string childName)
         {
             throw new NotImplementedException();
         }

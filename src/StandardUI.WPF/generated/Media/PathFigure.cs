@@ -6,7 +6,7 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
-    public class PathFigure : StandardUIDependencyObject, IPathFigure
+    public class PathFigure : BuiltInDependencyObject, IPathFigure
     {
         public static readonly DependencyProperty SegmentsProperty = PropertyUtils.Register(nameof(Segments), typeof(IEnumerable<IPathSegment>), typeof(PathFigure), null);
         public static readonly DependencyProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointWpf), typeof(PathFigure), PointWpf.Default);

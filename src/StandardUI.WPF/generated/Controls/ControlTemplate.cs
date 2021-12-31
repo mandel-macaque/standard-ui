@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class ControlTemplate : StandardUIDependencyObject, IControlTemplate
+    public class ControlTemplate : BuiltInDependencyObject, IControlTemplate
     {
     }
 }

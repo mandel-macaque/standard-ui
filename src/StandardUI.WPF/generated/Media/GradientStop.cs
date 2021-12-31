@@ -5,7 +5,7 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
-    public class GradientStop : StandardUIDependencyObject, IGradientStop
+    public class GradientStop : BuiltInDependencyObject, IGradientStop
     {
         public static readonly DependencyProperty ColorProperty = PropertyUtils.Register(nameof(Color), typeof(ColorWpf), typeof(GradientStop), ColorWpf.Default);
         public static readonly DependencyProperty OffsetProperty = PropertyUtils.Register(nameof(Offset), typeof(double), typeof(GradientStop), 0.0);

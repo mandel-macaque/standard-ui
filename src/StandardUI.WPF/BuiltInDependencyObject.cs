@@ -6,7 +6,7 @@ namespace Microsoft.StandardUI.Wpf
     /// <summary>
     /// This is the base for predefined dependency objects;
     /// </summary>
-    public class StandardUIDependencyObject : DependencyObject, IUIPropertyObject
+    public class BuiltInDependencyObject : DependencyObject, IUIObject
     {
         public object GetValue(IUIProperty property)
         {

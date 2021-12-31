@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class UIPropertyObject : StandardUIDependencyObject, IUIPropertyObject
+    public class UIPropertyObject : BuiltInDependencyObject, IUIObject
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class VisualStateManager : StandardUIDependencyObject, IVisualStateManager
+    public class VisualStateManager : BuiltInDependencyObject, IVisualStateManager
     {
     }
 }
