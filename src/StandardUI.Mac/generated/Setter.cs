@@ -1,14 +1,12 @@
 // This file is generated from ISetter.cs. Update the source file to change its contents.
 
-using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
-
-namespace Microsoft.StandardUI.WinUI
+namespace Microsoft.StandardUI.Mac
 {
-    public class Setter : UIObject, ISetter
+    public class Setter : StandardUIObject, ISetter
     {
-        public static readonly DependencyProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(UIProperty), typeof(Setter), null);
-        public static readonly DependencyProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);
-        public static readonly DependencyProperty ValueProperty = PropertyUtils.Register(nameof(Value), typeof(object), typeof(Setter), null);
+        public static readonly UIProperty PropertyProperty = new UIProperty(nameof(Property), null);
+        public static readonly UIProperty TargetProperty = new UIProperty(nameof(Target), null);
+        public static readonly UIProperty ValueProperty = new UIProperty(nameof(Value), null);
         
         public UIProperty? Property
         {

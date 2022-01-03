@@ -1,14 +1,12 @@
 // This file is generated from IVisualStateGroup.cs. Update the source file to change its contents.
 
-using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
-
-namespace Microsoft.StandardUI.WinUI
+namespace Microsoft.StandardUI.Mac
 {
-    public class VisualStateGroup : UIObject, IVisualStateGroup
+    public class VisualStateGroup : StandardUIObject, IVisualStateGroup
     {
-        public static readonly DependencyProperty CurrentStateProperty = PropertyUtils.Register(nameof(CurrentState), typeof(VisualState), typeof(VisualStateGroup), null);
-        public static readonly DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualStateGroup), "");
-        public static readonly DependencyProperty StatesProperty = PropertyUtils.Register(nameof(States), typeof(UICollection<IVisualState>), typeof(VisualStateGroup), null);
+        public static readonly UIProperty CurrentStateProperty = new UIProperty(nameof(CurrentState), null, readOnly:true);
+        public static readonly UIProperty NameProperty = new UIProperty(nameof(Name), "", readOnly:true);
+        public static readonly UIProperty StatesProperty = new UIProperty(nameof(States), null, readOnly:true);
         
         private UICollection<IVisualState> _states;
         

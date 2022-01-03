@@ -1,13 +1,11 @@
 // This file is generated from IVisualState.cs. Update the source file to change its contents.
 
-using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
-
-namespace Microsoft.StandardUI.WinUI
+namespace Microsoft.StandardUI.Mac
 {
-    public class VisualState : UIObject, IVisualState
+    public class VisualState : StandardUIObject, IVisualState
     {
-        public static readonly DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualState), "");
-        public static readonly DependencyProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(UICollection<ISetter>), typeof(VisualState), null);
+        public static readonly UIProperty NameProperty = new UIProperty(nameof(Name), "", readOnly:true);
+        public static readonly UIProperty SettersProperty = new UIProperty(nameof(Setters), null, readOnly:true);
         
         private UICollection<ISetter> _setters;
         
