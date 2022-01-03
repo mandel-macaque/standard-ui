@@ -30,8 +30,6 @@ namespace Microsoft.StandardUI
         public static ILinearGradientBrush LinearGradientBrush() => Factory.CreateLinearGradientBrush();
         public static IRadialGradientBrush RadialGradientBrush() => Factory.CreateRadialGradientBrush();
 
-        /*** Environment peers ***/
-
         /*** Infrastructure objects ***/
 
         public static IUIPropertyMetadata UIPropertyMetdata(object defaultValue) => Factory.CreatePropertyMetadata(defaultValue);
