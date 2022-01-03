@@ -2,7 +2,7 @@
   "profiles": {
     "Microsoft.StandardUI.CommandLineSourceGenerator": {
       "commandName": "Project",
-      "commandLineArgs": " \" $(SolutionDir) \" \" $(DevEnvDir) \""
+      "commandLineArgs": " \" $(SolutionDir) \""
     }
   }
 }
