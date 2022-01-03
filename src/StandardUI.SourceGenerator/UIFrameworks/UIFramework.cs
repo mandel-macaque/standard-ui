@@ -19,11 +19,16 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string NativeUIElementType { get; }
-        public abstract string? DefaultBaseClassName { get; }
-        public abstract string BuiltInUIElementBaseClassName { get; }
+        public virtual string BuiltInUIElementBaseClassName => "StandardUIElement";
+        public virtual string BuiltInUIObjectBaseClassName => "StandardUIObject";
+
+        public virtual string PropertyDescriptorName(Property property) => property.Name + "Property";
+        public virtual string PropertyDescriptorName(AttachedProperty property) => property.Name + "Property";
+
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
 
         public virtual void GeneratePropertyDescriptor(Property property, Source staticMembers) { }
+
         public virtual void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers) { }
         public virtual void GeneratePropertyField(Property property, Source nonstaticFields) { }
         public virtual void GeneratePropertyInit(Property property, Source constuctorBody) { }
@@ -58,14 +63,16 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             string typeName = type.Name;
 
             string destinationTypeName;
-            if (Utils.IsThisType(type, KnownTypes.IUIElement))
+            if (Utils.IsThisType(type, KnownTypes.IUIObject))
+                destinationTypeName = BuiltInUIObjectBaseClassName;
+            else if (Utils.IsThisType(type, KnownTypes.IUIElement))
                 destinationTypeName = BuiltInUIElementBaseClassName;
             else if (Utils.IsUICollectionType(type, out ITypeSymbol elementType))
             {
                 if (Utils.IsThisType(elementType, KnownTypes.IUIElement))
-                    destinationTypeName = $"UIElementCollection<{NativeUIElementType},{elementType}>";
+                    destinationTypeName = UIElementCollectionOutputTypeName(elementType);
                 else if (Utils.IsSubtypeOf(elementType, KnownTypes.IUIElement))
-                    destinationTypeName = $"UIElementCollection<{OutputTypeName(elementType)},{elementType.Name}>";
+                    destinationTypeName = UIElementSubtypeCollectionOutputTypeName(elementType);
                 else destinationTypeName = $"UICollection<{elementType.Name}>";
             }
             else if (Utils.IsUIModelInterfaceType(type))
@@ -76,6 +83,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
             return Utils.AddNullableSuffixIfNeeded(destinationTypeName, type.NullableAnnotation);
         }
+
+        public virtual string UIElementCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{elementType}>";
+        public virtual string UIElementSubtypeCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{elementType}>";
 
         public string PropertyOutputTypeName(PropertyBase property) => OutputTypeName(property.Type);
 

@@ -9,10 +9,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string ProjectBaseDirectory => "StandardUI.Wpf";
         public override string RootNamespace => "Microsoft.StandardUI.Wpf";
         public override string? DependencyPropertyTypeAlias => "DependencyProperty = System.Windows.DependencyProperty";
-        public override string DependencyPropertyClassName => "DependencyProperty";
+        public override string DependencyPropertyType => "DependencyProperty";
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.UIElement";
         public override string NativeUIElementType => "System.Windows.FrameworkElement";
-        public override string? DefaultBaseClassName => "StandardUIDependencyObject";
         public override string BuiltInUIElementBaseClassName => "BuiltInUIElement";
         public override string WrapperSuffix => "Wpf";
         protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";

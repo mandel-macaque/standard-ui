@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Source
     {
-        public static string LineEnding = "\r\n";
+        public static string LineEnding = Environment.NewLine;
 
         private Usings? _usings;
         private List<SourceLine> _lines = new List<SourceLine>();

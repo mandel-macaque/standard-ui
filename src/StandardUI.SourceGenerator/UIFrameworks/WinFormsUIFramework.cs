@@ -10,7 +10,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string RootNamespace => "Microsoft.StandardUI.WinForms";
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.WinForms.Control";
         public override string NativeUIElementType => "System.Windows.WinForms.Control";
-        public override string? DefaultBaseClassName => null;
         public override string BuiltInUIElementBaseClassName => "StandardUIControl";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
 

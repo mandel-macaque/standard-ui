@@ -2,49 +2,24 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
-    public abstract class XamlUIFramework : UIFramework
+    public abstract class NonXamlUIFramework : UIFramework
     {
-        protected XamlUIFramework(Context context) : base(context)
+        protected NonXamlUIFramework(Context context) : base(context)
         {
         }
 
-        public virtual string? DependencyPropertyTypeAlias => null;
-        public abstract string DependencyPropertyType { get; }
-
-        public override string UIElementCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{NativeUIElementType},{elementType}>";
-        public override string UIElementSubtypeCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{OutputTypeName(elementType)},{elementType.Name}>";
-
         public override void GeneratePropertyDescriptor(Property property, Source staticMembers)
         {
-            string? usingTypeAlias = DependencyPropertyTypeAlias;
-            if (usingTypeAlias != null)
-            {
-                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
-            }
-
-            string nonNullablePropertyType = Utils.ToNonnullableType(PropertyOutputTypeName(property));
-            string descriptorName = PropertyDescriptorName(property);
-            string defaultValue = DefaultValue(property);
+            string readOnlyParam = property.IsReadOnly ? ", readOnly:true" : "";
             staticMembers.AddLine(
-                $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.Register(nameof({property.Name}), typeof({nonNullablePropertyType}), typeof({property.Interface.FrameworkClassName}), {defaultValue});");
+                $"public static readonly UIProperty {PropertyDescriptorName(property)} = new UIProperty(nameof({property.Name}), {DefaultValue(property)}{readOnlyParam});");
         }
 
         public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
         {
-            string? usingTypeAlias = DependencyPropertyTypeAlias;
-            if (usingTypeAlias != null)
-            {
-                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
-            }
-
-            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
-            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
-            string nonNullablePropertyType = Utils.ToNonnullableType(propertyOutputTypeName);
-            string descriptorName = PropertyDescriptorName(attachedProperty);
-            string defaultValue = DefaultValue(attachedProperty);
-
+            string readOnlyParam = attachedProperty.IsReadOnly ? ", readOnly:true" : "";
             staticMembers.AddLine(
-                $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.RegisterAttached(\"{attachedProperty.Name}\", typeof({nonNullablePropertyType}), typeof({targetOutputTypeName}), {defaultValue});");
+                $"public static readonly AttachedUIProperty {PropertyDescriptorName(attachedProperty)} = new AttachedUIProperty(\"{attachedProperty.Name}\", {DefaultValue(attachedProperty)}{readOnlyParam});");
         }
 
         public override void GeneratePropertyField(Property property, Source nonstaticFields)
@@ -52,8 +27,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             if (property.IsUICollection)
                 nonstaticFields.AddLine(
                     $"private {PropertyOutputTypeName(property)} {PropertyFieldName(property)};");
-
-            // private readonly UIElementCollection<UIElement, IUIElement> _children;
         }
 
         public override void GeneratePropertyInit(Property property, Source constuctorBody)
@@ -205,12 +178,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             methods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
             if (attachedProperty.SetterMethod != null)
                 methods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
-        }
-
-        public override bool IsWrappedType(ITypeSymbol type)
-        {
-            string typeName = type.Name;
-            return typeName == "Color" || typeName == "Point" || typeName == "Points" || typeName == "Size" || typeName == "DataSource" || typeName == "FontWeight";
         }
     }
 }

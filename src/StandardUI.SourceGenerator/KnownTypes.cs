@@ -2,6 +2,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public static class KnownTypes
     {
+        public const string IUIObject = "Microsoft.StandardUI.IUIObject";
         public const string IUIElement = "Microsoft.StandardUI.IUIElement";
         public const string IUICollection = "Microsoft.StandardUI.IUICollection";
         public const string IPanel = "Microsoft.StandardUI.Controls.IPanel";

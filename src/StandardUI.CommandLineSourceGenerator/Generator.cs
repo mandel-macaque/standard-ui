@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
+using Microsoft.CodeAnalysis;
+using Microsoft.Build.Locator;
+using Microsoft.CodeAnalysis.MSBuild;
 
 namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
@@ -15,22 +15,15 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
     {
         static async Task Main(string[] args)
         {
-            if (args.Length < 1 || args.Length > 2)
+            if (args.Length != 1)
             {
-                Console.WriteLine($"Usage: StandardUI.CodelGenerator.exe <path-to-repo-root> [path-to-vs-instance]");
+                Console.WriteLine($"Usage: StandardUI.CodelGenerator.exe <path-to-repo-root>");
                 Environment.Exit(1);
             }
 
             string rootDirectory = NormalizePath(args[0]);
 
-            VisualStudioInstance instance = GetVisualStudioInstance(args.Length == 2 ? NormalizePath(args[1]) : null);
-
-            Console.WriteLine($"Using MSBuild at '{instance.MSBuildPath}' to load projects.");
-
-            // NOTE: Be sure to register an instance with the MSBuildLocator 
-            //       before calling MSBuildWorkspace.Create()
-            //       otherwise, MSBuildWorkspace won't MEF compose.
-            MSBuildLocator.RegisterInstance(instance);
+            MSBuildLocator.RegisterDefaults();
 
             using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
             // Print message for WorkspaceFailed event to help diagnosing project load failures.
@@ -58,38 +51,6 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 Console.WriteLine($"Error: {e.ToString()}");
                 Environment.Exit(2);
             }
-        }
-
-        private static VisualStudioInstance GetVisualStudioInstance(string? vsPath)
-        {
-            VisualStudioInstance? instance = null;
-            var visualStudioInstances = MSBuildLocator.QueryVisualStudioInstances().ToArray();
-            if (visualStudioInstances.Length == 1)
-            {
-                // If there is only one instance of MSBuild on this machine, set that as the one to use.
-                instance = visualStudioInstances[0];
-            }
-            else if (visualStudioInstances.Length > 1 && vsPath != null)
-            {
-                foreach (var currInstance in visualStudioInstances)
-                {
-                    string vsRootPath = NormalizePath(currInstance.VisualStudioRootPath);
-
-                    if (vsPath.StartsWith(vsRootPath))
-                    {
-                        instance = currInstance;
-                        break;
-                    }
-                }
-            }
-
-            if (instance == null)
-            {
-                // Let user select the instance to use manually
-                instance = SelectVisualStudioInstance(visualStudioInstances);
-            }
-
-            return instance;
         }
 
         public class GatherInterfacesToGenerateFrom : SymbolVisitor
@@ -125,24 +86,26 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 return;
 
             Utils.Init(compilation);
-
+            
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 
             Context context = new Context(compilation, rootDirectory);
 
-            var wpfUIFramework = new WpfUIFramework(context);
-            var winUIUIFramework = new WinUIUIFramework(context);
+            //var wpfUIFramework = new WpfUIFramework(context);
+            //var winUIUIFramework = new WinUIUIFramework(context);
             //var winFormsUIFramework = new WinFormsUIFramework(context);
+            var macUIUIFramework = new MacUIFramework(context);
 
             foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
             {
                 Console.WriteLine($"Processing {interfaceType.Name}");
 
                 var intface = new Interface(context, interfaceType);
-                intface.Generate(wpfUIFramework);
-                intface.Generate(winUIUIFramework);
+                //intface.Generate(wpfUIFramework);
+                //intface.Generate(winUIUIFramework);
                 //intface.Generate(winFormsUIFramework);
+                intface.Generate(macUIUIFramework);
             }
         }
 
@@ -157,30 +120,6 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             {
                 // If invalid path, leave unmodified
                 return path;
-            }
-        }
-
-        private static VisualStudioInstance SelectVisualStudioInstance(VisualStudioInstance[] visualStudioInstances)
-        {
-            Console.WriteLine("Multiple installs of MSBuild detected please select one:");
-            for (int i = 0; i < visualStudioInstances.Length; i++)
-            {
-                Console.WriteLine($"Instance {i + 1}");
-                Console.WriteLine($"    Name: {visualStudioInstances[i].Name}");
-                Console.WriteLine($"    Version: {visualStudioInstances[i].Version}");
-                Console.WriteLine($"    MSBuild Path: {visualStudioInstances[i].MSBuildPath}");
-            }
-
-            while (true)
-            {
-                var userResponse = Console.ReadLine();
-                if (int.TryParse(userResponse, out int instanceNumber) &&
-                    instanceNumber > 0 &&
-                    instanceNumber <= visualStudioInstances.Length)
-                {
-                    return visualStudioInstances[instanceNumber - 1];
-                }
-                Console.WriteLine("Input not accepted, try again.");
             }
         }
 

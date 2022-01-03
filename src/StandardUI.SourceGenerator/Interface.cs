@@ -409,7 +409,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)
-                return uiFramework.DefaultBaseClassName;
+                return null;
             else
                 return uiFramework.OutputTypeName(baseInterface);
         }
