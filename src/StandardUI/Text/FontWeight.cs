@@ -5,6 +5,8 @@
     /// </summary>
     public struct FontWeight
     {
+        public static readonly FontWeight Default = FontWeights.Normal;
+
         /// <summary>
         /// The font weight expressed as a numeric value.
         /// </summary>
