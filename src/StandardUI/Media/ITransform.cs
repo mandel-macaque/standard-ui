@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface ITransform
+    public interface ITransform : IUIObject
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface IBrush
+    public interface IBrush : IUIObject
     {
     }
 }

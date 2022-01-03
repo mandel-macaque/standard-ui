@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface IGeometry
+    public interface IGeometry : IUIObject
     {
         [DefaultValue(0.25)]
         double StandardFlatteningTolerance { get; set; }

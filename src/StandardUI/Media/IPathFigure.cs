@@ -3,7 +3,7 @@
 namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface IPathFigure
+    public interface IPathFigure : IUIObject
     {
         IEnumerable<IPathSegment> Segments { get; set; }
 

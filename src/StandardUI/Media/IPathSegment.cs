@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface IPathSegment
+    public interface IPathSegment : IUIObject
     {
     }
 }

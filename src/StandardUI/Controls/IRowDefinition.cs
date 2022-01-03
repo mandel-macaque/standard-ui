@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
-    public interface IRowDefinition
+    public interface IRowDefinition : IUIObject
     {
         /// <summary>
         /// The height of the row. The default value is a GridLength representing a "1*" sizing.

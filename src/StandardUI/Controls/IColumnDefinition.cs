@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
-    public interface IColumnDefinition
+    public interface IColumnDefinition : IUIObject
     {
         /// <summary>
         /// The width of the column. The default value is a GridLength representing a "1*" sizing.

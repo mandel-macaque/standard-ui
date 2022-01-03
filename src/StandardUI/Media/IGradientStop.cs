@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
-    public interface IGradientStop
+    public interface IGradientStop : IUIObject
     {
         // The default is Transparent
         Color Color { get; set; }

@@ -4,7 +4,7 @@
     /// Represents the path to a property on a target element.
     /// </summary>
     [UIModelObject]
-    public interface ITargetPropertyPath
+    public interface ITargetPropertyPath : IUIObject
     {
         /// <summary>
         /// Gets or sets the path to the property on the target element.
