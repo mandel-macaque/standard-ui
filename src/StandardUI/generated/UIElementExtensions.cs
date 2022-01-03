@@ -60,7 +60,7 @@ namespace Microsoft.StandardUI
         
         public static T IsVisible<T>(this T uiElement, bool value) where T : IUIElement
         {
-            uiElement.IsVisible = value;
+            uiElement.Visible = value;
             return uiElement;
         }
     }

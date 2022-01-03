@@ -102,6 +102,6 @@ namespace Microsoft.StandardUI
         /// layout, and cannot receive focus or input events.
         /// </summary>
         [DefaultValue(true)]
-        public bool IsVisible { get; set; }
+        public bool Visible { get; set; }
     }
 }

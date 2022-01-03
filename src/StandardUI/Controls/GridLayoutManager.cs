@@ -23,7 +23,7 @@ namespace Microsoft.StandardUI.Controls
 
             foreach (IUIElement? child in grid.Children)
             {
-                if (! child.IsVisible)
+                if (! child.Visible)
                 {
                     continue;
                 }
@@ -133,7 +133,7 @@ namespace Microsoft.StandardUI.Controls
                 {
                     IUIElement child = gridChildren[n];
 
-                    if (child.IsVisible)
+                    if (child.Visible)
                     {
                         _childrenToLayOut[currentChild] = child;
                         currentChild += 1;
@@ -164,7 +164,7 @@ namespace Microsoft.StandardUI.Controls
                 {
                     IUIElement? child = _childrenToLayOut[n];
 
-                    if (!child.IsVisible)
+                    if (!child.Visible)
                     {
                         continue;
                     }
@@ -783,6 +783,11 @@ namespace Microsoft.StandardUI.Controls
             double IRowDefinition.MinHeight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             double IRowDefinition.MaxHeight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             double IRowDefinition.ActualHeight => throw new NotImplementedException();
+
+            void IUIObject.ClearValue(IUIProperty property) => throw new NotImplementedException();
+            object? IUIObject.GetValue(IUIProperty property) => throw new NotImplementedException();
+            object? IUIObject.ReadLocalValue(IUIProperty property) => throw new NotImplementedException();
+            void IUIObject.SetValue(IUIProperty property, object? value) => throw new NotImplementedException();
         }
 
         private class ImpliedColumn : IColumnDefinition
@@ -792,6 +797,11 @@ namespace Microsoft.StandardUI.Controls
             double IColumnDefinition.MinWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             double IColumnDefinition.MaxWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             double IColumnDefinition.ActualWidth => throw new NotImplementedException();
+
+            void IUIObject.ClearValue(IUIProperty property) => throw new NotImplementedException();
+            object? IUIObject.GetValue(IUIProperty property) => throw new NotImplementedException();
+            object? IUIObject.ReadLocalValue(IUIProperty property) => throw new NotImplementedException();
+            void IUIObject.SetValue(IUIProperty property, object? value) => throw new NotImplementedException();
         }
     }
 }
