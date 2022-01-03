@@ -82,29 +82,16 @@ namespace Microsoft.StandardUI.Wpf
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.IsVisible
+        bool IUIElement.Visible
         {
             get => this.Visibility != System.Windows.Visibility.Collapsed;
             set => this.Visibility = value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
 
-        public object GetValue(IUIProperty dp)
-        {
-            System.Windows.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
-            return GetValue(wpfDependencyProperty);
-        }
-
-        public object ReadLocalValue(IUIProperty dp)
-        {
-            System.Windows.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
-            return ReadLocalValue(wpfDependencyProperty);
-        }
-
-        public void SetValue(IUIProperty dp, object value)
-        {
-            System.Windows.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
-            SetValue(wpfDependencyProperty, value);
-        }
+        object? IUIObject.GetValue(IUIProperty property) => GetValue(((UIProperty)property).DependencyProperty);
+        object? IUIObject.ReadLocalValue(IUIProperty property) => ReadLocalValue(((UIProperty)property).DependencyProperty);
+        void IUIObject.SetValue(IUIProperty property, object? value) => SetValue(((UIProperty)property).DependencyProperty, value);
+        void IUIObject.ClearValue(IUIProperty property) => ClearValue(((UIProperty)property).DependencyProperty);
 
         protected override int VisualChildrenCount => _buildContent != null ? 1 : 0;
 

@@ -26,7 +26,7 @@ namespace Microsoft.StandardUI.WinForms
 
         public double ActualHeight => throw new NotImplementedException();
 
-        public bool IsVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IUIElement.Visible { get => Visible; set => Visible = value; }
         double IUIElement.Width { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         double IUIElement.Height { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -50,7 +50,12 @@ namespace Microsoft.StandardUI.WinForms
             throw new NotImplementedException();
         }
 
-        public void SetValue(IUIProperty property, object value)
+        public void SetValue(IUIProperty property, object? value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearValue(IUIProperty property)
         {
             throw new NotImplementedException();
         }
