@@ -1,13 +1,10 @@
-﻿using System.IO;
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
     public class Context
     {
-        public const string RootNamespace = "Microsoft.StandardUI";
-        public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat = new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
-
         public int IndentSize { get; } = 4;
         public Compilation Compilation { get; }
         public string RootDirectory { get; }

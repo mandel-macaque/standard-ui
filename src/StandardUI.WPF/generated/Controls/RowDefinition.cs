@@ -5,7 +5,7 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class RowDefinition : StandardUIDependencyObject, IRowDefinition
+    public class RowDefinition : StandardUIObject, IRowDefinition
     {
         public static readonly DependencyProperty HeightProperty = PropertyUtils.Register(nameof(Height), typeof(GridLength), typeof(RowDefinition), GridLength.Default);
         public static readonly DependencyProperty MinHeightProperty = PropertyUtils.Register(nameof(MinHeight), typeof(double), typeof(RowDefinition), 0.0);

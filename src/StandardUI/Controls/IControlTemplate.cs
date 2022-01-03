@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.Controls
+namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
     public interface IControlTemplate

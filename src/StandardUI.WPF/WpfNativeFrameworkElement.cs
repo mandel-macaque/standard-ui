@@ -7,11 +7,11 @@ namespace Microsoft.StandardUI.Wpf
     /// This class is for UI controls passed in from the host, for native WPF controls (not
     /// Standard UI built in controls or StandardControl controls), which we wrap with an IUIElement here.
     /// </summary>
-    public class WpfNativeFrameworkElement : IUIElement
+    public class NativeUIElement : IUIElement
     {
         private FrameworkElement _frameworkElement;
 
-        public WpfNativeFrameworkElement(FrameworkElement frameworkElement)
+        public NativeUIElement(FrameworkElement frameworkElement)
         {
             this._frameworkElement = frameworkElement;
         }
@@ -53,7 +53,7 @@ namespace Microsoft.StandardUI.Wpf
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.IsVisible
+        bool IUIElement.Visible
         {
             get => _frameworkElement.Visibility != Visibility.Collapsed;
             set => _frameworkElement.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
@@ -99,19 +99,9 @@ namespace Microsoft.StandardUI.Wpf
 
         double IUIElement.ActualHeight => _frameworkElement.ActualHeight;
 
-        public object GetValue(IUIProperty property)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object ReadLocalValue(IUIProperty property)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetValue(IUIProperty property, object value)
-        {
-            throw new NotImplementedException();
-        }
+        object? IUIObject.GetValue(IUIProperty property) => _frameworkElement.GetValue(((UIProperty)property).DependencyProperty);
+        object? IUIObject.ReadLocalValue(IUIProperty property) => _frameworkElement.ReadLocalValue(((UIProperty)property).DependencyProperty);
+        void IUIObject.SetValue(IUIProperty property, object? value) => _frameworkElement.SetValue(((UIProperty)property).DependencyProperty, value);
+        void IUIObject.ClearValue(IUIProperty property) => _frameworkElement.ClearValue(((UIProperty)property).DependencyProperty);
     }
 }

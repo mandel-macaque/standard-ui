@@ -187,8 +187,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             return type.TypeKind == TypeKind.Interface && type.Name != "IEnumerable";  // TODO: Use attribute check instead
         }
 
-        public static bool IsUIElementType(ITypeSymbol type) => IsThisType(type, KnownTypes.IUIElement);
-
         public static bool IsUICollectionType(ITypeSymbol type, out ITypeSymbol elementType)
         {
             if (VoidType == null)

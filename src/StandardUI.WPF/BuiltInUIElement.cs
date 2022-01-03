@@ -46,7 +46,7 @@ namespace Microsoft.StandardUI.Wpf
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.IsVisible
+        bool IUIElement.Visible
         {
             get => Visibility != Visibility.Collapsed;
             set => Visibility = value ? Visibility.Visible : Visibility.Collapsed;
@@ -85,26 +85,12 @@ namespace Microsoft.StandardUI.Wpf
         {
         }
 
-        public object GetValue(IUIProperty property)
-        {
-            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
-            return GetValue(dependencyProperty);
-        }
-
-        public object ReadLocalValue(IUIProperty property)
-        {
-            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
-            return ReadLocalValue(dependencyProperty);
-        }
-
-        public void SetValue(IUIProperty property, object value)
-        {
-            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
-            SetValue(dependencyProperty, value);
-        }
+        object? IUIObject.GetValue(IUIProperty property) => GetValue(((UIProperty) property).DependencyProperty);
+        object? IUIObject.ReadLocalValue(IUIProperty property) => ReadLocalValue(((UIProperty)property).DependencyProperty);
+        void IUIObject.SetValue(IUIProperty property, object? value) => SetValue(((UIProperty)property).DependencyProperty, value);
+        void IUIObject.ClearValue(IUIProperty property) => ClearValue(((UIProperty)property).DependencyProperty);
 
         void ILogicalParent.AddLogicalChild(object child) => this.AddLogicalChild(child);
-
         void ILogicalParent.RemoveLogicalChild(object child) => this.RemoveLogicalChild(child);
     }
 }

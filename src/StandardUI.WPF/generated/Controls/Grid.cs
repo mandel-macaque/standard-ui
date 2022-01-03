@@ -35,7 +35,6 @@ namespace Microsoft.StandardUI.Wpf.Controls
         {
             _columnDefinitions = new UICollection<IColumnDefinition>(this);
             SetValue(ColumnDefinitionsProperty, _columnDefinitions);
-
             _rowDefinitions = new UICollection<IRowDefinition>(this);
             SetValue(RowDefinitionsProperty, _rowDefinitions);
         }

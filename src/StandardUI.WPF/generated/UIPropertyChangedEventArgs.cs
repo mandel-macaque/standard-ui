@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class UIPropertyChangedEventArgs : BuiltInDependencyObject, IUIPropertyChangedEventArgs
+    public class UIPropertyChangedEventArgs : IUIPropertyChangedEventArgs
     {
     }
 }

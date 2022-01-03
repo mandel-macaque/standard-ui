@@ -4,7 +4,7 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class VisualState : UIPropertyObject, IVisualState
+    public class VisualState : StandardUIObject, IVisualState
     {
         public static readonly DependencyProperty NameProperty = PropertyUtils.Register(nameof(Name), typeof(string), typeof(VisualState), "");
         public static readonly DependencyProperty SettersProperty = PropertyUtils.Register(nameof(Setters), typeof(UICollection<ISetter>), typeof(VisualState), null);

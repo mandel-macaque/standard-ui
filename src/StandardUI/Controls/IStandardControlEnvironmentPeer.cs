@@ -1,6 +1,6 @@
-﻿namespace Microsoft.StandardUI.Controls
+namespace Microsoft.StandardUI.Controls
 {
-    public interface IStandardControlEnvironmentPeer : IDependencyObjectEnvironmentPeer
+    public interface IStandardControlEnvironmentPeer
     {
         public IUIElement? BuildContent { get; }
     }

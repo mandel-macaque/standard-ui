@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
-    public class Brush : StandardUIDependencyObject, IBrush
+    public class Brush : StandardUIObject, IBrush
     {
     }
 }

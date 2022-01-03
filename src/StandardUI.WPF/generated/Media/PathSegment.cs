@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Wpf.Media
 {
-    public class PathSegment : BuiltInDependencyObject, IPathSegment
+    public class PathSegment : StandardUIObject, IPathSegment
     {
     }
 }
