@@ -92,9 +92,9 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             Context context = new Context(compilation, rootDirectory);
 
-            //var wpfUIFramework = new WpfUIFramework(context);
-            //var winUIUIFramework = new WinUIUIFramework(context);
-            //var winFormsUIFramework = new WinFormsUIFramework(context);
+            var wpfUIFramework = new WpfUIFramework(context);
+            var winUIUIFramework = new WinUIUIFramework(context);
+            var winFormsUIFramework = new WinFormsUIFramework(context);
             var macUIUIFramework = new MacUIFramework(context);
 
             foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
@@ -102,7 +102,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 Console.WriteLine($"Processing {interfaceType.Name}");
 
                 var intface = new Interface(context, interfaceType);
-                //intface.Generate(wpfUIFramework);
+                intface.Generate(wpfUIFramework);
                 //intface.Generate(winUIUIFramework);
                 //intface.Generate(winFormsUIFramework);
                 intface.Generate(macUIUIFramework);
