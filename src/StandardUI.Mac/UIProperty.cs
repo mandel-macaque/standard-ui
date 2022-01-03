@@ -1,19 +1,9 @@
-using System.Windows;
-
 namespace Microsoft.StandardUI.Mac
 {
-    public class UIProperty : IUIProperty
+    public class UIProperty : BasicUIProperty
     {
-        public DependencyProperty DependencyProperty { get;  }
-
-        public UIProperty(DependencyProperty property)
+        public UIProperty(string name, object? defaultValue, bool readOnly = false) : base(name, defaultValue, readOnly)
         {
-            DependencyProperty = property;
-        }
-
-        public static DependencyProperty GetDependencyProeprty(IUIProperty property)
-        {
-            return ((UIProperty)property).DependencyProperty;
         }
     }
 }

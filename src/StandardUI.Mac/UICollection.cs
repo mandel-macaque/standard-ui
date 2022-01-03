@@ -1,14 +1,13 @@
-using System.Windows;
-
 namespace Microsoft.StandardUI.Mac
 {
     public sealed class UICollection<T> : BasicUICollection<T>
     {
-        DependencyObject _parent;
-
-        public UICollection(DependencyObject parent)
+        public UICollection(StandardUIElement parent)
         {
-            _parent = parent;
+        }
+
+        public UICollection(StandardUIObject parent)
+        {
         }
     }
 }
