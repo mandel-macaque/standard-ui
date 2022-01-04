@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -10,7 +10,6 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string Name { get; }
         public ITypeSymbol Type { get; }
         public bool IsReadOnly { get; }
-        public string TypeName { get; }
         public ITypeSymbol? UICollectionElementType { get; }
         public TypedConstant? SpecifiedDefaultValue { get; protected set; }
         public string FullPropertyName { get; }
@@ -23,14 +22,15 @@ namespace Microsoft.StandardUI.SourceGenerator
             Type = type;
             IsReadOnly = isReadOnly;
             FullPropertyName = $"{containingTypeName}.{name}";
-            TypeName = Utils.ToTypeName(Type);
 
             if (Utils.IsUICollectionType(Type, out ITypeSymbol uiCollectionElementType))
                 UICollectionElementType = uiCollectionElementType;
             else UICollectionElementType = null;
         }
 
+        public string TypeName => Utils.ToTypeName(Type);
         public bool IsUICollection => UICollectionElementType != null;
+        public string UICollectionElementTypeName => Utils.ToTypeName(UICollectionElementType!);
 
         public TypedConstant? GetSpecifiedDefaultValue(ImmutableArray<AttributeData> attributes)
         {

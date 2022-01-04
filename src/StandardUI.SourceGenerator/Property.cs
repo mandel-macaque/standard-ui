@@ -15,7 +15,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void GenerateExtensionClassMethods(Source source)
         {
-            if (IsReadOnly)
+            if (IsReadOnly && !IsUICollection)
                 return;
 
             source.Usings.AddTypeNamespace(Type);
@@ -23,17 +23,34 @@ namespace Microsoft.StandardUI.SourceGenerator
             string interfaceVariableName = Interface.VariableName;
 
             source.AddBlankLineIfNonempty();
-            source.AddLines(
-                $"public static T {Name}<T>(this T {interfaceVariableName}, {TypeName} value) where T : {Interface.Name}",
-                "{");
-            using (source.Indent())
+            if (IsUICollection)
             {
                 source.AddLines(
-                    $"{interfaceVariableName}.{Name} = value;",
-                    $"return {interfaceVariableName};");
+                    $"public static T {Name}<T>(this T {interfaceVariableName}, params {UICollectionElementTypeName}[] value) where T : {Interface.Name}",
+                    "{");
+                using (source.Indent())
+                {
+                    source.AddLines(
+                        $"{interfaceVariableName}.{Name}.Set(value);",
+                        $"return {interfaceVariableName};");
+                }
+                source.AddLine(
+                    "}");
             }
-            source.AddLine(
-                "}");
+            else
+            {
+                source.AddLines(
+                    $"public static T {Name}<T>(this T {interfaceVariableName}, {TypeName} value) where T : {Interface.Name}",
+                    "{");
+                using (source.Indent())
+                {
+                    source.AddLines(
+                        $"{interfaceVariableName}.{Name} = value;",
+                        $"return {interfaceVariableName};");
+                }
+                source.AddLine(
+                    "}");
+            }
         }
     }
 }

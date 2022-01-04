@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.StandardUI.SourceGenerator;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -13,7 +12,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
     public static class Generator
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -92,20 +91,20 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             Context context = new Context(compilation, rootDirectory);
 
-            //var wpfUIFramework = new WpfUIFramework(context);
+            var wpfUIFramework = new WpfUIFramework(context);
             //var winUIUIFramework = new WinUIUIFramework(context);
             //var winFormsUIFramework = new WinFormsUIFramework(context);
-            var macUIUIFramework = new MacUIFramework(context);
+            //var macUIUIFramework = new MacUIFramework(context);
 
             foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
             {
                 Console.WriteLine($"Processing {interfaceType.Name}");
 
                 var intface = new Interface(context, interfaceType);
-                //intface.Generate(wpfUIFramework);
+                intface.Generate(wpfUIFramework);
                 //intface.Generate(winUIUIFramework);
                 //intface.Generate(winFormsUIFramework);
-                intface.Generate(macUIUIFramework);
+                //intface.Generate(macUIUIFramework);
             }
         }
 
