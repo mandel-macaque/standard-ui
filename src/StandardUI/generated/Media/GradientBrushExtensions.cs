@@ -1,14 +1,12 @@
 // This file is generated from IGradientBrush.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
-
 namespace Microsoft.StandardUI.Media
 {
     public static class GradientBrushExtensions
     {
-        public static T GradientStops<T>(this T gradientBrush, IEnumerable<IGradientStop> value) where T : IGradientBrush
+        public static T GradientStops<T>(this T gradientBrush, params IGradientStop[] value) where T : IGradientBrush
         {
-            gradientBrush.GradientStops = value;
+            gradientBrush.GradientStops.Set(value);
             return gradientBrush;
         }
         
