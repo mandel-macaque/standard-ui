@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -90,7 +90,7 @@ namespace Microsoft.StandardUI.Wpf
         void IUIObject.SetValue(IUIProperty property, object? value) => SetValue(((UIProperty)property).DependencyProperty, value);
         void IUIObject.ClearValue(IUIProperty property) => ClearValue(((UIProperty)property).DependencyProperty);
 
-        void ILogicalParent.AddLogicalChild(object child) => this.AddLogicalChild(child);
-        void ILogicalParent.RemoveLogicalChild(object child) => this.RemoveLogicalChild(child);
+        void ILogicalParent.AddLogicalChild(object child) => AddLogicalChild(child);
+        void ILogicalParent.RemoveLogicalChild(object child) => RemoveLogicalChild(child);
     }
 }
