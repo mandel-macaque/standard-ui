@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -14,9 +14,7 @@ namespace Microsoft.StandardUI
         internal int _size; // Do not rename (binary serialization)
         private int _version; // Do not rename (binary serialization)
 
-#pragma warning disable CA1825 // avoid the extra generic instantiation for Array.Empty<T>()
         private static readonly T[] s_emptyArray = new T[0];
-#pragma warning restore CA1825
 
         // Constructs a List. The list is initially empty and has a capacity
         // of zero. Upon adding the first element to the list the capacity is
@@ -159,6 +157,31 @@ namespace Microsoft.StandardUI
             else
             {
                 AddWithResize(item);
+            }
+        }
+
+        public void Set(params T[] newItems)
+        {
+            if (_items.Length > 0)
+            {
+                Clear();
+                _items = s_emptyArray;
+            }
+
+            int newItemsLength = newItems.Length;
+            if (newItemsLength == 0)
+            {
+                return;
+            }
+
+            _version++;
+            Capacity = newItemsLength;
+            _size = newItemsLength;
+            Array.Copy(newItems, _items, newItemsLength);
+
+            for (int i = 0; i < newItemsLength; i++)
+            {
+                OnItemAdded(newItems[i]);
             }
         }
 

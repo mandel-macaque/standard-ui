@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.StandardUI.Media
+﻿namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
     public interface IPathFigure : IUIObject
     {
-        IEnumerable<IPathSegment> Segments { get; set; }
+        IUICollection<IPathSegment> Segments { get; }
 
         Point StartPoint { get; set; }
 
