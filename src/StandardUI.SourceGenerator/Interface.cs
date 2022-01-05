@@ -268,7 +268,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 }
             }
 
-            if (!methods.IsEmpty || !staticFields.IsEmpty)
+            if (!(methods.IsEmpty && staticFields.IsEmpty))
             {
                 string extensionsClassName = FrameworkClassName + "Extensions";
                 Source extensionsClassSource = GenerateStaticClassFile(usings, NamespaceName, extensionsClassName, methods, staticFields);
@@ -360,7 +360,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     "{");
                 using (fileSource.Indent())
                 {
-                    if (staticFields != null)
+                    if (staticFields != null && !staticFields.IsEmpty)
                     {
                         fileSource.AddSource(staticFields);
                         fileSource.AddBlankLine();

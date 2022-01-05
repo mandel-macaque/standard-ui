@@ -59,16 +59,6 @@ namespace Microsoft.StandardUI.SourceGenerator
                 source.AddLine(
                     "}");
             }
-
-#if false
-        public static int GridRow<T>(this T uiElement) where T : IUIElement => GridAttachedInstance.GetRow(uiElement);
-
-        public static T GridRow<T>(this T uiElement, int value) where T : IUIElement
-        {
-            GridAttachedInstance.SetRow(uiElement, value);
-            return uiElement;
-        }
-#endif
         }
     }
 }
