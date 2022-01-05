@@ -1,20 +1,24 @@
 // This file is generated from IPathGeometry.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Mac.Media
 {
     public class PathGeometry : Geometry, IPathGeometry
     {
-        public static readonly UIProperty FiguresProperty = new UIProperty(nameof(Figures), null);
+        public static readonly UIProperty FiguresProperty = new UIProperty(nameof(Figures), null, readOnly:true);
         public static readonly UIProperty FillRuleProperty = new UIProperty(nameof(FillRule), FillRule.EvenOdd);
         
-        public IEnumerable<IPathFigure> Figures
+        private UICollection<IPathFigure> _figures;
+        
+        public PathGeometry()
         {
-            get => (IEnumerable<IPathFigure>) GetValue(FiguresProperty);
-            set => SetValue(FiguresProperty, value);
+            _figures = new UICollection<IPathFigure>(this);
+            SetValue(FiguresProperty, _figures);
         }
+        
+        public UICollection<IPathFigure> Figures => _figures;
+        IUICollection<IPathFigure> IPathGeometry.Figures => Figures;
         
         public FillRule FillRule
         {
