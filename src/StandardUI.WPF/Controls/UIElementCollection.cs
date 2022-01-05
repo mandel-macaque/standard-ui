@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
@@ -335,7 +335,6 @@ namespace Microsoft.StandardUI.Wpf
             public void CopyTo(TStandardUIElement[] array, int arrayIndex)
             {
                 int count = _nativeUIElementCollection.Count;
-
                 for (int i = arrayIndex; i < count; i++)
                 {
                     array[i] = ToStandardUIElement(_nativeUIElementCollection[i]);
@@ -353,6 +352,18 @@ namespace Microsoft.StandardUI.Wpf
             public bool Remove(TStandardUIElement item) => _nativeUIElementCollection.Remove(ToNativeUIElement(item));
 
             public void RemoveAt(int index) => _nativeUIElementCollection.RemoveAt(index);
+
+            public void Set(params TStandardUIElement[] items)
+            {
+                // TODO: Potentially provide a more optimized implementation later
+                Clear();
+
+                int length = items.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    Add(items[i]);
+                }
+            }
 
             internal static TNativeUIElment ToNativeUIElement(TStandardUIElement element)
             {
