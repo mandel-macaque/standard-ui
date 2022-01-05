@@ -40,14 +40,35 @@ namespace Microsoft.StandardUI.SourceGenerator
             // Get the type base name, without the "I" nor "Attached" suffix
             string typeBaseName = Interface.Name.Substring(1);
 
+            string targetVariableName = Utils.GetInterfaceVariableName(TargetType);
+
             source.AddBlankLineIfNonempty();
-            source.AddLine(
-                $"public static {TypeName} Get{typeBaseName}{Name}(this IUIElement element) => {typeBaseName}AttachedInstance.Get{Name}(element);");
+            source.AddLines(
+                $"public static {TypeName} {typeBaseName}{Name}<T>(this T uiElement) where T : {TargetTypeName} => {typeBaseName}AttachedInstance.Get{Name}(uiElement);");
             if (!IsReadOnly)
             {
+                source.AddLines(
+                    $"public static T {typeBaseName}{Name}<T>(this T {targetVariableName}, {TypeName} value) where T : {TargetTypeName}",
+                    "{");
+                using (source.Indent())
+                {
+                    source.AddLines(
+                        $"{typeBaseName}AttachedInstance.Set{Name}({targetVariableName}, value);",
+                        $"return {targetVariableName};");
+                }
                 source.AddLine(
-                    $"public static void Set{typeBaseName}{Name}(this IUIElement element, {TypeName} value) => {typeBaseName}AttachedInstance.Set{Name}(element, value);");
+                    "}");
             }
+
+#if false
+        public static int GridRow<T>(this T uiElement) where T : IUIElement => GridAttachedInstance.GetRow(uiElement);
+
+        public static T GridRow<T>(this T uiElement, int value) where T : IUIElement
+        {
+            GridAttachedInstance.SetRow(uiElement, value);
+            return uiElement;
+        }
+#endif
         }
     }
 }

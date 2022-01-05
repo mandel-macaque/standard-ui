@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -127,6 +127,18 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return typeName.Substring(0, 1).ToLower() + typeName.Substring(1);
             else
                 return typeName.Substring(0, upperCasePrefixCharCount - 1).ToLower() + typeName.Substring(upperCasePrefixCharCount - 1);
+        }
+
+        public static string GetInterfaceVariableName(ITypeSymbol typeSymbol)
+        {
+            var name = typeSymbol.Name;
+            if (! name.StartsWith("I"))
+            {
+                throw new InvalidOperationException($"Type name {name}, which should be an interface, unexpectedly doesn't start with an 'I'");
+            }
+
+            // e.g. ICanvas => canvas, IUIElement => uiElement
+            return PascalCaseToCamelCase(name.Substring(1));
         }
 
         public static bool IsTransformType(TypeSyntax type)
