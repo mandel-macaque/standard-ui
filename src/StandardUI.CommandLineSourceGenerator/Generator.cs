@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.StandardUI.SourceGenerator;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -13,7 +12,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
     public static class Generator
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -106,6 +105,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 //intface.Generate(winUIUIFramework);
                 //intface.Generate(winFormsUIFramework);
                 intface.Generate(macUIUIFramework);
+                intface.GenerateExtensionsClass();
             }
         }
 

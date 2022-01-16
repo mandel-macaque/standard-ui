@@ -8,7 +8,8 @@ namespace Microsoft.StandardUI
     public struct GridLength
     {
         public static readonly GridLength Auto = new(1.0, GridUnitType.Auto);
-        public static readonly GridLength Default = new(1.0, GridUnitType.Star);
+        public static readonly GridLength Star = new(1.0, GridUnitType.Star);
+        public static readonly GridLength Default = Star;
 
         private readonly double _unitValue;
         private readonly GridUnitType _unitType;
@@ -53,6 +54,8 @@ namespace Microsoft.StandardUI
                 return Auto._unitValue;
             }
         }
+
+        public static implicit operator GridLength(double pixels) => new GridLength(pixels);
 
         internal static bool IsFinite(double value)
         {

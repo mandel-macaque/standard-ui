@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
@@ -15,7 +14,9 @@ namespace Microsoft.StandardUI
         IStackPanel CreateStackPanel();
         IVerticalStack CreateVerticalStack();
         IHorizontalStack CreateHorizontalStack();
-		IGrid CreateGrid ();
+		IGrid CreateGrid();
+        IRowDefinition CreateRowDefinition();
+        IColumnDefinition CreateColumnDefinition();
         IGridAttached GridAttachedInstance { get; }
 
         IEllipse CreateEllipse();
@@ -44,11 +45,5 @@ namespace Microsoft.StandardUI
 
         IPathGeometry CreatePathGeometry(ITransform? transform, IEnumerable<IPathFigure> figures, FillRule fillRule);
         IPathFigure CreatePathFigure(IEnumerable<IPathSegment> segments, Point startPoint, bool isClosed, bool isFilled);
-
-        /*** Infrastructure objects ***/
-
-        IUIPropertyMetadata CreatePropertyMetadata(object defaultValue);
-        IUIPropertyMetadata CreatePropertyMetadata(object defaultValue, UIPropertyChangedCallback propertyChangedCallback);
-        IUIProperty RegisterUIProperty(string name, Type propertyType, Type ownerType, IUIPropertyMetadata typeMetadata);
     }
 }

@@ -1,14 +1,12 @@
 // This file is generated from IPathFigure.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
-
 namespace Microsoft.StandardUI.Media
 {
     public static class PathFigureExtensions
     {
-        public static T Segments<T>(this T pathFigure, IEnumerable<IPathSegment> value) where T : IPathFigure
+        public static T Segments<T>(this T pathFigure, params IPathSegment[] value) where T : IPathFigure
         {
-            pathFigure.Segments = value;
+            pathFigure.Segments.Set(value);
             return pathFigure;
         }
         

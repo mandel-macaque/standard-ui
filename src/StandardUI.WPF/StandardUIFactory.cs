@@ -20,7 +20,8 @@ namespace Microsoft.StandardUI.Wpf
 		public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
 		public IGrid CreateGrid() => new Grid();
         public IGridAttached GridAttachedInstance => GridAttached.Instance;
-
+        public IRowDefinition CreateRowDefinition() => new RowDefinition();
+        public IColumnDefinition CreateColumnDefinition() => new ColumnDefinition();
         public IEllipse CreateEllipse() => new Ellipse();
         public ILine CreateLine() => new Line();
         public IPath CreatePath() => new Path();
@@ -45,11 +46,5 @@ namespace Microsoft.StandardUI.Wpf
         public IPolyLineSegment CreatePolyLineSegment(Points points) => throw new NotImplementedException();
         public IPolyQuadraticBezierSegment CreatePolyQuadraticBezierSegment(Points points) => throw new NotImplementedException();
         public IQuadraticBezierSegment CreateQuadraticBezierSegment(in Point point1, in Point point2) => throw new NotImplementedException();
-
-        /*** Infrastructure objects ***/
-
-        public IUIPropertyMetadata CreatePropertyMetadata(object defaultValue) => throw new NotImplementedException();
-        public IUIPropertyMetadata CreatePropertyMetadata(object defaultValue, UIPropertyChangedCallback propertyChangedCallback) => throw new NotImplementedException();
-        public IUIProperty RegisterUIProperty(string name, Type propertyType, Type ownerType, IUIPropertyMetadata typeMetadata) => throw new NotImplementedException();
     }
 }

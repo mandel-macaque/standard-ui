@@ -1,22 +1,26 @@
 // This file is generated from IPathFigure.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Mac.Media
 {
     public class PathFigure : StandardUIObject, IPathFigure
     {
-        public static readonly UIProperty SegmentsProperty = new UIProperty(nameof(Segments), null);
+        public static readonly UIProperty SegmentsProperty = new UIProperty(nameof(Segments), null, readOnly:true);
         public static readonly UIProperty StartPointProperty = new UIProperty(nameof(StartPoint), Point.Default);
         public static readonly UIProperty IsClosedProperty = new UIProperty(nameof(IsClosed), false);
         public static readonly UIProperty IsFilledProperty = new UIProperty(nameof(IsFilled), true);
         
-        public IEnumerable<IPathSegment> Segments
+        private UICollection<IPathSegment> _segments;
+        
+        public PathFigure()
         {
-            get => (IEnumerable<IPathSegment>) GetValue(SegmentsProperty);
-            set => SetValue(SegmentsProperty, value);
+            _segments = new UICollection<IPathSegment>(this);
+            SetValue(SegmentsProperty, _segments);
         }
+        
+        public UICollection<IPathSegment> Segments => _segments;
+        IUICollection<IPathSegment> IPathFigure.Segments => Segments;
         
         public Point StartPoint
         {

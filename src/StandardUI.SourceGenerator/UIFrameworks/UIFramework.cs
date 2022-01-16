@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public abstract class UIFramework
     {
-        Context Context { get; }
+        public Context Context { get; }
 
         protected UIFramework(Context context)
         {

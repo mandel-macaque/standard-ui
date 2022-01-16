@@ -35,11 +35,11 @@
                 //If Left is specified, then Right is ignored
                 //If Left is not specified, then Right is used
                 //If both are not there, then 0
-                double left = child.GetCanvasLeft();
+                double left = child.CanvasLeft();
                 if (!double.IsNaN(left))
                     x = left;
 
-                double top = child.GetCanvasTop();
+                double top = child.CanvasTop();
                 if (!double.IsNaN(top))
                     y = top;
 

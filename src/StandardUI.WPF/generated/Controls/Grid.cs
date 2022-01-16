@@ -56,5 +56,11 @@ namespace Microsoft.StandardUI.Wpf.Controls
         
         public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
         IUICollection<IRowDefinition> IGrid.RowDefinitions => RowDefinitions;
+        
+        protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint) =>
+            GridLayoutManager.Instance.MeasureOverride(this, constraint.ToStandardUISize()).ToWpfSize();
+        
+        protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize) =>
+            GridLayoutManager.Instance.ArrangeOverride(this, arrangeSize.ToStandardUISize()).ToWpfSize();
     }
 }

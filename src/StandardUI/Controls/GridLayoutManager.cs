@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.Controls
@@ -169,8 +169,8 @@ namespace Microsoft.StandardUI.Controls
                         continue;
                     }
 
-                    int column = child.GetGridColumn().Clamp(0, _columns.Length - 1);
-                    int columnSpan = _grid.GetGridColumnSpan().Clamp(1, _columns.Length - column);
+                    int column = child.GridColumn().Clamp(0, _columns.Length - 1);
+                    int columnSpan = _grid.GridColumnSpan().Clamp(1, _columns.Length - column);
 
                     GridLengthType columnGridLengthType = GridLengthType.None;
 
@@ -179,8 +179,8 @@ namespace Microsoft.StandardUI.Controls
                         columnGridLengthType |= ToGridLengthType(_columns[columnIndex].ColumnDefinition.Width.GridUnitType);
                     }
 
-                    var row = child.GetGridRow().Clamp(0, _rows.Length - 1);
-                    var rowSpan = child.GetGridRowSpan().Clamp(1, _rows.Length - row);
+                    var row = child.GridRow().Clamp(0, _rows.Length - 1);
+                    var rowSpan = child.GridRowSpan().Clamp(1, _rows.Length - row);
 
                     var rowGridLengthType = GridLengthType.None;
 
@@ -199,12 +199,12 @@ namespace Microsoft.StandardUI.Controls
 
             public Rect GetCellBoundsFor(IUIElement uiElement, double xOffset, double yOffset)
             {
-                int firstColumn = uiElement.GetGridColumn().Clamp(0, _columns.Length - 1);
-                int columnSpan = uiElement.GetGridColumnSpan().Clamp(1, _columns.Length - firstColumn);
+                int firstColumn = uiElement.GridColumn().Clamp(0, _columns.Length - 1);
+                int columnSpan = uiElement.GridColumnSpan().Clamp(1, _columns.Length - firstColumn);
                 int lastColumn = firstColumn + columnSpan;
 
-                int firstRow = uiElement.GetGridRow().Clamp(0, _rows.Length - 1);
-                int rowSpan = uiElement.GetGridRowSpan().Clamp(1, _rows.Length - firstRow);
+                int firstRow = uiElement.GridRow().Clamp(0, _rows.Length - 1);
+                int rowSpan = uiElement.GridRowSpan().Clamp(1, _rows.Length - firstRow);
                 int lastRow = firstRow + rowSpan;
 
                 double top = TopEdgeOfRow(firstRow);

@@ -1,7 +1,6 @@
 ﻿using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
-using System;
 
 namespace Microsoft.StandardUI
 {
@@ -14,7 +13,8 @@ namespace Microsoft.StandardUI
         public static IVerticalStack VerticalStack() => Factory.CreateVerticalStack();
         public static IHorizontalStack HorizontalStack() => Factory.CreateHorizontalStack();
         public static IGrid Grid() => Factory.CreateGrid();
-
+        public static IRowDefinition RowDefinition() => Factory.CreateRowDefinition();
+        public static IColumnDefinition ColumnDefinition() => Factory.CreateColumnDefinition();
         public static IEllipse Ellipse() => Factory.CreateEllipse();
         public static ILine Line() => Factory.CreateLine();
         public static IPath Path() => Factory.CreatePath();
@@ -30,12 +30,9 @@ namespace Microsoft.StandardUI
         public static ILinearGradientBrush LinearGradientBrush() => Factory.CreateLinearGradientBrush();
         public static IRadialGradientBrush RadialGradientBrush() => Factory.CreateRadialGradientBrush();
 
-        /*** Infrastructure objects ***/
+        /*** Constants **/
 
-        public static IUIPropertyMetadata UIPropertyMetdata(object defaultValue) => Factory.CreatePropertyMetadata(defaultValue);
-        public static IUIPropertyMetadata UIPropertyMetdata(object defaultValue, UIPropertyChangedCallback propertyChangedCallback) => Factory.CreatePropertyMetadata(defaultValue, propertyChangedCallback);
-        public static IUIProperty RegisterUIProperty(string name, Type propertyType, Type ownerType, IUIPropertyMetadata typeMetadata) =>
-            Factory.RegisterUIProperty(name, propertyType, ownerType, typeMetadata);
+        public static GridLength Star => GridLength.Default;
 
         internal static IStandardUIFactory Factory => StandardUIEnvironment.Factory;
     }

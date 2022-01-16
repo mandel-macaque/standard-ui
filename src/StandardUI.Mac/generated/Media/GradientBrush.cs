@@ -1,21 +1,25 @@
 // This file is generated from IGradientBrush.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Mac.Media
 {
     public class GradientBrush : Brush, IGradientBrush
     {
-        public static readonly UIProperty GradientStopsProperty = new UIProperty(nameof(GradientStops), null);
+        public static readonly UIProperty GradientStopsProperty = new UIProperty(nameof(GradientStops), null, readOnly:true);
         public static readonly UIProperty MappingModeProperty = new UIProperty(nameof(MappingMode), BrushMappingMode.RelativeToBoundingBox);
         public static readonly UIProperty SpreadMethodProperty = new UIProperty(nameof(SpreadMethod), GradientSpreadMethod.Pad);
         
-        public IEnumerable<IGradientStop> GradientStops
+        private UICollection<IGradientStop> _gradientStops;
+        
+        public GradientBrush()
         {
-            get => (IEnumerable<IGradientStop>) GetValue(GradientStopsProperty);
-            set => SetValue(GradientStopsProperty, value);
+            _gradientStops = new UICollection<IGradientStop>(this);
+            SetValue(GradientStopsProperty, _gradientStops);
         }
+        
+        public UICollection<IGradientStop> GradientStops => _gradientStops;
+        IUICollection<IGradientStop> IGradientBrush.GradientStops => GradientStops;
         
         public BrushMappingMode MappingMode
         {

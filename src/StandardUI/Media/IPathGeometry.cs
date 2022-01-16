@@ -5,7 +5,7 @@ namespace Microsoft.StandardUI.Media
     [UIModelObject]
     public interface IPathGeometry : IGeometry
     {
-        IEnumerable<IPathFigure> Figures { get; set; }
+        IUICollection<IPathFigure> Figures { get; }
 
         [DefaultValue(FillRule.EvenOdd)]
         FillRule FillRule { get; set; }

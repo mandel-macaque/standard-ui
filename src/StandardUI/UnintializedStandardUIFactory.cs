@@ -18,6 +18,8 @@ namespace Microsoft.StandardUI
 		public IVerticalStack CreateVerticalStack() => throw CreateInitNotCalledException ();
 		public IHorizontalStack CreateHorizontalStack() => throw CreateInitNotCalledException ();
 		public IGrid CreateGrid() => throw CreateInitNotCalledException();
+        public IRowDefinition CreateRowDefinition() => throw CreateInitNotCalledException();
+        public IColumnDefinition CreateColumnDefinition() => throw CreateInitNotCalledException();
         public IGridAttached GridAttachedInstance => throw CreateInitNotCalledException();
 
         public IEllipse CreateEllipse() => throw CreateInitNotCalledException();
@@ -46,12 +48,6 @@ namespace Microsoft.StandardUI
 
         public IPathGeometry CreatePathGeometry(ITransform? transform, IEnumerable<IPathFigure> figures, FillRule fillRule) => throw CreateInitNotCalledException();
         public IPathFigure CreatePathFigure(IEnumerable<IPathSegment> segments, Point startPoint, bool isClosed, bool isFilled) => throw CreateInitNotCalledException();
-
-        /*** Infrastructure objects ***/
-
-        public IUIPropertyMetadata CreatePropertyMetadata(object defaultValue) => throw CreateInitNotCalledException();
-        public IUIPropertyMetadata CreatePropertyMetadata(object defaultValue, UIPropertyChangedCallback propertyChangedCallback) => throw CreateInitNotCalledException();
-        public IUIProperty RegisterUIProperty(string name, Type propertyType, Type ownerType, IUIPropertyMetadata typeMetadata) => throw CreateInitNotCalledException();
 
         private Exception CreateInitNotCalledException() => new InvalidOperationException("StandardUIEnvironment.Init hasn't been called: " + Environment.StackTrace);
     }
