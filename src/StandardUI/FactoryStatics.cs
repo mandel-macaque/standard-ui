@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 
@@ -27,6 +27,7 @@ namespace Microsoft.StandardUI
         /*** Media objects ***/
 
         public static ISolidColorBrush SolidColorBrush() => Factory.CreateSolidColorBrush();
+        public static ISolidColorBrush SolidColorBrush(Color color) => Factory.CreateSolidColorBrush().Color(color);
         public static ILinearGradientBrush LinearGradientBrush() => Factory.CreateLinearGradientBrush();
         public static IRadialGradientBrush RadialGradientBrush() => Factory.CreateRadialGradientBrush();
 
