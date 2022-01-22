@@ -4,7 +4,7 @@ using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI
 {
-    public class Setter : UIObject, ISetter
+    public class Setter : StandardUIObject, ISetter
     {
         public static readonly DependencyProperty PropertyProperty = PropertyUtils.Register(nameof(Property), typeof(UIProperty), typeof(Setter), null);
         public static readonly DependencyProperty TargetProperty = PropertyUtils.Register(nameof(Target), typeof(TargetPropertyPath), typeof(Setter), null);

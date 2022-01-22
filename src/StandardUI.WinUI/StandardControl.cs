@@ -1,5 +1,6 @@
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.WinUI.NativeVisualEnvironment;
+using Microsoft.UI.Xaml;
 using System;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -34,7 +35,7 @@ namespace Microsoft.StandardUI.WinUI
             Arrange(finalRect.ToWindowsFoundationRect());
         }
 
-        IUIPropertyObject? IStandardControl.GetTemplateChild(string childName)
+        IUIObject? IStandardControl.GetTemplateChild(string childName)
         {
             throw new NotImplementedException();
         }
@@ -82,7 +83,7 @@ namespace Microsoft.StandardUI.WinUI
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.IsVisible
+        bool IUIElement.Visible
         {
 #pragma warning disable CA1033 // Interface methods should be callable by child types
             get => this.Visibility != Visibility.Collapsed;
@@ -90,21 +91,27 @@ namespace Microsoft.StandardUI.WinUI
 #pragma warning restore CA1033 // Interface methods should be callable by child types
         }
 
-        public object GetValue(IUIProperty dp)
+        public object? GetValue(IUIProperty dp)
         {
-            Microsoft.UI.Xaml.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
-            return GetValue(wpfDependencyProperty);
+            DependencyProperty dependencyProperty = ((UIProperty)dp).DependencyProperty;
+            return GetValue(dependencyProperty);
         }
 
-        public object ReadLocalValue(IUIProperty dp)
+        public object? ReadLocalValue(IUIProperty dp)
         {
-            Microsoft.UI.Xaml.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
-            return ReadLocalValue(wpfDependencyProperty);
+            DependencyProperty dependencyProperty = ((UIProperty)dp).DependencyProperty;
+            return ReadLocalValue(dependencyProperty);
         }
 
-        public void SetValue(IUIProperty dp, object value)
+        public void ClearValue(IUIProperty property)
         {
-            Microsoft.UI.Xaml.DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
+            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
+            ClearValue(dependencyProperty);
+        }
+
+        public void SetValue(IUIProperty dp, object? value)
+        {
+            DependencyProperty wpfDependencyProperty = ((UIProperty)dp).DependencyProperty;
             SetValue(wpfDependencyProperty, value);
         }
 

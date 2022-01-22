@@ -5,7 +5,7 @@ using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI.Controls
 {
-    public class ColumnDefinition : StandardUIDependencyObject, IColumnDefinition
+    public class ColumnDefinition : StandardUIObject, IColumnDefinition
     {
         public static readonly DependencyProperty WidthProperty = PropertyUtils.Register(nameof(Width), typeof(GridLength), typeof(ColumnDefinition), GridLength.Default);
         public static readonly DependencyProperty MinWidthProperty = PropertyUtils.Register(nameof(MinWidth), typeof(double), typeof(ColumnDefinition), 0.0);

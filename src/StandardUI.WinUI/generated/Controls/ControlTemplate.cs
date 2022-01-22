@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.WinUI.Controls
 {
-    public class ControlTemplate : StandardUIDependencyObject, IControlTemplate
+    public class ControlTemplate : IControlTemplate
     {
     }
 }

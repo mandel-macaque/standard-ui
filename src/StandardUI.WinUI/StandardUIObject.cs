@@ -5,8 +5,14 @@ namespace Microsoft.StandardUI.WinUI
     /// <summary>
     /// This is the base for predefined dependency objects
     /// </summary>
-    public class StandardUIDependencyObject : DependencyObject, IUIPropertyObject
+    public class StandardUIObject : DependencyObject, IUIObject
     {
+        public void ClearValue(IUIProperty property)
+        {
+            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
+            ClearValue(dependencyProperty);
+        }
+
         public object GetValue(IUIProperty property)
         {
             DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
@@ -19,7 +25,7 @@ namespace Microsoft.StandardUI.WinUI
             return ReadLocalValue(dependencyProperty);
         }
 
-        public void SetValue(IUIProperty property, object value)
+        public void SetValue(IUIProperty property, object? value)
         {
             DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
             SetValue(dependencyProperty, value);

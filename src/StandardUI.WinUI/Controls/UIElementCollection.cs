@@ -1,131 +1,192 @@
+using Microsoft.UI.Composition;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.WinUI
 {
-    public class UIElementCollection<TNativeUIElment, TStandardUIElement> : IList, IList<TNativeUIElment>
-        where TNativeUIElment : UIElement where TStandardUIElement : IUIElement
+    public sealed class UIElementCollection<TNativeUIElment, TStandardUIElement> : BasicUICollection<TNativeUIElment>
+        where TNativeUIElment : FrameworkElement where TStandardUIElement : IUIElement
     {
-        private Microsoft.UI.Xaml.Controls.UIElementCollection _collection;
+        private readonly FrameworkElement _parent;
+        private IUICollection<TStandardUIElement>? _standardUIElementCollection;
 
-        public UIElementCollection(Microsoft.UI.Xaml.FrameworkElement parent)
+        /// <summary>
+        ///     The colleciton is the children collection of the visualParent. The logicalParent 
+        ///     is used to do logical parenting. The flags is used to invalidate 
+        ///     the resource properties in the child tree, if an Application object exists. 
+        /// </summary>
+        /// <param name="visualParent">The element of whom this is a children collection</param>
+        /// <param name="logicalParent">The logicalParent of the elements of this collection. 
+        /// if overriding Panel.CreateUIElementCollection, pass the logicalParent parameter of that method here.
+        /// </param>
+        public UIElementCollection(FrameworkElement parent)
         {
-            // TODO: Figure out the best way to implement this
-            _collection = null; //  new Microsoft.UI.Xaml.Controls.UIElementCollection();
+            _parent = parent;
         }
 
-        public IUIElement this[int index]
-        {
-            get => (IUIElement)_collection[index];
-            set => _collection[index] = (Microsoft.UI.Xaml.UIElement)value;
-        }
+        public IUICollection<TStandardUIElement> ToStandardUIElementCollection() => throw new NotImplementedException();
 
-        T IList<T>.this[int index]
+#if LATER
+        public IUICollection<TStandardUIElement> ToStandardUIElementCollection()
         {
-            get
+            if (_standardUIElementCollection == null)
             {
-                throw new NotImplementedException();
+                _standardUIElementCollection = new StandardUIElementCollection(this);
             }
 
-            set
+            return _standardUIElementCollection;
+        }
+
+        /// <summary>
+        /// This class provides a Standard UI wrapper for the collection, implementing IUICollection<TStandardUIElement>,
+        /// allowing accessing the collection using Standard UI interfaces.
+        /// </summary>
+        public class StandardUIElementCollection : IUICollection<TStandardUIElement>
+        {
+            private readonly UIElementCollection<TNativeUIElment, TStandardUIElement> _nativeUIElementCollection;
+
+            public StandardUIElementCollection(UIElementCollection<TNativeUIElment, TStandardUIElement> nativeUIElementCollection)
             {
-                throw new NotImplementedException();
+                _nativeUIElementCollection = nativeUIElementCollection;
+            }
+
+            TStandardUIElement IList<TStandardUIElement>.this[int index]
+            {
+                get => ToStandardUIElement(_nativeUIElementCollection[index]);
+                set => _nativeUIElementCollection[index] = ToNativeUIElement(value);
+            }
+
+            public int Count => _nativeUIElementCollection.Count;
+
+            public bool IsReadOnly => false;
+
+            public void Add(TStandardUIElement item) => _nativeUIElementCollection.Add(ToNativeUIElement(item));
+
+            public void Clear() => _nativeUIElementCollection.Clear();
+
+            public bool Contains(TStandardUIElement item) => _nativeUIElementCollection.Contains(ToNativeUIElement(item));
+
+            public void CopyTo(TStandardUIElement[] array, int arrayIndex)
+            {
+                int count = _nativeUIElementCollection.Count;
+                for (int i = arrayIndex; i < count; i++)
+                {
+                    array[i] = ToStandardUIElement(_nativeUIElementCollection[i]);
+                }
+            }
+
+            public IEnumerator<TStandardUIElement> GetEnumerator() => new StandardUIEnumerator(_nativeUIElementCollection);
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+            public int IndexOf(TStandardUIElement item) => _nativeUIElementCollection.IndexOf(ToNativeUIElement(item));
+
+            public void Insert(int index, TStandardUIElement item) => _nativeUIElementCollection.Insert(index, ToNativeUIElement(item));
+
+            public bool Remove(TStandardUIElement item) => _nativeUIElementCollection.Remove(ToNativeUIElement(item));
+
+            public void RemoveAt(int index) => _nativeUIElementCollection.RemoveAt(index);
+
+            public void Set(params TStandardUIElement[] items)
+            {
+                // TODO: Potentially provide a more optimized implementation later
+                Clear();
+
+                int length = items.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    Add(items[i]);
+                }
+            }
+
+            internal static TNativeUIElment ToNativeUIElement(TStandardUIElement element)
+            {
+                if (element is TNativeUIElment nativeUIElement)
+                    return nativeUIElement;
+
+                if (element is NativeUIElement wrappedNativeUIElement)
+                {
+                    FrameworkElement frameworkElement = wrappedNativeUIElement.FrameworkElement;
+                    if (frameworkElement is TNativeUIElment frameworkElementOfNeededType)
+                        return frameworkElementOfNeededType;
+                }
+
+                throw new InvalidOperationException($"UIElement is of unexpected type '{element.GetType()}' and can't be converted to a native WPF UIElement");
+            }
+
+            internal static TStandardUIElement ToStandardUIElement(TNativeUIElment element)
+            {
+                if (element is TStandardUIElement standardUIElement)
+                    return standardUIElement;
+
+                if (element is FrameworkElement frameworkElement)
+                {
+                    var wrappedNativeUIElement = new NativeUIElement(frameworkElement);
+                    if (wrappedNativeUIElement is TStandardUIElement standardUIElementOfNeededType)
+                        return standardUIElementOfNeededType;
+                }
+
+                throw new InvalidOperationException($"UIElement is of unexpected type '{element.GetType()}' and can't be converted to a StandardUI interface");
             }
         }
 
-        public int Count => _collection.Count;
-
-        public bool IsReadOnly => false;
-
-        public void Add(IUIElement item)
+        public struct NativeUIEnumerator : IEnumerator<TNativeUIElment>
         {
-            _collection.Add((Microsoft.UI.Xaml.UIElement) item);
-        }
+            private VisualCollection.Enumerator _visualCollectionEnumerator;
 
-        public void Clear() => _collection.Clear();
-
-        public bool Contains(IUIElement item) => _collection.Contains((Microsoft.UI.Xaml.UIElement)item);
-
-        public void CopyTo(IUIElement[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<IUIElement> GetEnumerator() => new Enumerator(_collection.GetEnumerator());
-
-        public int IndexOf(IUIElement item) => _collection.IndexOf((Microsoft.UI.Xaml.UIElement)item);
-
-        public void Insert(int index, IUIElement item) => _collection.Insert(index, (Microsoft.UI.Xaml.UIElement)item);
-
-        public bool Remove(IUIElement item)
-        {
-            int index = _collection.IndexOf((Microsoft.UI.Xaml.UIElement)item);
-            if (index == -1)
-                return false;
-            _collection.RemoveAt(index);
-            return true;
-        }
-
-        public void RemoveAt(int index) => _collection.RemoveAt(index);
-
-        void ICollection<T>.Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICollection<T>.Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => _collection.GetEnumerator();
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IList<T>.IndexOf(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList<T>.Insert(int index, T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICollection<T>.Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        private class Enumerator : IEnumerator<IUIElement>
-        {
-            private IEnumerator _enumerator;
-
-            public Enumerator(IEnumerator enumerator)
+            public NativeUIEnumerator(UIElementCollection<TNativeUIElment, TStandardUIElement> nativeUIElementCollection)
             {
-                _enumerator = enumerator;
+                _visualCollectionEnumerator = nativeUIElementCollection.VisualCollection.GetEnumerator();
             }
 
-#pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
-            public IUIElement? Current => (IUIElement?)_enumerator.Current;
-#pragma warning restore CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
+            /// <summary>
+            /// Advances the enumerator to the next element of the collection.
+            /// </summary>
+            public bool MoveNext() => _visualCollectionEnumerator.MoveNext();
 
-            object? IEnumerator.Current => _enumerator.Current;
+            public TNativeUIElment Current => (TNativeUIElment)_visualCollectionEnumerator.Current!;
 
-            public void Dispose() { }
+            object? IEnumerator.Current => Current;
 
-            public bool MoveNext() => _enumerator.MoveNext();
+            /// <summary>
+            /// Sets the enumerator to its initial position, which is before the first element in the collection.
+            /// </summary>
+            public void Reset() => _visualCollectionEnumerator.Reset();
 
-            public void Reset() => _enumerator.Reset();
+            public void Dispose()
+            {
+            }
         }
+
+        public struct StandardUIEnumerator : IEnumerator<TStandardUIElement>
+        {
+            private IEnumerator _visualCollectionEnumerator;
+
+            public StandardUIEnumerator(UIElementCollection<TNativeUIElment, TStandardUIElement> nativeUIElementCollection)
+            {
+                _visualCollectionEnumerator = nativeUIElementCollection.VisualCollection.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Advances the enumerator to the next element of the collection.
+            /// </summary>
+            public bool MoveNext() => _visualCollectionEnumerator.MoveNext();
+
+            public TStandardUIElement Current => StandardUIElementCollection.ToStandardUIElement((TNativeUIElment)_visualCollectionEnumerator.Current!);
+
+            object? IEnumerator.Current => Current;
+
+            /// <summary>
+            /// Sets the enumerator to its initial position, which is before the first element in the collection.
+            /// </summary>
+            public void Reset() => _visualCollectionEnumerator.Reset();
+
+            public void Dispose()
+            {
+            }
+        }
+#endif
     }
 }

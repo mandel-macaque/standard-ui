@@ -4,7 +4,7 @@ using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.WinUI.Media
 {
-    public class PathSegment : StandardUIDependencyObject, IPathSegment
+    public class PathSegment : StandardUIObject, IPathSegment
     {
     }
 }

@@ -47,7 +47,7 @@ namespace Microsoft.StandardUI.WinUI
         }
 
         // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.IsVisible
+        bool IUIElement.Visible
         {
 #pragma warning disable CA1033 // Interface methods should be callable by child types
             get => Visibility != Visibility.Collapsed;
@@ -95,6 +95,12 @@ namespace Microsoft.StandardUI.WinUI
 
         public virtual void Draw(IDrawingContext visualizer)
         {
+        }
+
+        public void ClearValue(IUIProperty property)
+        {
+            DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
+            ClearValue(dependencyProperty);
         }
 
         public object GetValue(IUIProperty property)

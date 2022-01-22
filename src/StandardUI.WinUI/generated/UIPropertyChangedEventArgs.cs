@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.WinUI
 {
-    public class UIPropertyChangedEventArgs : StandardUIDependencyObject, IUIPropertyChangedEventArgs
+    public class UIPropertyChangedEventArgs : IUIPropertyChangedEventArgs
     {
     }
 }

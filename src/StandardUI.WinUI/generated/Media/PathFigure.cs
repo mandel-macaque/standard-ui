@@ -1,23 +1,27 @@
 // This file is generated from IPathFigure.cs. Update the source file to change its contents.
 
-using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
 using DependencyProperty = Microsoft.UI.Xaml.DependencyProperty;
 
 namespace Microsoft.StandardUI.WinUI.Media
 {
-    public class PathFigure : StandardUIDependencyObject, IPathFigure
+    public class PathFigure : StandardUIObject, IPathFigure
     {
-        public static readonly DependencyProperty SegmentsProperty = PropertyUtils.Register(nameof(Segments), typeof(IEnumerable<IPathSegment>), typeof(PathFigure), null);
+        public static readonly DependencyProperty SegmentsProperty = PropertyUtils.Register(nameof(Segments), typeof(UICollection<IPathSegment>), typeof(PathFigure), null);
         public static readonly DependencyProperty StartPointProperty = PropertyUtils.Register(nameof(StartPoint), typeof(PointWinUI), typeof(PathFigure), PointWinUI.Default);
         public static readonly DependencyProperty IsClosedProperty = PropertyUtils.Register(nameof(IsClosed), typeof(bool), typeof(PathFigure), false);
         public static readonly DependencyProperty IsFilledProperty = PropertyUtils.Register(nameof(IsFilled), typeof(bool), typeof(PathFigure), true);
         
-        public IEnumerable<IPathSegment> Segments
+        private UICollection<IPathSegment> _segments;
+        
+        public PathFigure()
         {
-            get => (IEnumerable<IPathSegment>) GetValue(SegmentsProperty);
-            set => SetValue(SegmentsProperty, value);
+            _segments = new UICollection<IPathSegment>(this);
+            SetValue(SegmentsProperty, _segments);
         }
+        
+        public UICollection<IPathSegment> Segments => _segments;
+        IUICollection<IPathSegment> IPathFigure.Segments => Segments;
         
         public PointWinUI StartPoint
         {

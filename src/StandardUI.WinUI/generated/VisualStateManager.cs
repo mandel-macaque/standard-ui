@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.WinUI
 {
-    public class VisualStateManager : StandardUIDependencyObject, IVisualStateManager
+    public class VisualStateManager : IVisualStateManager
     {
     }
 }
