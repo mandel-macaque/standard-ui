@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -93,7 +93,6 @@ namespace Microsoft.StandardUI
                 {
                     ThrowArgumentOutOfRange_IndexException();
                 }
-
 
                 OnItemRemoved(_items[index]);
                 _items[index] = value;
