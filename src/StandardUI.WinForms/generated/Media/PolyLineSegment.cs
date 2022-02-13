@@ -1,0 +1,17 @@
+// This file is generated from IPolyLineSegment.cs. Update the source file to change its contents.
+
+using Microsoft.StandardUI.Media;
+
+namespace Microsoft.StandardUI.WinForms.Media
+{
+    public class PolyLineSegment : PathSegment, IPolyLineSegment
+    {
+        public static readonly UIProperty PointsProperty = new UIProperty(nameof(Points), Points.Default);
+        
+        public Points Points
+        {
+            get => (Points) GetValue(PointsProperty);
+            set => SetValue(PointsProperty, value);
+        }
+    }
+}
