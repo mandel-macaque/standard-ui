@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
@@ -16,7 +16,7 @@ namespace Microsoft.StandardUI.Wpf
     /// </remarks>
     /// <seealso cref="System.Windows.Media.VisualCollection" />
     public sealed class UIElementCollection<TNativeUIElment, TStandardUIElement> : IList, IList<TNativeUIElment>
-        where TNativeUIElment : UIElement where TStandardUIElement : IUIElement
+        where TNativeUIElment : FrameworkElement where TStandardUIElement : IUIElement
     {
         private readonly VisualCollection _visualChildren;
         private readonly FrameworkElement _visualParent;
