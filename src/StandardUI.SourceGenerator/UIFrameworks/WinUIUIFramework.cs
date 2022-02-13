@@ -12,7 +12,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string DependencyPropertyType => "DependencyProperty";
         public override string FrameworkTypeForUIElementAttachedTarget => "Microsoft.UI.Xaml.FrameworkElement";
         public override string NativeUIElementType => "Microsoft.UI.Xaml.FrameworkElement";
-        public override string BuiltInUIElementBaseClassName => "BuiltInUIElement";
         public override string WrapperSuffix => "WinUI";
         protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";
 

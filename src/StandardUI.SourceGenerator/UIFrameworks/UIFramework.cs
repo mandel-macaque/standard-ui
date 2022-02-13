@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -19,7 +19,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string NativeUIElementType { get; }
-        public virtual string BuiltInUIElementBaseClassName => "StandardUIElement";
+        public virtual string BuiltInUIElementBaseClassName => "BuiltInUIElement";
         public virtual string BuiltInUIObjectBaseClassName => "StandardUIObject";
 
         public virtual string PropertyDescriptorName(Property property) => property.Name + "Property";

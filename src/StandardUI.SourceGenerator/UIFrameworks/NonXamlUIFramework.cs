@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis;
-
 namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public abstract class NonXamlUIFramework : UIFramework
@@ -154,10 +152,10 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
             string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
 
-            methods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) {attachedProperty.TargetParameterName}.GetValue({descriptorName});");
+            methods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) AttachedPropertiesValues.GetValue({attachedProperty.TargetParameterName}, {descriptorName});");
 
             if (attachedProperty.SetterMethod != null)
-                methods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.TargetParameterName}.SetValue({descriptorName}, value);");
+                methods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => AttachedPropertiesValues.SetValue({attachedProperty.TargetParameterName}, {descriptorName}, value);");
 
 #if LATER
             //if (!includeXmlComment)

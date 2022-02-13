@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -103,7 +103,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 var intface = new Interface(context, interfaceType);
                 intface.Generate(wpfUIFramework);
                 //intface.Generate(winUIUIFramework);
-                //intface.Generate(winFormsUIFramework);
+                intface.Generate(winFormsUIFramework);
                 intface.Generate(macUIUIFramework);
                 intface.GenerateExtensionsClass();
             }
