@@ -1,12 +1,12 @@
 namespace Microsoft.StandardUI
 {
-    public class BasicUIProperty : IUIProperty
+    public class UIProperty : IUIProperty
     {
         private string _name;
         private object? _defaultValue;
         private bool _readOnly;
 
-        public BasicUIProperty(string name, object? defaultValue, bool readOnly = false)
+        public UIProperty(string name, object? defaultValue, bool readOnly = false)
         {
             this._name = name;
             this._defaultValue = defaultValue;
