@@ -6,7 +6,7 @@ namespace Microsoft.StandardUI.WinForms
     /// <summary>
     /// This is the base for predefined Standard UI controls. 
     /// </summary>
-    public class StandardUIControl : Control, IUIElement
+    public class BuiltInUIElement : Control, IUIElement
     {
         public double MinWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public double MaxWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
