@@ -8,7 +8,7 @@ using System.Windows.Media;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;
 
-namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
+namespace Microsoft.StandardUI.Wpf.NativeVisualFramework
 {
     public class WpfNativeDrawingContext : IDrawingContext
     {

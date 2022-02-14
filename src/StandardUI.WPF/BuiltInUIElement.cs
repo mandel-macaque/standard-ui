@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -59,12 +59,12 @@ namespace Microsoft.StandardUI.Wpf
             if (Visibility != Visibility.Visible)
                 return;
 
-            IVisualEnvironment visualEnvironment = StandardUIEnvironment.VisualEnvironment;
+            IVisualFramework visualFramework = HostEnvironment.VisualFramework;
 
             Rect cullingRect = new Rect(0, 0, 200, 200);
 
             IVisual? visual;
-            using (IDrawingContext drawingContext = visualEnvironment.CreateDrawingContext(this)) {
+            using (IDrawingContext drawingContext = visualFramework.CreateDrawingContext(this)) {
                 Draw(drawingContext);
                 visual = drawingContext.Close();
             }

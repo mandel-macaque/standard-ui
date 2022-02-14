@@ -6,7 +6,7 @@ namespace Microsoft.StandardUI.Controls
 {
     public static class CanvasExtensions
     {
-        private static readonly Lazy<ICanvasAttached> s_CanvasAttached = new Lazy<ICanvasAttached>(() => StandardUIEnvironment.Instance.Factory.CanvasAttachedInstance);
+        private static readonly Lazy<ICanvasAttached> s_CanvasAttached = new Lazy<ICanvasAttached>(() => HostEnvironment.Factory.CanvasAttachedInstance);
         public static ICanvasAttached CanvasAttachedInstance => s_CanvasAttached.Value;
         
         // Attached properties

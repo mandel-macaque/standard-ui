@@ -59,8 +59,8 @@ namespace Microsoft.StandardUI.WinUI
                 // draw on the bitmap
                 _bitmap.Lock();
 
-                IVisualEnvironment visualEnvironment = StandardUIEnvironment.VisualEnvironment;
-                visualEnvironment.RenderToBuffer(visual, _bitmap.BackBuffer, widthInPixels, heightInPixels, _bitmap.BackBufferStride);
+                IVisualFramework visualFramework = HostEnvironment.VisualFramework;
+                visualFramework.RenderToBuffer(visual, _bitmap.BackBuffer, widthInPixels, heightInPixels, _bitmap.BackBufferStride);
 
                 _bitmap.AddDirtyRect(new Int32Rect(0, 0, widthInPixels, heightInPixels));
                 _bitmap.Unlock();

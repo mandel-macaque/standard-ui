@@ -3,7 +3,7 @@ using System.Windows;
 namespace Microsoft.StandardUI.Wpf
 {
     /// <summary>
-    /// This is the base for predefined dependency objects;
+    /// This is the base for predefined dependency objects
     /// </summary>
     public class StandardUIObject : DependencyObject, IUIObject
     {

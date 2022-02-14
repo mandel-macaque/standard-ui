@@ -1,5 +1,5 @@
 using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.WinUI.NativeVisualEnvironment;
+using Microsoft.StandardUI.WinUI.NativeVisualFramework;
 using Microsoft.UI.Xaml;
 using System;
 using Visibility = Microsoft.UI.Xaml.Visibility;
@@ -14,9 +14,9 @@ namespace Microsoft.StandardUI.WinUI
 
         public StandardControl()
         {
-            if (!StandardUIEnvironment.IsInitialized)
+            if (!HostEnvironment.IsInitialized)
             {
-                WinUIStandardUIEnvironment.Init(new WinUINativeVisualEnvironment());
+                WinUIHostFramework.Init(new WinUINativeVisualFramework());
             }
         }
 

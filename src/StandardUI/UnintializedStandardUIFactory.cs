@@ -1,4 +1,4 @@
-﻿using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Media;
 using System;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Shapes;
@@ -49,6 +49,6 @@ namespace Microsoft.StandardUI
         public IPathGeometry CreatePathGeometry(ITransform? transform, IEnumerable<IPathFigure> figures, FillRule fillRule) => throw CreateInitNotCalledException();
         public IPathFigure CreatePathFigure(IEnumerable<IPathSegment> segments, Point startPoint, bool isClosed, bool isFilled) => throw CreateInitNotCalledException();
 
-        private Exception CreateInitNotCalledException() => new InvalidOperationException("StandardUIEnvironment.Init hasn't been called: " + Environment.StackTrace);
+        private Exception CreateInitNotCalledException() => new InvalidOperationException("The Standard UI host framework hasn't been initialized: " + Environment.StackTrace);
     }
 }

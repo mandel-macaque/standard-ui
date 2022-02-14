@@ -4,9 +4,9 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.WinUI.Text;
 
-namespace Microsoft.StandardUI.WinUI.NativeVisualEnvironment
+namespace Microsoft.StandardUI.WinUI.NativeVisualFramework
 {
-    public class WinUINativeVisualEnvironment : IVisualEnvironment
+    public class WinUINativeVisualFramework : IVisualFramework
     {
         public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new WinUINativeDrawingContext(uiElement);
 

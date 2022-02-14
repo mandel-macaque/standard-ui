@@ -4,9 +4,9 @@ using System.Windows.Media;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Wpf.Text;
 
-namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
+namespace Microsoft.StandardUI.Wpf.NativeVisualFramework
 {
-    public class WpfNativeVisualEnvironment : IVisualEnvironment
+    public class WpfNativeVisualFramework : IVisualFramework
     {
         public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new WpfNativeDrawingContext();
 

@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.StandardUI.SkiaVisualizer
 {
-    public class SkiaVisualEnvironment : IVisualEnvironment
+    public class SkiaVisualFramework : IVisualFramework
     {
         public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new SkiaDrawingContext();
 

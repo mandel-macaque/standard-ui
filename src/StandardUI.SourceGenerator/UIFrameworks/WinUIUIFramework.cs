@@ -60,7 +60,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 using (methods.Indent())
                 {
                     methods.AddLine(
-                        $"StandardUIEnvironment.Instance.VisualEnvironment.MeasureTextBlock(this).ToWindowsFoundationSize();");
+                        $"HostEnvironment.VisualFramework.MeasureTextBlock(this).ToWindowsFoundationSize();");
                 }
             }
         }

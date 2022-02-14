@@ -18,7 +18,7 @@ namespace Microsoft.StandardUI
     /// For best performance, IVisuals can be composited together when possible to minimize the
     /// number of host controls. An IVisual can also be rendered to a bitmap with RenderToBuffer.
     /// </summary>
-    public interface IVisualEnvironment
+    public interface IVisualFramework
     {
         IDrawingContext CreateDrawingContext(IUIElement uiElement);
 

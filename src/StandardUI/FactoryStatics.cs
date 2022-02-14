@@ -35,6 +35,6 @@ namespace Microsoft.StandardUI
 
         public static GridLength Star => GridLength.Default;
 
-        internal static IStandardUIFactory Factory => StandardUIEnvironment.Factory;
+        internal static IStandardUIFactory Factory => HostEnvironment.Factory;
     }
 }

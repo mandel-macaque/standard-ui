@@ -6,7 +6,7 @@ namespace Microsoft.StandardUI.Controls
 {
     public static class GridExtensions
     {
-        private static readonly Lazy<IGridAttached> s_GridAttached = new Lazy<IGridAttached>(() => StandardUIEnvironment.Instance.Factory.GridAttachedInstance);
+        private static readonly Lazy<IGridAttached> s_GridAttached = new Lazy<IGridAttached>(() => HostEnvironment.Factory.GridAttachedInstance);
         public static IGridAttached GridAttachedInstance => s_GridAttached.Value;
         
         public static T ColumnSpacing<T>(this T grid, double value) where T : IGrid

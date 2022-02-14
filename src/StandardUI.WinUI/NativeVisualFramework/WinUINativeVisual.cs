@@ -1,6 +1,6 @@
 using Microsoft.UI.Composition;
 
-namespace Microsoft.StandardUI.WinUI.NativeVisualEnvironment
+namespace Microsoft.StandardUI.WinUI.NativeVisualFramework
 {
     public class WinUINativeVisual : IVisual
     {

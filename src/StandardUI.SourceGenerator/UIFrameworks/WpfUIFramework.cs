@@ -58,7 +58,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 using (methods.Indent())
                 {
                     methods.AddLine(
-                        $"StandardUIEnvironment.Instance.VisualEnvironment.MeasureTextBlock(this).ToWpfSize();");
+                        $"HostEnvironment.VisualFramework.MeasureTextBlock(this).ToWpfSize();");
                 }
             }
         }

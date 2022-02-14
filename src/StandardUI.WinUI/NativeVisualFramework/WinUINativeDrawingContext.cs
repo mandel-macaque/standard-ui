@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Hosting;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;
 
-namespace Microsoft.StandardUI.WinUI.NativeVisualEnvironment
+namespace Microsoft.StandardUI.WinUI.NativeVisualFramework
 {
     public class WinUINativeDrawingContext : IDrawingContext
     {

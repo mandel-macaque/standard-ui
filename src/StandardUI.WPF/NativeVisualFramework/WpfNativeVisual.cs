@@ -1,6 +1,6 @@
-﻿using System.Windows.Media;
+using System.Windows.Media;
 
-namespace Microsoft.StandardUI.Wpf.NativeVisualEnvironment
+namespace Microsoft.StandardUI.Wpf.NativeVisualFramework
 {
     public class WpfNativeVisual : IVisual
     {
