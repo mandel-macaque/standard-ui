@@ -49,7 +49,9 @@ This project is an evolution of my [XGraphics](https://github.com/BretJohnson/XG
 # Documentation
 
 Doc is a work in progress. The latest doc is here:
-[API Reference doc](https://review.docs.microsoft.com/en-us/dotnet/api/microsoft.standardui?view=dotnet-standard-ui&branch=pr-en-us-4)
+
+[Reference (API) doc](https://review.docs.microsoft.com/en-us/dotnet/api/microsoft.standardui?view=dotnet-standard-ui&branch=pr-en-us-4)
+
 [Conceptual doc](https://review.docs.microsoft.com/en-us/dotnet/standard-ui/?branch=main)
 
 ### Control hierarchy
