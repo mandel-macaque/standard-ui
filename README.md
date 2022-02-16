@@ -24,6 +24,13 @@ For the most part they don't share code. The naming differences are annoying. Th
 a single unified XAML object model for everything (not yet in any case), but it's a significant step in that direction.
 As the standard is based on WPF/UWP/WinUI, it means that it isn't a big leap to take an existing WPF/UWP/WinUI control definition (something like [this](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/controls/button-styles-and-templates?view=netframeworkdesktop-4.8) for instance, contructed out of shape primitives, visual states, and storyboards) and make it a cross platform control.
 
+# Documentation
+
+Doc is a work in progress; the latest is here:
+
+API reference doc: https://review.docs.microsoft.com/en-us/dotnet/api/microsoft.standardui?view=dotnet-standard-ui&branch=smoke-test
+
+
 # Architecture and APIs
 
 The API is interface based. For instance, an ellipse is `Microsoft.StandardUI.Shapes.IEllipse`. Users of the API always use the interface.
@@ -39,7 +46,11 @@ The API interfaces are all defined [here](src/StandardUI). Implementations for t
 
 This project is an evolution of my [XGraphics](https://github.com/BretJohnson/XGraphics) project, taking it beyond just shapes.
 
-# Current APIs
+# Documentation
+
+Doc is a work in progress. The latest doc is here:
+[API Reference doc](https://review.docs.microsoft.com/en-us/dotnet/api/microsoft.standardui?view=dotnet-standard-ui&branch=pr-en-us-4)
+[Conceptual doc](https://review.docs.microsoft.com/en-us/dotnet/standard-ui/?branch=main)
 
 ### Control hierarchy
 
