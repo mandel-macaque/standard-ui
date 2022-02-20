@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.Wpf", "src\Stand
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9B71283D-A4A6-480E-9A9B-AD446F08CCC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.VisualEnvironment.Skia", "src\StandardUI.VisualEnvironment.Skia\StandardUI.VisualEnvironment.Skia.csproj", "{7B85BF7F-1265-4A34-9865-A371FB3D71F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SkiaVisualFramework", "src\StandardUI.SkiaVisualFramework\StandardUI.SkiaVisualFramework.csproj", "{7B85BF7F-1265-4A34-9865-A371FB3D71F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleControls", "samples\SimpleControls\SimpleControls.csproj", "{2A1EDFC0-2865-4DC8-A232-6D2CCB7FA7E2}"
 EndProject

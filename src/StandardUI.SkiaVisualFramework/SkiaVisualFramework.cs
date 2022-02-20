@@ -2,7 +2,7 @@ using Microsoft.StandardUI.Controls;
 using SkiaSharp;
 using System;
 
-namespace Microsoft.StandardUI.SkiaVisualizer
+namespace Microsoft.StandardUI.SkiaVisualFramework
 {
     public class SkiaVisualFramework : IVisualFramework
     {

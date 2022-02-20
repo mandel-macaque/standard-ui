@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.StandardUI.Controls;
 
-namespace Microsoft.StandardUI.SkiaVisualizer
+namespace Microsoft.StandardUI.SkiaVisualFramework
 {
     public class SkiaDrawingContext : IDrawingContext
     {
