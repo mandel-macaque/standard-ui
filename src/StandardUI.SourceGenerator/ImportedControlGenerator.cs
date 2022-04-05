@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -84,9 +86,26 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
             }
         }
 
-        private static void GenerateSourceFile(GeneratorExecutionContext context, string interfaceFullTypeName)
+        private static UIFramework GetUIFramework(Compilation compilation, Context context)
         {
-            INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
+            foreach (AssemblyIdentity referencedAssembly in compilation.ReferencedAssemblyNames)
+            {
+                string displayName = referencedAssembly.GetDisplayName();
+
+                if (displayName == "StandardUI.Wpf")
+                    return new WpfUIFramework(context);
+                else if (displayName == "StandardUI.WinForms")
+                    return new WinFormsUIFramework(context);
+            }
+            
+            throw new InvalidOperationException("Could not identify UI framework type; add reference to the platform's StandardUI assembly to specify");
+        }
+
+        private static void GenerateSourceFile(GeneratorExecutionContext generatorExecutionContext, string interfaceFullTypeName)
+        {
+            Compilation compilation = generatorExecutionContext.Compilation;
+
+            INamedTypeSymbol? interfaceSymbol = compilation.GetTypeByMetadataName(interfaceFullTypeName);
             if (interfaceSymbol == null)
             {
                 return;
@@ -97,13 +116,13 @@ internal sealed class ImportStandardControlAttribute : System.Attribute
                 return;
             }
 
-            if (interfaceFullTypeName == "Microcharts.IChart")
-            {
-                // For now, hack the IChart case
-                GenerateChartSourceFile(context);
-                return;
-            }
-            
+            Context context = new Context(compilation, new GeneratorExecutionOutput(generatorExecutionContext));
+            UIFramework uiFramework = GetUIFramework(compilation, context);
+
+            var intface = new Interface(context, interfaceSymbol);
+            intface.Generate(uiFramework);
+
+#if false
             string baseTypeName = GetBaseInterface(interfaceSymbol).Name;
             string controlBaseTypeName = baseTypeName == "IStandardControl" ? "StandardControl" : baseTypeName.Substring(1);
 
@@ -130,7 +149,8 @@ namespace {interfaceNamespace}.Wpf
 }}");
 
             // Create the file
-            context.AddSource(controlTypeName, sourceCode.ToString());
+            generatorExecutionContext.AddSource(controlTypeName, sourceCode.ToString());
+#endif
         }
 
         private static void GenerateChartSourceFile(GeneratorExecutionContext context)

@@ -49,15 +49,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             else return RootNamespace + "." + childNamespaceName;
         }
 
-        public string GetOutputDirectory(string? childNamespaceName)
-        {
-            string outputDirectory = Path.Combine(Context.RootDirectory, "src", ProjectBaseDirectory, "generated");
-            if (childNamespaceName != null)
-                outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
-
-            return outputDirectory;
-        }
-
         public string OutputTypeName(ITypeSymbol type)
         {
             string typeName = type.Name;

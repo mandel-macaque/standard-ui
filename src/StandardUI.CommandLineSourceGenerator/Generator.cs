@@ -89,7 +89,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 
-            Context context = new Context(compilation, rootDirectory);
+            Context context = new Context(compilation, new DirectoryOutput(rootDirectory));
 
             var wpfUIFramework = new WpfUIFramework(context);
             var winUIUIFramework = new WinUIUIFramework(context);

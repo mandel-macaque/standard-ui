@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -188,8 +188,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             Source? constructor = GenerateConstructor(uiFramework, properties);
 
-            string frameworkOutputDirectory = uiFramework.GetOutputDirectory(ChildNamespaceName);
-
             string mainClassDerviedFrom;
             if (destinationBaseClass == null)
                 mainClassDerviedFrom = Name;
@@ -199,7 +197,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
-            mainClassSource.WriteToFile(frameworkOutputDirectory, FrameworkClassName + ".cs");
+            Context.Output.AddSource(uiFramework, ChildNamespaceName, FrameworkClassName, mainClassSource);
 
             if (AttachedType != null)
             {
@@ -210,7 +208,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 Source attachedClassSource = GenerateClassFile(usings, frameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
-                attachedClassSource.WriteToFile(frameworkOutputDirectory, attachedClassName + ".cs");
+                Context.Output.AddSource(uiFramework, ChildNamespaceName, attachedClassName, attachedClassSource);
             }
         }
 
@@ -237,7 +235,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 usings.AddNamespace("System");
 
                 staticFields.AddLines(
-                    $"private static readonly Lazy<{AttachedType.Name}> s_{attachedClassName} = new Lazy<{AttachedType.Name}>(() => StandardUIEnvironment.Instance.Factory.{attachedClassName}Instance);",
+                    $"private static readonly Lazy<{AttachedType.Name}> s_{attachedClassName} = new Lazy<{AttachedType.Name}>(() => HostEnvironment.Factory.{attachedClassName}Instance);",
                     $"public static {AttachedType.Name} {attachedClassName}Instance => s_{attachedClassName}.Value;");
 
                 methods.AddBlankLineIfNonempty();
@@ -272,7 +270,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             {
                 string extensionsClassName = FrameworkClassName + "Extensions";
                 Source extensionsClassSource = GenerateStaticClassFile(usings, NamespaceName, extensionsClassName, methods, staticFields);
-                extensionsClassSource.WriteToFile(Context.GetSharedOutputDirectory(ChildNamespaceName), extensionsClassName + ".cs");
+                Context.Output.AddSource(null, ChildNamespaceName, extensionsClassName, extensionsClassSource);
             }
         }
 

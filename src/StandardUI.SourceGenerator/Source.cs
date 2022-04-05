@@ -1,4 +1,3 @@
-﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,12 +85,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 			}
 		}
 
-        public void Write(StreamWriter stream)
-        {
-            foreach (SourceLine line in _lines)
-                line.Write(stream, LineEnding);
-        }
-
         public void WriteToFile(string directory, string fileName)
 		{
             Directory.CreateDirectory(directory);
@@ -99,6 +92,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             string destinationFilePath = Path.Combine(directory, fileName);
             using (StreamWriter stream = File.CreateText(destinationFilePath))
                 Write(stream);
+        }
+
+        public void Write(StreamWriter stream)
+        {
+            foreach (SourceLine line in _lines)
+                line.Write(stream, LineEnding);
         }
 
         public class IndentRestorer : IDisposable
