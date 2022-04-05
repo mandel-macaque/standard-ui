@@ -1,7 +1,7 @@
-﻿using Microcharts;
+using Microcharts;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Wpf;
-using Microsoft.StandardUI.Wpf.NativeVisualEnvironment;
+using Microsoft.StandardUI.Wpf.NativeVisualFramework;
 using System.Windows;
 
 namespace WpfHost
@@ -13,7 +13,7 @@ namespace WpfHost
     {
         public MainWindow()
         {
-            WpfStandardUIEnvironment.Init(new WpfNativeVisualEnvironment());
+            WpfHostFramework.Init(new WpfNativeVisualFramework());
             InitializeComponent();
 
             MyBarChart.Entries = CreateChartEntries();

@@ -1,4 +1,5 @@
 using System.Windows;
+using Microsoft.StandardUI;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
