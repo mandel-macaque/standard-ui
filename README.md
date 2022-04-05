@@ -33,8 +33,6 @@ generator that turns the Standard Control into a WPF native control, functioning
     define control styles, etc. It works like any other WPF native control, because it is. But because it's a
 standard control, it can also be used in WinForms, MAUI, and other frameworks, acting like native controls there too.
 
-# Value Propositions
-
 .NET Standard Controls aims to help solve these problems:
 
 **Grow the .NET UI control ecosystem** - Writing a single control that can target several UI
@@ -47,6 +45,7 @@ For the most part they don't share code. The naming differences are annoying.
 This project is similar in some ways to [XAML Standard](https://github.com/microsoft/xaml-standard), but this is a binary standard, not just aligned naming conventions. A binary standard is much more useful, at it allows writing shared code.
 As the standard is based on WPF/UWP/WinUI, it means that it isn't a big leap to take an existing WPF/UWP/WinUI control definition (something like [this](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/controls/button-styles-and-templates?view=netframeworkdesktop-4.8) for instance, contructed out of shape primitives, visual states, and storyboards) and make it a cross platform control.
 
+
 # Documentation
 
 Doc is a work in progress. The latest doc is here (though currently only accessible by Microsoft internals, unfortunately):
@@ -55,6 +54,29 @@ Doc is a work in progress. The latest doc is here (though currently only accessi
 
 [Conceptual doc](https://review.docs.microsoft.com/en-us/dotnet/standard-ui/?branch=main)
 
+# FAQ
+
+**How is this different than other embedding approaches, like XAML islands?**
+
+Standard Controls interoperate much more seamlessly with the host platform - they act like native controls because they are (thanks to source generation). XAML based host platforms, like WPF and MAUI, can set Standard Control properties in XAML and use bindings and styles to set properties, just like normal controls. VS tools like the (design time) property editor and (runtime) live property explorer all
+work, same as native controls.
+
+Importantly, Standard Controls embrace **composability** - native UI can contain (compose) Standard Controls and Standard Controls can
+contain (compose) native UI - you can mix and match in the visual tree. For example, a button Standard Control can have a Content property
+for the content of the button, drawn inside the button border. When the control is used in WPF XAML, the Content property XAML can
+use native WPF controls, just like a normal WPF button.
+
+**What about layout - controls that just position other controls?**
+
+Another advantage of composability is that this tech enables standardized layout controls. The built in `StackPanel` and `Grid`
+standard controls - and their more modern and concise `HorizontalStack`/`VerticalStack` and `HorizontalGrid`/`VerticalGrid` can be used in
+any host framework. No more different StackLayout vs StackPanel differences between MAUI and WPF/WinUI - now you can use the same
+layout controls everywhere, with the same modern conveniences making for more concise XAML.
+
+**How does .NET Standard Controls related to .NET MAUI - does it compete?**
+
+No, it complements .NET MAUI. MAUI is a full blown app framework, for building apps. Standard Controls is for building
+controls that can work across many frameworks, including MAUI.
 
 # Architecture and APIs
 
