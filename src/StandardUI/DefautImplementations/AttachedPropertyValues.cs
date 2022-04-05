@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI.DefaultImplementations
 {
     public class AttachedPropertyValues
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI.DefaultImplementations
 {
     public struct PropertyValues
     {

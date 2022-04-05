@@ -8,6 +8,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public override void GeneratePropertyDescriptor(Property property, Source staticMembers)
         {
+            // Add using for UIProperty
+            staticMembers.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
+
             string readOnlyParam = property.IsReadOnly ? ", readOnly:true" : "";
             staticMembers.AddLine(
                 $"public static readonly UIProperty {PropertyDescriptorName(property)} = new UIProperty(nameof({property.Name}), {DefaultValue(property)}{readOnlyParam});");
@@ -15,6 +18,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
         {
+            // Add using for AttachedUIProperty
+            staticMembers.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
+
             string readOnlyParam = attachedProperty.IsReadOnly ? ", readOnly:true" : "";
             staticMembers.AddLine(
                 $"public static readonly AttachedUIProperty {PropertyDescriptorName(attachedProperty)} = new AttachedUIProperty(\"{attachedProperty.Name}\", {DefaultValue(attachedProperty)}{readOnlyParam});");

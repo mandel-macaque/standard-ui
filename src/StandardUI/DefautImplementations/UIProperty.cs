@@ -1,4 +1,4 @@
-namespace Microsoft.StandardUI
+namespace Microsoft.StandardUI.DefaultImplementations
 {
     public class UIProperty : IUIProperty
     {
