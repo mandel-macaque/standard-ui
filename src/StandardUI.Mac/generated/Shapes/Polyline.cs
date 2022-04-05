@@ -1,5 +1,6 @@
 // This file is generated from IPolyline.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 

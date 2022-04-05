@@ -1,5 +1,7 @@
 // This file is generated from IPropertyPath.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
+
 namespace Microsoft.StandardUI.Mac
 {
     public class PropertyPath : StandardUIObject, IPropertyPath

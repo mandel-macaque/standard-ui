@@ -1,10 +1,11 @@
 // This file is generated from IPanel.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class Panel : StandardUIElement, IPanel
+    public class Panel : BuiltInUIElement, IPanel
     {
         public static readonly UIProperty ChildrenProperty = new UIProperty(nameof(Children), null, readOnly:true);
         

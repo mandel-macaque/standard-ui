@@ -1,5 +1,6 @@
 // This file is generated from ITransformGroup.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using System.Collections.Generic;
 using Microsoft.StandardUI.Media;
 

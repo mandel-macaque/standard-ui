@@ -1,5 +1,6 @@
 // This file is generated from ITextBlock.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Mac.Media;
 using Microsoft.StandardUI.Text;
@@ -7,7 +8,7 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class TextBlock : StandardUIElement, ITextBlock
+    public class TextBlock : BuiltInUIElement, ITextBlock
     {
         public static readonly UIProperty ForegroundProperty = new UIProperty(nameof(Foreground), null);
         public static readonly UIProperty TextProperty = new UIProperty(nameof(Text), "");

@@ -1,5 +1,6 @@
 // This file is generated from ISolidColorBrush.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Mac.Media

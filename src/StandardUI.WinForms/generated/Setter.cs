@@ -1,5 +1,7 @@
 // This file is generated from ISetter.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
+
 namespace Microsoft.StandardUI.WinForms
 {
     public class Setter : StandardUIObject, ISetter

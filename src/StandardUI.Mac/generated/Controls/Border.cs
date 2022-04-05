@@ -1,12 +1,13 @@
 // This file is generated from IBorder.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Mac.Media;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class Border : StandardUIElement, IBorder
+    public class Border : BuiltInUIElement, IBorder
     {
         public static readonly UIProperty BackgroundProperty = new UIProperty(nameof(Background), null);
         public static readonly UIProperty BackgroundSizingProperty = new UIProperty(nameof(BackgroundSizing), BackgroundSizing.InnerBorderEdge);
@@ -50,15 +51,15 @@ namespace Microsoft.StandardUI.Mac.Controls
             set => SetValue(BorderThicknessProperty, value);
         }
         
-        public StandardUIElement Child
+        public BuiltInUIElement Child
         {
-            get => (StandardUIElement) GetValue(ChildProperty);
+            get => (BuiltInUIElement) GetValue(ChildProperty);
             set => SetValue(ChildProperty, value);
         }
         IUIElement IBorder.Child
         {
             get => Child;
-            set => Child = (StandardUIElement) value;
+            set => Child = (BuiltInUIElement) value;
         }
         
         public CornerRadius CornerRadius

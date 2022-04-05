@@ -1,5 +1,6 @@
 // This file is generated from ILine.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI.WinForms.Shapes

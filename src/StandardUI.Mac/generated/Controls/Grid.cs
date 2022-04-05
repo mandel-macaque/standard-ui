@@ -1,5 +1,6 @@
 // This file is generated from IGrid.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
@@ -15,17 +16,17 @@ namespace Microsoft.StandardUI.Mac.Controls
         public static readonly AttachedUIProperty RowSpanProperty = new AttachedUIProperty("RowSpan", 1);
         public static readonly AttachedUIProperty ColumnSpanProperty = new AttachedUIProperty("ColumnSpan", 1);
         
-        public static int GetRow(StandardUIElement element) => (int) element.GetValue(RowProperty);
-        public static void SetRow(StandardUIElement element, int value) => element.SetValue(RowProperty, value);
+        public static int GetRow(StandardUIElement element) => (int) AttachedPropertiesValues.GetValue(element, RowProperty);
+        public static void SetRow(StandardUIElement element, int value) => AttachedPropertiesValues.SetValue(element, RowProperty, value);
         
-        public static int GetColumn(StandardUIElement element) => (int) element.GetValue(ColumnProperty);
-        public static void SetColumn(StandardUIElement element, int value) => element.SetValue(ColumnProperty, value);
+        public static int GetColumn(StandardUIElement element) => (int) AttachedPropertiesValues.GetValue(element, ColumnProperty);
+        public static void SetColumn(StandardUIElement element, int value) => AttachedPropertiesValues.SetValue(element, ColumnProperty, value);
         
-        public static int GetRowSpan(StandardUIElement element) => (int) element.GetValue(RowSpanProperty);
-        public static void SetRowSpan(StandardUIElement element, int value) => element.SetValue(RowSpanProperty, value);
+        public static int GetRowSpan(StandardUIElement element) => (int) AttachedPropertiesValues.GetValue(element, RowSpanProperty);
+        public static void SetRowSpan(StandardUIElement element, int value) => AttachedPropertiesValues.SetValue(element, RowSpanProperty, value);
         
-        public static int GetColumnSpan(StandardUIElement element) => (int) element.GetValue(ColumnSpanProperty);
-        public static void SetColumnSpan(StandardUIElement element, int value) => element.SetValue(ColumnSpanProperty, value);
+        public static int GetColumnSpan(StandardUIElement element) => (int) AttachedPropertiesValues.GetValue(element, ColumnSpanProperty);
+        public static void SetColumnSpan(StandardUIElement element, int value) => AttachedPropertiesValues.SetValue(element, ColumnSpanProperty, value);
         
         private UICollection<IColumnDefinition> _columnDefinitions;
         private UICollection<IRowDefinition> _rowDefinitions;

@@ -1,3 +1,5 @@
+using Microsoft.StandardUI.DefaultImplementations;
+
 namespace Microsoft.StandardUI.WinForms
 {
     public class StandardUIObject : IUIObject

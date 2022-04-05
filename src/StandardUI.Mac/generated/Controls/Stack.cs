@@ -1,5 +1,6 @@
 // This file is generated from IStack.cs. Update the source file to change its contents.
 
+using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
