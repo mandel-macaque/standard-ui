@@ -140,7 +140,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                     otherGetterValue = $"{property.Name}.{property.TypeName}";
                     setterAssignment = $"{property.Name} = new {propertyOutputTypeName}(value)";
                 }
-                else if (Utils.IsUICollectionType(property.Type, out var elementType) && propertyOutputTypeName.StartsWith("UIElementCollection<"))
+                else if (Utils.IsUICollectionType(Context, property.Type, out var elementType) && propertyOutputTypeName.StartsWith("UIElementCollection<"))
                 {
                     otherGetterValue = $"{property.Name}.ToStandardUIElementCollection()";
                     setterAssignment = ""; // Not used

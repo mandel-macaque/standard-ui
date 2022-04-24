@@ -41,9 +41,15 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
         {
+            // For controls outside the StandardUI namespace - user provided, not built in -
+            // just keep with a the original namespace, not using a child namespace per platform
+            string namespaceName = Utils.GetNamespaceFullName(namespc);
+            if (!namespaceName.StartsWith(Utils.StandardUIRootNamespace))
+                return namespaceName;
+
             // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
             // If the source namespace is just Microsoft.StandardUI, don't change anything here
-            string? childNamespaceName = Utils.GetChildNamespaceName(Utils.GetNamespaceFullName(namespc));
+            string? childNamespaceName = Utils.GetChildNamespaceName(namespaceName);
             if (childNamespaceName == null)
                 return RootNamespace;
             else return RootNamespace + "." + childNamespaceName;
@@ -58,7 +64,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 destinationTypeName = BuiltInUIObjectBaseClassName;
             else if (Utils.IsThisType(type, KnownTypes.IUIElement))
                 destinationTypeName = BuiltInUIElementBaseClassName;
-            else if (Utils.IsUICollectionType(type, out ITypeSymbol elementType))
+            else if (Utils.IsUICollectionType(Context, type, out ITypeSymbol elementType))
             {
                 if (Utils.IsThisType(elementType, KnownTypes.IUIElement))
                     destinationTypeName = UIElementCollectionOutputTypeName(elementType);
@@ -177,7 +183,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             if (typeFullName == "System.Collections.Generic.IEnumerable")
                 return "null";
 
-            if (Utils.IsUICollectionType(propertyType))
+            if (Utils.IsUICollectionType(Context, propertyType))
                 return "null";
 
             if (typeFullName == "Microsoft.StandardUI.Color" ||
@@ -212,7 +218,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             }
 #endif
 
-            throw new UserViewableException($"Property {property.FullPropertyName} has no [DefaultValue] attribute nor hardcoded default");
+            throw UserVisibleErrors.PropertyHasNoDefaultValue(property.Symbol, property.FullPropertyName);
         }
 
         protected virtual string? PropertyTypeDefaultValue(INamedTypeSymbol propertyType)

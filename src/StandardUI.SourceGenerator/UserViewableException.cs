@@ -1,11 +1,22 @@
-﻿using System;
+using Microsoft.CodeAnalysis;
+using System;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
     public class UserViewableException : Exception
     {
-        public UserViewableException(string message) : base(message)
+        public string Id { get; }
+
+        public Location? Location { get; }
+
+        public UserViewableException(string message) : this("MISSING", message)
         {
+        }
+
+        public UserViewableException(string id, string message, Location? location = null) : base(message)
+        {
+            Id = id;
+            Location = location;
         }
     }
 }

@@ -90,14 +90,17 @@ namespace Microsoft.StandardUI.SourceGenerator
             Directory.CreateDirectory(directory);
 
             string destinationFilePath = Path.Combine(directory, fileName);
-            using (StreamWriter stream = File.CreateText(destinationFilePath))
-                Write(stream);
+            using (TextWriter textWriter = File.CreateText(destinationFilePath))
+            {
+                textWriter.NewLine = LineEnding;
+                Write(textWriter);
+            }
         }
 
-        public void Write(StreamWriter stream)
+        public void Write(TextWriter textWriter)
         {
             foreach (SourceLine line in _lines)
-                line.Write(stream, LineEnding);
+                line.Write(textWriter);
         }
 
         public class IndentRestorer : IDisposable

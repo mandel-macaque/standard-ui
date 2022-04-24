@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System.Linq;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -13,7 +13,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string? TargetParameterName { get; }
 
         public AttachedProperty(Context context, Interface intface, INamedTypeSymbol attachedType, IMethodSymbol getterMethod, IMethodSymbol? setterMethod) :
-            base(context, intface, getterMethod.Name.Substring("Get".Length), getterMethod.ReturnType, setterMethod == null, attachedType.Name)
+            base(context, intface, getterMethod, getterMethod.Name.Substring("Get".Length), getterMethod.ReturnType, setterMethod == null, attachedType.Name)
         {
             if (getterMethod.Parameters.Length != 1)
                 throw new UserViewableException(

@@ -84,8 +84,6 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             if (compilation == null)
                 return;
 
-            Utils.Init(compilation);
-            
             var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
             gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
 

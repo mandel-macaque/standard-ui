@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -13,12 +13,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             Text = text;
         }
 
-        public void Write(StreamWriter stream, string lineEnding)
+        public void Write(TextWriter textWriter)
         {
             for (int i = 0; i < Indent; ++i)
-                stream.Write(' ');
-            stream.Write(Text);
-            stream.Write(lineEnding);
+                textWriter.Write(' ');
+            textWriter.WriteLine(Text);
         }
     }
 }

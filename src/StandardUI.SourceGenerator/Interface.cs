@@ -12,12 +12,12 @@ namespace Microsoft.StandardUI.SourceGenerator
         public InterfacePurpose Purpose { get; }
         public INamespaceSymbol Namespace { get; }
         public string NamespaceName { get; }
-        public string? ChildNamespaceName { get; }
         public string FrameworkClassName { get; }
         public INamedTypeSymbol? AttachedType { get; }
         public string Name { get; }
         public string VariableName { get; }
         public INamedTypeSymbol? LayoutManagerType { get; }
+        public INamedTypeSymbol? StandardControlImpelementationType { get; }
 
         public bool IsThisType(string typeName) => Utils.IsThisType(Type, typeName);
 
@@ -74,11 +74,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             Type = type;
             Name = type.Name;
             if (!Name.StartsWith("I"))
-                throw new UserViewableException($"Data model interface {Name} must start with 'I'");
+                throw UserVisibleErrors.StandardUIInterfaceMustStartWithI(type);
 
             InterfacePurpose? purpose = IdentifyPurpose(type);
             if (! purpose.HasValue)
-                throw new UserViewableException($"Interface {type} doesn't have expected attributes indicating purpose");
+                throw UserVisibleErrors.StandardUIMissingPurposeAttribute(type);
             Purpose = purpose.Value;
 
             FrameworkClassName = Name.Substring(1);
@@ -88,7 +88,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             Namespace = Type.ContainingNamespace;
             NamespaceName = Utils.GetNamespaceFullName(Namespace);
-            ChildNamespaceName = Utils.GetChildNamespaceName(NamespaceName);
 
             // Get attached type, if it exists
             string fullNameAttached = Utils.GetTypeFullName(type) + "Attached";
@@ -100,9 +99,15 @@ namespace Microsoft.StandardUI.SourceGenerator
                 LayoutManagerType = Context.Compilation.GetTypeByMetadataName(layoutManagerFullName);
 
                 if (LayoutManagerType == null)
-                {
-                    throw new UserViewableException($"No type {layoutManagerFullName} found for StandardPanel interface {Name}");
-                }
+                    throw UserVisibleErrors.NoLayoutManagerClassFound(layoutManagerFullName, Name);
+            }
+            else if (Purpose == InterfacePurpose.StandardControl)
+            {
+                string standardControlImplementationFullName = $"{NamespaceName}.{Name.Substring(1)}Implementation";
+                StandardControlImpelementationType = Context.Compilation.GetTypeByMetadataName(standardControlImplementationFullName);
+
+                if (StandardControlImpelementationType == null)
+                    throw UserVisibleErrors.NoLayoutManagerClassFound(standardControlImplementationFullName, Name);
             }
         }
 
@@ -147,8 +152,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     if (!methodName.StartsWith("Get"))
                     {
                         if (!methodName.StartsWith("Set"))
-                            throw new UserViewableException(
-                                $"Attached type method {AttachedType.Name}.{methodName} doesn't start with Get or Set");
+                            throw UserVisibleErrors.AttachedTypeMethodMustStartWithGetOrSet(AttachedType.Name, methodName);
                         else continue;
                     }
 
@@ -197,7 +201,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom,
                 constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
                 nonstaticMethods: mainClassNonstaticMethods);
-            Context.Output.AddSource(uiFramework, ChildNamespaceName, FrameworkClassName, mainClassSource);
+            Context.Output.AddSource(uiFramework, NamespaceName, FrameworkClassName, mainClassSource);
 
             if (AttachedType != null)
             {
@@ -208,7 +212,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 Source attachedClassSource = GenerateClassFile(usings, frameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
                     staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
-                Context.Output.AddSource(uiFramework, ChildNamespaceName, attachedClassName, attachedClassSource);
+                Context.Output.AddSource(uiFramework, NamespaceName, attachedClassName, attachedClassSource);
             }
         }
 
@@ -251,8 +255,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     if (!methodName.StartsWith("Get"))
                     {
                         if (!methodName.StartsWith("Set"))
-                            throw new UserViewableException(
-                                $"Attached type method {AttachedType.Name}.{methodName} doesn't start with Get or Set");
+                            throw UserVisibleErrors.AttachedTypeMethodMustStartWithGetOrSet(AttachedType.Name, methodName);
                         else continue;
                     }
 
@@ -270,7 +273,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             {
                 string extensionsClassName = FrameworkClassName + "Extensions";
                 Source extensionsClassSource = GenerateStaticClassFile(usings, NamespaceName, extensionsClassName, methods, staticFields);
-                Context.Output.AddSource(null, ChildNamespaceName, extensionsClassName, extensionsClassSource);
+                Context.Output.AddSource(null, NamespaceName, extensionsClassName, extensionsClassSource);
             }
         }
 
@@ -388,6 +391,13 @@ namespace Microsoft.StandardUI.SourceGenerator
             Source constructorBody = new Source(Context);
             foreach (Property property in properties)
                 uiFramework.GeneratePropertyInit(property, constructorBody);
+
+            if (Purpose == InterfacePurpose.StandardControl)
+            {
+                string implementationFullTypeName = Utils.GetTypeFullName(StandardControlImpelementationType);
+                constructorBody.AddLine(
+                    $"InitImplementation(new {implementationFullTypeName}(this));");
+            }
 
             if (constructorBody.IsEmpty)
                 return null;

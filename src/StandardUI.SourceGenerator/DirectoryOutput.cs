@@ -12,18 +12,15 @@ namespace Microsoft.StandardUI.SourceGenerator
             RootDirectory = rootDirectory;
         }
 
-        public override void AddSource(UIFramework? uiFramework, string? childNamespaceName, string fileName, Source source)
+        public override void AddSource(UIFramework? uiFramework, string? namespaceName, string fileName, Source source)
         {
-            string outputDirectory;
-            if (uiFramework != null)
+            string outputDirectory = uiFramework != null
+                ? Path.Combine(RootDirectory, "src", uiFramework.ProjectBaseDirectory, "generated")
+                : Path.Combine(RootDirectory, "src", "StandardUI", "generated");
+
+            if (namespaceName != null)
             {
-                outputDirectory = Path.Combine(RootDirectory, "src", uiFramework.ProjectBaseDirectory, "generated");
-                if (childNamespaceName != null)
-                    outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
-            }
-            else
-            {
-                outputDirectory = Path.Combine(RootDirectory, "src", "StandardUI", "generated");
+                string? childNamespaceName = Utils.GetChildNamespaceName(namespaceName);
                 if (childNamespaceName != null)
                     outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
             }

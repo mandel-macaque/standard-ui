@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -8,14 +8,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public static class Utils
     {
-        public static INamedTypeSymbol? VoidType { get; private set; }
-
-        public static void Init(Compilation compilation)
-        {
-            VoidType = compilation.GetSpecialType(SpecialType.System_Void);
-        }
-
-        public const string RootNamespace = "Microsoft.StandardUI";
+        public const string StandardUIRootNamespace = "Microsoft.StandardUI";
         public static readonly SymbolDisplayFormat TypeFullNameSymbolDisplayFormat =
             new SymbolDisplayFormat(typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
@@ -199,12 +192,9 @@ namespace Microsoft.StandardUI.SourceGenerator
             return type.TypeKind == TypeKind.Interface && type.Name != "IEnumerable";  // TODO: Use attribute check instead
         }
 
-        public static bool IsUICollectionType(ITypeSymbol type, out ITypeSymbol elementType)
+        public static bool IsUICollectionType(Context context, ITypeSymbol type, out ITypeSymbol elementType)
         {
-            if (VoidType == null)
-                throw new InvalidOperationException("Utils.Init must be called to set VoidType");
-
-            elementType = VoidType;
+            elementType = context.VoidType;
 
             if (! IsThisType(type, KnownTypes.IUICollection))
                 return false;
@@ -220,26 +210,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             return true;
         }
 
-        public static bool IsUICollectionType(ITypeSymbol type) => IsUICollectionType(type, out ITypeSymbol _);
-
-        /// <summary>
-        /// Return the child namespace (e.g. "Shapes", "Transforms", etc. or null if there is no child
-        /// and classes should be at the root.
-        /// </summary>
-        /// <param name="sourceNamespace">source namespace</param>
-        /// <returns>child namespace</returns>
-        public static string? GetChildNamespace(NameSyntax sourceNamespace)
-        {
-            string sourceNamespaceString = sourceNamespace.ToString();
-
-            if (!sourceNamespaceString.StartsWith(RootNamespace))
-                throw new InvalidOperationException($"Source namespace {sourceNamespace} doesn't start with '{RootNamespace}' as expected");
-
-            if (!sourceNamespaceString.StartsWith(RootNamespace + "."))
-                return null;
-
-            return sourceNamespaceString.Substring(sourceNamespaceString.LastIndexOf('.') + 1);
-        }
+        public static bool IsUICollectionType(Context context, ITypeSymbol type) => IsUICollectionType(context, type, out ITypeSymbol _);
 
         /// <summary>
         /// Return the child namespace (e.g. "Shapes", "Transforms", etc. or null if there is no child
@@ -249,10 +220,10 @@ namespace Microsoft.StandardUI.SourceGenerator
         /// <returns>child namespace</returns>
         public static string? GetChildNamespaceName(string namespaceName)
         {
-            if (!namespaceName.StartsWith(RootNamespace))
-                throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{RootNamespace}' as expected");
+            if (!namespaceName.StartsWith(StandardUIRootNamespace))
+                throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{StandardUIRootNamespace}' as expected");
 
-            if (!namespaceName.StartsWith(RootNamespace + "."))
+            if (!namespaceName.StartsWith(StandardUIRootNamespace + "."))
                 return null;
 
             return namespaceName.Substring(namespaceName.LastIndexOf('.') + 1);

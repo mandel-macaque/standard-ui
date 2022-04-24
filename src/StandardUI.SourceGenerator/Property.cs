@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public IPropertySymbol PropertySymbol { get; }
 
         public Property(Context context, Interface intface, IPropertySymbol propertySymbol) :
-            base(context, intface, propertySymbol.Name, propertySymbol.Type, propertySymbol.IsReadOnly, intface.Name)
+            base(context, intface, propertySymbol, propertySymbol.Name, propertySymbol.Type, propertySymbol.IsReadOnly, intface.Name)
         {
             PropertySymbol = propertySymbol;
             SpecifiedDefaultValue = GetSpecifiedDefaultValue(propertySymbol.GetAttributes());

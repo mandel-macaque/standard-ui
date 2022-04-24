@@ -6,20 +6,20 @@ namespace Microsoft.StandardUI.SourceGenerator
 {
     public class GeneratorExecutionOutput : Output
     {
-        public GeneratorExecutionContext GeneratorExecutionContext { get; }
+        public SourceProductionContext SourceProductionContext { get; }
 
-        public GeneratorExecutionOutput(GeneratorExecutionContext generatorExecutionContext)
+        public GeneratorExecutionOutput(SourceProductionContext sourceProductionContext)
         {
-            GeneratorExecutionContext = generatorExecutionContext;
+            SourceProductionContext = sourceProductionContext;
         }
 
-        public override void AddSource(UIFramework? uiFramework, string? childNamespaceName, string fileName, Source source)
+        public override void AddSource(UIFramework? uiFramework, string? namespaceName, string fileName, Source source)
         {
-            StringWriter stringWriter = new StringWriter();
-            stringWriter.Write(source);
-            string sourceString = stringWriter.ToString();
-
-            GeneratorExecutionContext.AddSource(fileName + ".cs", sourceString);
+            using (var stringWriter = new StringWriter())
+            {
+                source.Write(stringWriter);
+                SourceProductionContext.AddSource(fileName + ".cs", stringWriter.ToString());
+            }
         }
     }
 }
