@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 namespace Microsoft.StandardUI.Controls
 {
-	public abstract class LayoutManager<TPanel> where TPanel : IPanel
+	public abstract class LayoutManager<TContainerUIElement> where TContainerUIElement : IUIElement
     {
-		public abstract Size MeasureOverride(TPanel panel, Size constraint);
+		public abstract Size MeasureOverride(TContainerUIElement panel, Size constraint);
 
-        public abstract Size ArrangeOverride(TPanel panel, Size finalSize);
+        public abstract Size ArrangeOverride(TContainerUIElement panel, Size finalSize);
 
 		public static double ResolveWidthConstraints(IUIElement uiElement, double externalConstraint, double measuredLength)
 		{
