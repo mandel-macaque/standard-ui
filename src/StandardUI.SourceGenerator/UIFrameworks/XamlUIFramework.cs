@@ -14,19 +14,33 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string UIElementCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{NativeUIElementType},{elementType}>";
         public override string UIElementSubtypeCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{OutputTypeName(elementType)},{elementType.Name}>";
 
-        public override void GeneratePropertyDescriptor(Property property, Source staticMembers)
+        public override void GenerateProperty(Property property, ClassSource classSource)
         {
             string? usingTypeAlias = DependencyPropertyTypeAlias;
             if (usingTypeAlias != null)
-            {
-                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
-            }
+                classSource.Usings.AddTypeAlias(usingTypeAlias);
 
+            // Generate the property descriptor
             string nonNullablePropertyType = Utils.ToNonnullableType(PropertyOutputTypeName(property));
             string descriptorName = PropertyDescriptorName(property);
             string defaultValue = DefaultValue(property);
-            staticMembers.AddLine(
+            classSource.StaticFields.AddLine(
                 $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.Register(nameof({property.Name}), typeof({nonNullablePropertyType}), typeof({property.Interface.FrameworkClassName}), {defaultValue});");
+
+            if (property.IsUICollection)
+            {
+                string fieldName = PropertyFieldName(property);
+                string fieldTypeName = PropertyOutputTypeName(property);
+
+                classSource.NonstaticFields.AddLine(
+                    $"private {fieldTypeName} {fieldName};");
+
+                classSource.DefaultConstructorBody.AddLines(
+                    $"{fieldName} = new {fieldTypeName}(this);",
+                    $"SetValue({descriptorName}, {fieldName});");
+            }
+
+            GeneratePropertyMethods(property, classSource.NonstaticMethods);
         }
 
         public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
@@ -47,29 +61,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.RegisterAttached(\"{attachedProperty.Name}\", typeof({nonNullablePropertyType}), typeof({targetOutputTypeName}), {defaultValue});");
         }
 
-        public override void GeneratePropertyField(Property property, Source nonstaticFields)
-        {
-            if (property.IsUICollection)
-                nonstaticFields.AddLine(
-                    $"private {PropertyOutputTypeName(property)} {PropertyFieldName(property)};");
-
-            // private readonly UIElementCollection<UIElement, IUIElement> _children;
-        }
-
-        public override void GeneratePropertyInit(Property property, Source constuctorBody)
-        {
-            if (property.IsUICollection)
-            {
-                string descriptorName = PropertyDescriptorName(property);
-                string propertyFieldName = PropertyFieldName(property);
-
-                constuctorBody.AddLines(
-                    $"{propertyFieldName} = new {PropertyOutputTypeName(property)}(this);",
-                    $"SetValue({descriptorName}, {propertyFieldName});");
-            }
-        }
-
-        public override void GeneratePropertyMethods(Property property, Source source)
+        private void GeneratePropertyMethods(Property property, Source source)
         {
             var usings = source.Usings;
             string propertyOutputTypeName = PropertyOutputTypeName(property);

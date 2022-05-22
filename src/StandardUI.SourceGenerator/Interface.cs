@@ -113,35 +113,55 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
+            string generatedFrom = $"{Name}.cs";
+
             string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
 
-            var usings = new Usings(Context, frameworkNamespaceName);
+            string? destinationBaseClass = GetOutputBaseClass(uiFramework);
+            string mainClassDerviedFrom;
+            if (destinationBaseClass == null)
+                mainClassDerviedFrom = Name;
+            else
+                mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
 
             var properties = new List<Property>();
-
-            var stubSourceForUsings = new Source(Context, usings);
-            var mainClassStaticFields = new Source(Context, usings);
-            var mainClassStaticMethods = new Source(Context, usings);
-            var mainClassNonstaticFields = new Source(Context, usings);
-            var mainClassNonstaticMethods = new Source(Context, usings);
-
-            var attachedClassStaticFields = new Source(Context, usings);
-            var attachedClassMethods = new Source(Context, usings);
+            var mainClassSource = new ClassSource(Context,
+                generatedFrom:generatedFrom,
+                namespaceName:frameworkNamespaceName,
+                className:FrameworkClassName,
+                derivedFrom:mainClassDerviedFrom);
 
             // Add the property descriptors and accessors
-            foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
-            {
-                var property = new Property(Context, this, propertySymbol);
-                properties.Add(property);
+            GenerateTypeProperties(this, uiFramework, properties, mainClassSource);
 
-                uiFramework.GeneratePropertyDescriptor(property, mainClassStaticFields);
-                uiFramework.GeneratePropertyField(property, mainClassNonstaticFields);
-                uiFramework.GeneratePropertyMethods(property, mainClassNonstaticMethods);
+            // If the interface has multiple parent interfaces, the generated superclass will implement the properties
+            // for the first interface (that's the typical case), but if there are any additional interfaces, properties
+            // for them must be directly implemented here
+            bool first = true;
+            foreach (INamedTypeSymbol additionalInterfaceType in Type.Interfaces)
+            {
+                if (first)
+                {
+                    first = false;
+                    continue;
+                }
+
+                var additionalInterface = new Interface(Context, additionalInterfaceType);
+                GenerateTypeProperties(additionalInterface, uiFramework, properties, mainClassSource);
             }
 
             // If there are any attached properties, add the property descriptors and accessors for them
+            ClassSource? attachedClassSource = null;
             if (AttachedType != null)
             {
+                string attachedClassDerivedFrom = AttachedType.Name;
+                attachedClassSource = new ClassSource(Context, generatedFrom:generatedFrom,
+                    namespaceName:frameworkNamespaceName,
+                    className:FrameworkClassName + "Attached",
+                    derivedFrom:attachedClassDerivedFrom);
+
+                attachedClassSource.Usings.AddTypeNamespace(Type);
+
                 foreach (ISymbol member in AttachedType.GetMembers())
                 {
                     if (!(member is IMethodSymbol getterMethod))
@@ -162,57 +182,50 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                     var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
 
-                    uiFramework.GenerateAttachedPropertyDescriptor(attachedProperty, mainClassStaticFields);
-                    uiFramework.GenerateAttachedPropertyMethods(attachedProperty, mainClassStaticMethods);
-                    uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassMethods);
+                    uiFramework.GenerateAttachedPropertyDescriptor(attachedProperty, mainClassSource.StaticFields);
+                    uiFramework.GenerateAttachedPropertyMethods(attachedProperty, mainClassSource.StaticMethods);
+                    uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassSource.NonstaticMethods);
                 }
             }
 
             // Add any other methods needed for particular special types
             if (IsDrawableObject)
-            {
-                uiFramework.GenerateDrawableObjectMethods(this, mainClassNonstaticMethods);
-            }
+                uiFramework.GenerateDrawableObjectMethods(this, mainClassSource.NonstaticMethods);
 
             if (IsThisType(KnownTypes.IPanel))
-            {
-                uiFramework.GeneratePanelMethods(mainClassNonstaticMethods);
-            }
+                uiFramework.GeneratePanelMethods(mainClassSource.NonstaticMethods);
 
             if (Purpose == InterfacePurpose.StandardPanel)
+                uiFramework.GenerateStandardPanelLayoutMethods(LayoutManagerType!.Name, mainClassSource.NonstaticMethods);
+
+            mainClassSource.Usings.AddTypeNamespace(Type);
+
+            if (Purpose == InterfacePurpose.StandardControl)
             {
-                uiFramework.GenerateStandardPanelLayoutMethods(LayoutManagerType!.Name, mainClassNonstaticMethods);
+                string implementationFullTypeName = Utils.GetTypeFullName(StandardControlImpelementationType);
+                mainClassSource.DefaultConstructorBody.AddLine(
+                    $"InitImplementation(new {implementationFullTypeName}(this));");
             }
 
-            usings.AddTypeNamespace(Type);
-            usings.AddNamespace(frameworkNamespaceName);
-            Source usingDeclarations = GenerateUsingDeclarations(uiFramework, usings);
-
-            string? destinationBaseClass = GetOutputBaseClass(uiFramework);
-
-            Source? constructor = GenerateConstructor(uiFramework, properties);
-
-            string mainClassDerviedFrom;
-            if (destinationBaseClass == null)
-                mainClassDerviedFrom = Name;
-            else
-                mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
-
-            Source mainClassSource = GenerateClassFile(usings, frameworkNamespaceName, FrameworkClassName, mainClassDerviedFrom,
-                constructor: constructor, staticFields: mainClassStaticFields, staticMethods: mainClassStaticMethods, nonstaticFields: mainClassNonstaticFields,
-                nonstaticMethods: mainClassNonstaticMethods);
-            Context.Output.AddSource(uiFramework, NamespaceName, FrameworkClassName, mainClassSource);
+            mainClassSource.AddToOutput(uiFramework);
 
             if (AttachedType != null)
             {
                 string attachedClassName = FrameworkClassName + "Attached";
-                string attachedClassDerivedFrom = AttachedType.Name;
+                attachedClassSource!.StaticFields.AddLine($"public static {attachedClassName} Instance = new {attachedClassName}();");
 
-                attachedClassStaticFields.AddLine($"public static {attachedClassName} Instance = new {attachedClassName}();");
+                attachedClassSource.AddToOutput(uiFramework);
+            }
+        }
 
-                Source attachedClassSource = GenerateClassFile(usings, frameworkNamespaceName, attachedClassName, attachedClassDerivedFrom,
-                    staticFields: attachedClassStaticFields, nonstaticMethods: attachedClassMethods);
-                Context.Output.AddSource(uiFramework, NamespaceName, attachedClassName, attachedClassSource);
+        private static void GenerateTypeProperties(Interface intface, UIFramework uiFramework, List<Property> properties, ClassSource classSource)
+        {
+            foreach (IPropertySymbol propertySymbol in intface.Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
+            {
+                var property = new Property(intface.Context, intface, propertySymbol);
+                properties.Add(property);
+
+                uiFramework.GenerateProperty(property, classSource);
             }
         }
 
@@ -277,66 +290,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
         }
 
-        public Source GenerateClassFile(Usings usings, string namespaceName, string className, string derivedFrom, bool isPartial = false,
-            Source? constructor = null, Source? staticFields = null, Source? staticMethods = null, Source? nonstaticFields = null, Source? nonstaticMethods = null)
-        {
-            Source fileSource = new Source(Context);
-
-            GenerateFileHeader(fileSource);
-
-            Source usingsDeclarations = usings.Generate();
-            if (!usingsDeclarations.IsEmpty)
-            {
-                fileSource.AddSource(usingsDeclarations);
-                fileSource.AddBlankLine();
-            }
-
-            fileSource.AddLines(
-                $"namespace {namespaceName}",
-                "{");
-
-            using (fileSource.Indent())
-            {
-                Source classBody = new Source(Context);
-                if (staticFields != null && !staticFields.IsEmpty)
-                    classBody.AddSource(staticFields);
-                if (staticMethods != null && !staticMethods.IsEmpty)
-                {
-                    classBody.AddBlankLineIfNonempty();
-                    classBody.AddSource(staticMethods);
-                }
-                if (nonstaticFields != null && !nonstaticFields.IsEmpty)
-                {
-                    classBody.AddBlankLineIfNonempty();
-                    classBody.AddSource(nonstaticFields);
-                }
-                if (constructor != null && !constructor.IsEmpty)
-                {
-                    classBody.AddBlankLineIfNonempty();
-                    classBody.AddSource(constructor);
-                }
-                if (nonstaticMethods != null && !nonstaticMethods.IsEmpty)
-                {
-                    classBody.AddBlankLineIfNonempty();
-                    classBody.AddSource(nonstaticMethods);
-                }
-
-                string modifiers = isPartial ? "public partial" : "public";
-                fileSource.AddLines(
-                    $"{modifiers} class {className} : {derivedFrom}",
-                    "{");
-                using (fileSource.Indent())
-                    fileSource.AddSource(classBody);
-                fileSource.AddLine(
-                    "}");
-            }
-
-            fileSource.AddLine(
-                "}");
-
-            return fileSource;
-        }
-
         public Source GenerateStaticClassFile(Usings usings, string namespaceName, string className, Source staticMethods, Source? staticFields = null)
         {
             Source fileSource = new Source(Context);
@@ -386,68 +339,8 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        private Source? GenerateConstructor(UIFramework uiFramework, List<Property> properties)
-        {
-            Source constructorBody = new Source(Context);
-            foreach (Property property in properties)
-                uiFramework.GeneratePropertyInit(property, constructorBody);
-
-            if (Purpose == InterfacePurpose.StandardControl)
-            {
-                string implementationFullTypeName = Utils.GetTypeFullName(StandardControlImpelementationType);
-                constructorBody.AddLine(
-                    $"InitImplementation(new {implementationFullTypeName}(this));");
-            }
-
-            if (constructorBody.IsEmpty)
-                return null;
-
-            Source constructor = new Source(Context);
-            constructor.AddLines(
-                $"public {FrameworkClassName}()",
-                "{");
-            using (constructor.Indent())
-                constructor.AddSource(
-                    constructorBody);
-            constructor.AddLine(
-                "}");
-
-            return constructor;
-        }
-
-        private Source GenerateUsingDeclarations(UIFramework uiFramework, Usings usings)
-        {
-#if false
-            foreach (var member in Declaration.Members)
-            {
-                if (!(member is PropertyDeclarationSyntax modelProperty))
-                    continue;
-
-                // Array.Empty requires System
-                if (modelProperty.Type is ArrayTypeSyntax)
-                    AddUsing(usings, IdentifierName("System"));
-            }
-#endif
-
-            /*
-            foreach (IPropertySymbol propertySymbol in Type.GetMembers().Where(member => member.Kind == SymbolKind.Property))
-            {
-                var property = new Property(Context, this, propertySymbol);
-                OutputType.AddTypeAliasUsingIfNeeded(usings, property.FrameworkTypeName.ToString());
-            }
-            */
-
-            return usings.Generate();
-        }
-
         private string? GetOutputBaseClass(UIFramework uiFramework)
         {
-#if NOMORE
-            string? elementType = Utils.IsCollectionType(Type);
-            if (elementType != null)
-                return $"StandardUICollection<{elementType}>";
-#endif
-
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)

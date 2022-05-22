@@ -15,5 +15,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         //public override string? DefaultBaseClassName => "ObjectWithCascadingNotifications";
         public override string BuiltInUIElementBaseClassName => "ObjectWithCascadingNotifications";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();
+
+        public override void GenerateProperty(Property property, ClassSource classSource)
+        {
+        }
     }
 }

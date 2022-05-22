@@ -6,14 +6,29 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         {
         }
 
-        public override void GeneratePropertyDescriptor(Property property, Source staticMembers)
+        public override void GenerateProperty(Property property, ClassSource classSource)
         {
-            // Add using for UIProperty
-            staticMembers.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
+            classSource.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
 
+            // Add the property descriptor
             string readOnlyParam = property.IsReadOnly ? ", readOnly:true" : "";
-            staticMembers.AddLine(
+            classSource.StaticFields.AddLine(
                 $"public static readonly UIProperty {PropertyDescriptorName(property)} = new UIProperty(nameof({property.Name}), {DefaultValue(property)}{readOnlyParam});");
+
+            if (property.IsUICollection)
+            {
+                string fieldName = PropertyFieldName(property);
+                string fieldTypeName = PropertyOutputTypeName(property);
+
+                classSource.NonstaticFields.AddLine(
+                    $"private {fieldTypeName} {fieldName};");
+
+                classSource.DefaultConstructorBody.AddLines(
+                    $"{fieldName} = new {fieldTypeName}(this);",
+                    $"SetValue({PropertyDescriptorName(property)}, {fieldName});");
+            }
+
+            GeneratePropertyMethods(property, classSource.NonstaticMethods);
         }
 
         public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
@@ -26,27 +41,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 $"public static readonly AttachedUIProperty {PropertyDescriptorName(attachedProperty)} = new AttachedUIProperty(\"{attachedProperty.Name}\", {DefaultValue(attachedProperty)}{readOnlyParam});");
         }
 
-        public override void GeneratePropertyField(Property property, Source nonstaticFields)
-        {
-            if (property.IsUICollection)
-                nonstaticFields.AddLine(
-                    $"private {PropertyOutputTypeName(property)} {PropertyFieldName(property)};");
-        }
-
-        public override void GeneratePropertyInit(Property property, Source constuctorBody)
-        {
-            if (property.IsUICollection)
-            {
-                string descriptorName = PropertyDescriptorName(property);
-                string propertyFieldName = PropertyFieldName(property);
-
-                constuctorBody.AddLines(
-                    $"{propertyFieldName} = new {PropertyOutputTypeName(property)}(this);",
-                    $"SetValue({descriptorName}, {propertyFieldName});");
-            }
-        }
-
-        public override void GeneratePropertyMethods(Property property, Source source)
+        private void GeneratePropertyMethods(Property property, Source source)
         {
             var usings = source.Usings;
             string propertyOutputTypeName = PropertyOutputTypeName(property);
