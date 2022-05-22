@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -218,15 +219,20 @@ namespace Microsoft.StandardUI.SourceGenerator
         /// </summary>
         /// <param name="sourceNamespace">source namespace</param>
         /// <returns>child namespace</returns>
-        public static string? GetChildNamespaceName(string namespaceName)
+        public static string? GetChildNamespaceName(string namespaceName, UIFramework? uiFramework = null)
         {
-            if (!namespaceName.StartsWith(StandardUIRootNamespace))
-                throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{StandardUIRootNamespace}' as expected");
+            string rootNamespace;
+            if (uiFramework != null && namespaceName.StartsWith(uiFramework.RootNamespace))
+                rootNamespace = uiFramework.RootNamespace;
+            else rootNamespace = StandardUIRootNamespace;
 
-            if (!namespaceName.StartsWith(StandardUIRootNamespace + "."))
+            if (namespaceName == rootNamespace)
                 return null;
 
-            return namespaceName.Substring(namespaceName.LastIndexOf('.') + 1);
+            string prefix = rootNamespace + ".";
+            if (namespaceName.StartsWith(prefix))
+                return namespaceName.Substring(prefix.Length);
+            else throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{rootNamespace}' as expected");
         }
     }
 }

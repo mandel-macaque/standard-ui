@@ -20,7 +20,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             if (namespaceName != null)
             {
-                string? childNamespaceName = Utils.GetChildNamespaceName(namespaceName);
+                string? childNamespaceName = Utils.GetChildNamespaceName(namespaceName, uiFramework);
                 if (childNamespaceName != null)
                     outputDirectory = Path.Combine(outputDirectory, childNamespaceName);
             }
