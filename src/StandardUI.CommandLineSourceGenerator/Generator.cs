@@ -100,7 +100,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
                 var intface = new Interface(context, interfaceType);
                 intface.Generate(wpfUIFramework);
-                //intface.Generate(winUIUIFramework);
+                intface.Generate(winUIUIFramework);
                 intface.Generate(winFormsUIFramework);
                 intface.Generate(macUIUIFramework);
                 intface.GenerateExtensionsClass();

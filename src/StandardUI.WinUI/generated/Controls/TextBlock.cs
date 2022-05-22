@@ -80,6 +80,6 @@ namespace Microsoft.StandardUI.WinUI.Controls
         
         public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
         protected override global::Windows.Foundation.Size MeasureOverride(global::Windows.Foundation.Size constraint) =>
-            HostEnvironment.HostFramework.VisualFramework.MeasureTextBlock(this).ToWindowsFoundationSize();
+            HostEnvironment.VisualFramework.MeasureTextBlock(this).ToWindowsFoundationSize();
     }
 }

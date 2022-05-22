@@ -20,6 +20,7 @@ namespace Microsoft.StandardUI.WinForms
 		public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
 		public IGrid CreateGrid() => new Grid();
         public IGridAttached GridAttachedInstance => GridAttached.Instance;
+        public ITableAttached TableAttachedInstance => TableAttached.Instance;
         public IRowDefinition CreateRowDefinition() => new RowDefinition();
         public IColumnDefinition CreateColumnDefinition() => new ColumnDefinition();
         public IEllipse CreateEllipse() => new Ellipse();
