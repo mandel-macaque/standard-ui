@@ -1,6 +1,6 @@
 namespace Microsoft.StandardUI.Controls   
 {
-    [StandardPanel]   
+    [StandardPanel]
     public interface IGrid : IGridBase, IPanel
     {
         /// <summary>

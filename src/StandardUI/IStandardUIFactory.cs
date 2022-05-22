@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
@@ -18,6 +18,7 @@ namespace Microsoft.StandardUI
         IRowDefinition CreateRowDefinition();
         IColumnDefinition CreateColumnDefinition();
         IGridAttached GridAttachedInstance { get; }
+        ITableAttached TableAttachedInstance { get; }
 
         IEllipse CreateEllipse();
         ILine CreateLine();

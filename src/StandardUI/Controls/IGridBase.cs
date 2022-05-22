@@ -1,5 +1,6 @@
 namespace Microsoft.StandardUI.Controls   
 {
+    [UIModelObject]
     public interface IGridBase : IUIElement
     {
         /// <summary>

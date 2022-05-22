@@ -33,8 +33,8 @@ namespace Microsoft.StandardUI.Controls
                 int rowIndex = 0;
                 foreach (IUIElement child in tableColumns[columnIndex].Children)
                 {
-                    int columnSpan = child.GridColumnSpan().Clamp(1, columnCount - columnIndex);
-                    var rowSpan = child.GridRowSpan().Clamp(1, rowCount - rowIndex);
+                    int columnSpan = child.TableColumnSpan().Clamp(1, columnCount - columnIndex);
+                    var rowSpan = child.TableRowSpan().Clamp(1, rowCount - rowIndex);
 
                     // Skip any children that aren't visible
                     if (child.Visible)
