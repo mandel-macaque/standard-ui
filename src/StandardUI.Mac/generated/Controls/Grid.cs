@@ -5,12 +5,11 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class Grid : Panel, IGrid
+    public class Grid : GridBase, IGrid
     {
-        public static readonly UIProperty ColumnSpacingProperty = new UIProperty(nameof(ColumnSpacing), 0.0);
-        public static readonly UIProperty RowSpacingProperty = new UIProperty(nameof(RowSpacing), 0.0);
         public static readonly UIProperty ColumnDefinitionsProperty = new UIProperty(nameof(ColumnDefinitions), null, readOnly:true);
         public static readonly UIProperty RowDefinitionsProperty = new UIProperty(nameof(RowDefinitions), null, readOnly:true);
+        public static readonly UIProperty ChildrenProperty = new UIProperty(nameof(Children), null, readOnly:true);
         public static readonly AttachedUIProperty RowProperty = new AttachedUIProperty("Row", 0);
         public static readonly AttachedUIProperty ColumnProperty = new AttachedUIProperty("Column", 0);
         public static readonly AttachedUIProperty RowSpanProperty = new AttachedUIProperty("RowSpan", 1);
@@ -30,6 +29,7 @@ namespace Microsoft.StandardUI.Mac.Controls
         
         private UICollection<IColumnDefinition> _columnDefinitions;
         private UICollection<IRowDefinition> _rowDefinitions;
+        private UIElementCollection<Microsoft.StandardUI.IUIElement> _children;
         
         public Grid()
         {
@@ -37,18 +37,8 @@ namespace Microsoft.StandardUI.Mac.Controls
             SetValue(ColumnDefinitionsProperty, _columnDefinitions);
             _rowDefinitions = new UICollection<IRowDefinition>(this);
             SetValue(RowDefinitionsProperty, _rowDefinitions);
-        }
-        
-        public double ColumnSpacing
-        {
-            get => (double) GetValue(ColumnSpacingProperty);
-            set => SetValue(ColumnSpacingProperty, value);
-        }
-        
-        public double RowSpacing
-        {
-            get => (double) GetValue(RowSpacingProperty);
-            set => SetValue(RowSpacingProperty, value);
+            _children = new UIElementCollection<Microsoft.StandardUI.IUIElement>(this);
+            SetValue(ChildrenProperty, _children);
         }
         
         public UICollection<IColumnDefinition> ColumnDefinitions => _columnDefinitions;
@@ -56,5 +46,8 @@ namespace Microsoft.StandardUI.Mac.Controls
         
         public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
         IUICollection<IRowDefinition> IGrid.RowDefinitions => RowDefinitions;
+        
+        public UIElementCollection<Microsoft.StandardUI.IUIElement> Children => _children;
+        IUICollection<IUIElement> IPanel.Children => Children.ToStandardUIElementCollection();
     }
 }

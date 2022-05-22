@@ -9,18 +9,6 @@ namespace Microsoft.StandardUI.Controls
         private static readonly Lazy<IGridAttached> s_GridAttached = new Lazy<IGridAttached>(() => HostEnvironment.Factory.GridAttachedInstance);
         public static IGridAttached GridAttachedInstance => s_GridAttached.Value;
         
-        public static T ColumnSpacing<T>(this T grid, double value) where T : IGrid
-        {
-            grid.ColumnSpacing = value;
-            return grid;
-        }
-        
-        public static T RowSpacing<T>(this T grid, double value) where T : IGrid
-        {
-            grid.RowSpacing = value;
-            return grid;
-        }
-        
         public static T ColumnDefinitions<T>(this T grid, params IColumnDefinition[] value) where T : IGrid
         {
             grid.ColumnDefinitions.Set(value);
