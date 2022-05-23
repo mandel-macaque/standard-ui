@@ -1,8 +1,7 @@
 namespace Microsoft.StandardUI.Controls   
 {
     [UIModelObject]
-    public interface IRow : IRowDefinition
+    public interface IRow : IPanel, IRowDefinition
     {
-        IUICollection<IUIElement> Children { get; }
     }
 }

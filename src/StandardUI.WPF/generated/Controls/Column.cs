@@ -5,19 +5,31 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class Column : ColumnDefinition, IColumn
+    public class Column : Panel, IColumn
     {
-        public static readonly DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement>), typeof(Column), null);
+        public static readonly DependencyProperty WidthProperty = PropertyUtils.Register(nameof(Width), typeof(GridLength), typeof(ColumnDefinition), GridLength.Default);
+        public static readonly DependencyProperty MinWidthProperty = PropertyUtils.Register(nameof(MinWidth), typeof(double), typeof(ColumnDefinition), 0.0);
+        public static readonly DependencyProperty MaxWidthProperty = PropertyUtils.Register(nameof(MaxWidth), typeof(double), typeof(ColumnDefinition), double.PositiveInfinity);
+        public static readonly DependencyProperty ActualWidthProperty = PropertyUtils.Register(nameof(ActualWidth), typeof(double), typeof(ColumnDefinition), 0.0);
         
-        private UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement> _children;
-        
-        public Column()
+        public GridLength Width
         {
-            _children = new UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement>(this);
-            SetValue(ChildrenProperty, _children);
+            get => (GridLength) GetValue(WidthProperty);
+            set => SetValue(WidthProperty, value);
         }
         
-        public UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement> Children => _children;
-        IUICollection<IUIElement> IColumn.Children => Children.ToStandardUIElementCollection();
+        public double MinWidth
+        {
+            get => (double) GetValue(MinWidthProperty);
+            set => SetValue(MinWidthProperty, value);
+        }
+        
+        public double MaxWidth
+        {
+            get => (double) GetValue(MaxWidthProperty);
+            set => SetValue(MaxWidthProperty, value);
+        }
+        
+        public double ActualWidth => (double) GetValue(ActualWidthProperty);
     }
 }

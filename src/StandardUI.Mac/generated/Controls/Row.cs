@@ -5,19 +5,31 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class Row : RowDefinition, IRow
+    public class Row : Panel, IRow
     {
-        public static readonly UIProperty ChildrenProperty = new UIProperty(nameof(Children), null, readOnly:true);
+        public static readonly UIProperty HeightProperty = new UIProperty(nameof(Height), GridLength.Default);
+        public static readonly UIProperty MinHeightProperty = new UIProperty(nameof(MinHeight), 0.0);
+        public static readonly UIProperty MaxHeightProperty = new UIProperty(nameof(MaxHeight), double.PositiveInfinity);
+        public static readonly UIProperty ActualHeightProperty = new UIProperty(nameof(ActualHeight), 0.0, readOnly:true);
         
-        private UIElementCollection<Microsoft.StandardUI.IUIElement> _children;
-        
-        public Row()
+        public GridLength Height
         {
-            _children = new UIElementCollection<Microsoft.StandardUI.IUIElement>(this);
-            SetValue(ChildrenProperty, _children);
+            get => (GridLength) GetValue(HeightProperty);
+            set => SetValue(HeightProperty, value);
         }
         
-        public UIElementCollection<Microsoft.StandardUI.IUIElement> Children => _children;
-        IUICollection<IUIElement> IRow.Children => Children.ToStandardUIElementCollection();
+        public double MinHeight
+        {
+            get => (double) GetValue(MinHeightProperty);
+            set => SetValue(MinHeightProperty, value);
+        }
+        
+        public double MaxHeight
+        {
+            get => (double) GetValue(MaxHeightProperty);
+            set => SetValue(MaxHeightProperty, value);
+        }
+        
+        public double ActualHeight => (double) GetValue(ActualHeightProperty);
     }
 }

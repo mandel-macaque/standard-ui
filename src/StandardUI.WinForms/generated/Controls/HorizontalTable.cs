@@ -11,20 +11,20 @@ namespace Microsoft.StandardUI.WinForms.Controls
         public static readonly UIProperty ColumnsProperty = new UIProperty(nameof(Columns), null, readOnly:true);
         
         private UICollection<IRowDefinition> _rowDefinitions;
-        private UICollection<IColumn> _columns;
+        private UIElementCollection<Microsoft.StandardUI.Controls.IColumn> _columns;
         
         public HorizontalTable()
         {
             _rowDefinitions = new UICollection<IRowDefinition>(this);
             SetValue(RowDefinitionsProperty, _rowDefinitions);
-            _columns = new UICollection<IColumn>(this);
+            _columns = new UIElementCollection<Microsoft.StandardUI.Controls.IColumn>(this);
             SetValue(ColumnsProperty, _columns);
         }
         
         public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
         IUICollection<IRowDefinition> IHorizontalTable.RowDefinitions => RowDefinitions;
         
-        public UICollection<IColumn> Columns => _columns;
-        IUICollection<IColumn> IHorizontalTable.Columns => Columns;
+        public UIElementCollection<Microsoft.StandardUI.Controls.IColumn> Columns => _columns;
+        IUICollection<IColumn> IHorizontalTable.Columns => Columns.ToStandardUIElementCollection();
     }
 }

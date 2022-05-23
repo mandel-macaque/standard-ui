@@ -5,19 +5,31 @@ using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
-    public class Row : RowDefinition, IRow
+    public class Row : Panel, IRow
     {
-        public static readonly DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement>), typeof(Row), null);
+        public static readonly DependencyProperty HeightProperty = PropertyUtils.Register(nameof(Height), typeof(GridLength), typeof(RowDefinition), GridLength.Default);
+        public static readonly DependencyProperty MinHeightProperty = PropertyUtils.Register(nameof(MinHeight), typeof(double), typeof(RowDefinition), 0.0);
+        public static readonly DependencyProperty MaxHeightProperty = PropertyUtils.Register(nameof(MaxHeight), typeof(double), typeof(RowDefinition), double.PositiveInfinity);
+        public static readonly DependencyProperty ActualHeightProperty = PropertyUtils.Register(nameof(ActualHeight), typeof(double), typeof(RowDefinition), 0.0);
         
-        private UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement> _children;
-        
-        public Row()
+        public GridLength Height
         {
-            _children = new UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement>(this);
-            SetValue(ChildrenProperty, _children);
+            get => (GridLength) GetValue(HeightProperty);
+            set => SetValue(HeightProperty, value);
         }
         
-        public UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement> Children => _children;
-        IUICollection<IUIElement> IRow.Children => Children.ToStandardUIElementCollection();
+        public double MinHeight
+        {
+            get => (double) GetValue(MinHeightProperty);
+            set => SetValue(MinHeightProperty, value);
+        }
+        
+        public double MaxHeight
+        {
+            get => (double) GetValue(MaxHeightProperty);
+            set => SetValue(MaxHeightProperty, value);
+        }
+        
+        public double ActualHeight => (double) GetValue(ActualHeightProperty);
     }
 }

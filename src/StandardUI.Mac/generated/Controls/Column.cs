@@ -5,19 +5,31 @@ using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Mac.Controls
 {
-    public class Column : ColumnDefinition, IColumn
+    public class Column : Panel, IColumn
     {
-        public static readonly UIProperty ChildrenProperty = new UIProperty(nameof(Children), null, readOnly:true);
+        public static readonly UIProperty WidthProperty = new UIProperty(nameof(Width), GridLength.Default);
+        public static readonly UIProperty MinWidthProperty = new UIProperty(nameof(MinWidth), 0.0);
+        public static readonly UIProperty MaxWidthProperty = new UIProperty(nameof(MaxWidth), double.PositiveInfinity);
+        public static readonly UIProperty ActualWidthProperty = new UIProperty(nameof(ActualWidth), 0.0, readOnly:true);
         
-        private UIElementCollection<Microsoft.StandardUI.IUIElement> _children;
-        
-        public Column()
+        public GridLength Width
         {
-            _children = new UIElementCollection<Microsoft.StandardUI.IUIElement>(this);
-            SetValue(ChildrenProperty, _children);
+            get => (GridLength) GetValue(WidthProperty);
+            set => SetValue(WidthProperty, value);
         }
         
-        public UIElementCollection<Microsoft.StandardUI.IUIElement> Children => _children;
-        IUICollection<IUIElement> IColumn.Children => Children.ToStandardUIElementCollection();
+        public double MinWidth
+        {
+            get => (double) GetValue(MinWidthProperty);
+            set => SetValue(MinWidthProperty, value);
+        }
+        
+        public double MaxWidth
+        {
+            get => (double) GetValue(MaxWidthProperty);
+            set => SetValue(MaxWidthProperty, value);
+        }
+        
+        public double ActualWidth => (double) GetValue(ActualWidthProperty);
     }
 }

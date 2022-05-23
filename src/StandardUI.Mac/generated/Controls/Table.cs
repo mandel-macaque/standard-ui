@@ -19,20 +19,20 @@ namespace Microsoft.StandardUI.Mac.Controls
         public static void SetColumnSpan(StandardUIElement element, int value) => AttachedPropertiesValues.SetValue(element, ColumnSpanProperty, value);
         
         private UICollection<IColumnDefinition> _columnDefinitions;
-        private UICollection<IRow> _rows;
+        private UIElementCollection<Microsoft.StandardUI.Controls.IRow> _rows;
         
         public Table()
         {
             _columnDefinitions = new UICollection<IColumnDefinition>(this);
             SetValue(ColumnDefinitionsProperty, _columnDefinitions);
-            _rows = new UICollection<IRow>(this);
+            _rows = new UIElementCollection<Microsoft.StandardUI.Controls.IRow>(this);
             SetValue(RowsProperty, _rows);
         }
         
         public UICollection<IColumnDefinition> ColumnDefinitions => _columnDefinitions;
         IUICollection<IColumnDefinition> ITable.ColumnDefinitions => ColumnDefinitions;
         
-        public UICollection<IRow> Rows => _rows;
-        IUICollection<IRow> ITable.Rows => Rows;
+        public UIElementCollection<Microsoft.StandardUI.Controls.IRow> Rows => _rows;
+        IUICollection<IRow> ITable.Rows => Rows.ToStandardUIElementCollection();
     }
 }

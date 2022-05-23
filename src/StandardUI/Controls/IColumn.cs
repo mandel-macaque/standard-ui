@@ -1,8 +1,7 @@
 namespace Microsoft.StandardUI.Controls   
 {
     [UIModelObject]
-    public interface IColumn : IColumnDefinition
+    public interface IColumn : IPanel, IColumnDefinition
     {
-        IUICollection<IUIElement> Children { get; }
     }
 }

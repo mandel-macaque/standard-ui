@@ -5,7 +5,7 @@ namespace Microsoft.StandardUI.Controls
 {
     public class HorizontalTableLayoutManager : GridBaseLayoutManager<IHorizontalTable>
     {
-        public static TableLayoutManager Instance = new TableLayoutManager();
+        public static HorizontalTableLayoutManager Instance = new HorizontalTableLayoutManager();
 
         override internal GridInfo CreateGridInfo(IHorizontalTable table, double widthConstraint, double heightConstraint)
         {
