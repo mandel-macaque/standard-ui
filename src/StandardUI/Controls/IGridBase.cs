@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Microsoft.StandardUI.Controls   
 {
     [UIModelObject]

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI.Media
+using System.ComponentModel;
+
+namespace Microsoft.StandardUI.Media
 {
     [UIModelObject]
     public interface IGradientBrush : IBrush

@@ -39,7 +39,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             foreach (AttributeData attribute in attributes)
             {
                 var attributeTypeFullName = Utils.GetTypeFullName(attribute.AttributeClass!);
-                if (attributeTypeFullName != "Microsoft.StandardUI.DefaultValueAttribute")
+                if (attributeTypeFullName != "System.ComponentModel.DefaultValueAttribute")
                     continue;
 
                 ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;

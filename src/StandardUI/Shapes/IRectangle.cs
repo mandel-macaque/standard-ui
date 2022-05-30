@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI.Shapes
+using System.ComponentModel;
+
+namespace Microsoft.StandardUI.Shapes
 {
     [UIModelObject]
     public interface IRectangle : IShape

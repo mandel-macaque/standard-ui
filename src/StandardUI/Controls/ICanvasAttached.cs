@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI.Controls
+using System.ComponentModel;
+
+namespace Microsoft.StandardUI.Controls
 {
     [UIModelObject]
     public interface ICanvasAttached

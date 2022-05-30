@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI
+using System.ComponentModel;
+
+namespace Microsoft.StandardUI
 {
     /// <summary>
     /// Represents the path to a property on a target element.

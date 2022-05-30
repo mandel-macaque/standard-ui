@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI
+using System.ComponentModel;
+
+namespace Microsoft.StandardUI
 {
     [UIModelObject]
     public interface ISetter : IUIObject

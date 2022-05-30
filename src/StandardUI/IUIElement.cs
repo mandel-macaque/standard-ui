@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Microsoft.StandardUI
 {
     public interface IUIElement : IUIObject
