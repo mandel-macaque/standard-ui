@@ -27,8 +27,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public virtual void AddTypeAliasUsingIfNeeded(Usings usings, string destinationtypeFullName) { }
 
+        public virtual void GenerateAttributes(Interface intface, ClassSource classSource) { }
         public abstract void GenerateProperty(Property property, ClassSource classSource);
-
         public virtual void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers) { }
         public virtual void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods) { }
         public virtual void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods) { }

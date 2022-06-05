@@ -9,6 +9,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string ProjectBaseDirectory => "StandardUI.XamarinForms";
         public override string RootNamespace => "Microsoft.StandardUI.XamarinForms";
         public override string DependencyPropertyType => "BindableProperty";
+        public override string ContentPropertyAttributeNamespace => "Xamarin.Forms";
+
         public override string FrameworkTypeForUIElementAttachedTarget => "VisualElement";
         public override string NativeUIElementType => "Xamarin.Forms.View";
         public override string WrapperSuffix => "XamarinForms";

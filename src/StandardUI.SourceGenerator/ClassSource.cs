@@ -9,6 +9,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Usings Usings { get; }
 
         public string GeneratedFrom { get; }
+
+        public Source Attributes { get; }
         public string NamespaceName { get; }
         public string ClassName { get; }
         public string DerivedFrom { get; }
@@ -26,9 +28,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             Usings = new Usings(context, namespaceName);
 
             GeneratedFrom = generatedFrom;
-            DerivedFrom = derivedFrom;
+
+            Attributes = new Source(context, Usings);
             NamespaceName = namespaceName;
             ClassName = className;
+            DerivedFrom = derivedFrom;
 
             StaticFields = new Source(context, Usings);
             NonstaticFields = new Source(context, Usings);
@@ -89,6 +93,8 @@ namespace Microsoft.StandardUI.SourceGenerator
                     classBody.AddSource(NonstaticMethods);
                 }
 
+                if (! Attributes.IsEmpty)
+                    fileSource.AddSource(Attributes);
                 fileSource.AddLines(
                     $"public class {ClassName} : {DerivedFrom}",
                     "{");

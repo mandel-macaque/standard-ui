@@ -30,6 +30,15 @@ namespace Microsoft.StandardUI.SourceGenerator
             CreateError(6, message: $"Property {fullPropertyName} has no [DefaultValue] attribute nor hardcoded default",
                 GetLocation(symbol));
 
+
+        public static UserViewableException AttributeShouldHaveSingleArgument(ISymbol symbol, string attributeName) =>
+            CreateError(7, message: $"{symbol.Name} should have a single argument for the [{attributeName}] attribute",
+                GetLocation(symbol));
+
+        public static UserViewableException AttributeShouldHaveAStringArgument(ISymbol symbol, string attributeName) =>
+            CreateError(8, message: $"{symbol.Name} should have a string value for the [{attributeName}] attribute",
+                GetLocation(symbol));
+
         public static string InternalErrorId = ErrorIdFromInt(99);
 
         public static Location? GetLocation(ISymbol symbol)

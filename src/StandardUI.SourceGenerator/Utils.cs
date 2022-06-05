@@ -37,7 +37,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 bool firstArgument = true;
                 foreach (ITypeSymbol typeArgument in namedType.TypeArguments)
                 {
-                    if (! firstArgument)
+                    if (!firstArgument)
                         buffer.Append(",");
                     buffer.Append(typeArgument.Name);
 
@@ -126,7 +126,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public static string GetInterfaceVariableName(ITypeSymbol typeSymbol)
         {
             var name = typeSymbol.Name;
-            if (! name.StartsWith("I"))
+            if (!name.StartsWith("I"))
             {
                 throw new InvalidOperationException($"Type name {name}, which should be an interface, unexpectedly doesn't start with an 'I'");
             }
@@ -197,7 +197,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             elementType = context.VoidType;
 
-            if (! IsThisType(type, KnownTypes.IUICollection))
+            if (!IsThisType(type, KnownTypes.IUICollection))
                 return false;
 
             if (type is not INamedTypeSymbol namedTypeSymbol)
@@ -233,6 +233,61 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (namespaceName.StartsWith(prefix))
                 return namespaceName.Substring(prefix.Length);
             else throw new InvalidOperationException($"namespace {namespaceName} doesn't start with '{rootNamespace}' as expected");
+        }
+
+        /// <summary>
+        /// Get the value (the single constructor argument) for the specified attribute or null if the
+        /// attribute isn't present. If the attribute has multiple constructor arguments, that's
+        /// treated as an error.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="attributeTypeName"></param>
+        /// <returns></returns>
+        /// <exception cref="UserViewableException"></exception>
+        public static TypedConstant? GetAttributeValue(ISymbol symbol, string attributeTypeName)
+        {
+            ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
+            foreach (AttributeData attribute in attributes)
+            {
+                var attributeTypeFullName = Utils.GetTypeFullName(attribute.AttributeClass!);
+                if (attributeTypeFullName != attributeTypeName)
+                    continue;
+
+                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
+
+                if (constructorArguments.Length != 1)
+                    throw UserVisibleErrors.AttributeShouldHaveSingleArgument(symbol, attributeTypeName);
+
+                return constructorArguments[0];
+            }
+
+            return null;
+        }
+
+        public static string? GetAttributeStringValue(ISymbol symbol, string attributeTypeName)
+        {
+            object? value = Utils.GetAttributeValue(symbol, attributeTypeName)?.Value;
+            if (value == null)
+                return null;
+
+            if (value is not string stringValue)
+                throw new UserViewableException($"{symbol.Name} should have a string value for the [{GetAttributeName(attributeTypeName)}] attribute");
+
+            return stringValue;
+        }
+
+        public static string GetAttributeName(string attributeTypeName)
+        {
+            string attributeName = attributeTypeName;
+
+            int lastPeriodIndex = attributeName.LastIndexOf('.');
+            if (lastPeriodIndex != -1)
+                attributeName = attributeName.Substring(lastPeriodIndex + 1);
+
+            if (attributeName.EndsWith("Attribute"))
+                attributeName = attributeName.Substring(0, attributeName.Length - "Attribute".Length);
+
+            return attributeName;
         }
     }
 }

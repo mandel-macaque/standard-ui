@@ -10,9 +10,19 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public virtual string? DependencyPropertyTypeAlias => null;
         public abstract string DependencyPropertyType { get; }
+        public abstract string ContentPropertyAttributeNamespace { get; }
 
         public override string UIElementCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{NativeUIElementType},{elementType}>";
         public override string UIElementSubtypeCollectionOutputTypeName(ITypeSymbol elementType) => $"UIElementCollection<{OutputTypeName(elementType)},{elementType.Name}>";
+
+        public override void GenerateAttributes(Interface intface, ClassSource classSource)
+        {
+            if (intface.ContentPropertyName != null)
+            {
+                classSource.Attributes.Usings.AddNamespace(ContentPropertyAttributeNamespace);
+                classSource.Attributes.AddLine($"[ContentProperty(\"{intface.ContentPropertyName}\")]");
+            }
+        }
 
         public override void GenerateProperty(Property property, ClassSource classSource)
         {

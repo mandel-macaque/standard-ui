@@ -12,5 +12,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         public const string UIModelAttribute = "Microsoft.StandardUI.UIModelObjectAttribute";
         public const string StandardPanelAttribute = "Microsoft.StandardUI.StandardPanelAttribute";
         public const string StandardControlAttribute = "Microsoft.StandardUI.StandardControlAttribute";
+
+        public const string DefaultValueAttribute = "System.ComponentModel.DefaultValueAttribute";
+        public const string ContentPropertyAttribute = "Microsoft.ComponentModelEx.ContentPropertyAttribute";
     }
 }

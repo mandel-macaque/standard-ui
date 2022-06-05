@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -18,6 +19,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string VariableName { get; }
         public INamedTypeSymbol? LayoutManagerType { get; }
         public INamedTypeSymbol? StandardControlImpelementationType { get; }
+        public string? ContentPropertyName { get; }
 
         public bool IsThisType(string typeName) => Utils.IsThisType(Type, typeName);
 
@@ -109,6 +111,9 @@ namespace Microsoft.StandardUI.SourceGenerator
                 if (StandardControlImpelementationType == null)
                     throw UserVisibleErrors.NoLayoutManagerClassFound(standardControlImplementationFullName, Name);
             }
+
+            // Get content property name or null
+            ContentPropertyName = Utils.GetAttributeStringValue(type, KnownTypes.ContentPropertyAttribute);
         }
 
         public void Generate(UIFramework uiFramework)
@@ -130,6 +135,8 @@ namespace Microsoft.StandardUI.SourceGenerator
                 namespaceName:frameworkNamespaceName,
                 className:FrameworkClassName,
                 derivedFrom:mainClassDerviedFrom);
+
+            uiFramework.GenerateAttributes(this, mainClassSource);
 
             // Add the property descriptors and accessors
             GenerateTypeProperties(this, uiFramework, properties, mainClassSource);

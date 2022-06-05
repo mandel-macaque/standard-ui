@@ -1,10 +1,12 @@
 // This file is generated from IPanel.cs. Update the source file to change its contents.
 
+using System.Windows.Markup;
 using Microsoft.StandardUI.Controls;
 using DependencyProperty = System.Windows.DependencyProperty;
 
 namespace Microsoft.StandardUI.Wpf.Controls
 {
+    [ContentProperty("Children")]
     public class Panel : BuiltInUIElement, IPanel
     {
         public static readonly DependencyProperty ChildrenProperty = PropertyUtils.Register(nameof(Children), typeof(UIElementCollection<System.Windows.FrameworkElement,Microsoft.StandardUI.IUIElement>), typeof(Panel), null);

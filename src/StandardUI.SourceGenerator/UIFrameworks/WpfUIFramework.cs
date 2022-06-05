@@ -10,6 +10,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string RootNamespace => "Microsoft.StandardUI.Wpf";
         public override string? DependencyPropertyTypeAlias => "DependencyProperty = System.Windows.DependencyProperty";
         public override string DependencyPropertyType => "DependencyProperty";
+        public override string ContentPropertyAttributeNamespace => "System.Windows.Markup";
+
         public override string FrameworkTypeForUIElementAttachedTarget => "System.Windows.UIElement";
         public override string NativeUIElementType => "System.Windows.FrameworkElement";
         public override string WrapperSuffix => "Wpf";

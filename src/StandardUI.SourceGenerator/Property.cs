@@ -10,7 +10,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             base(context, intface, propertySymbol, propertySymbol.Name, propertySymbol.Type, propertySymbol.IsReadOnly, intface.Name)
         {
             PropertySymbol = propertySymbol;
-            SpecifiedDefaultValue = GetSpecifiedDefaultValue(propertySymbol.GetAttributes());
+            SpecifiedDefaultValue = GetSpecifiedDefaultValue(propertySymbol);
         }
 
         public void GenerateExtensionClassMethods(Source source)

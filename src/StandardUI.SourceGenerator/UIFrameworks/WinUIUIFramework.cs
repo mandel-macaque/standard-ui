@@ -10,10 +10,21 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string RootNamespace => "Microsoft.StandardUI.WinUI";
         public override string? DependencyPropertyTypeAlias => "DependencyProperty = Microsoft.UI.Xaml.DependencyProperty";
         public override string DependencyPropertyType => "DependencyProperty";
+        public override string ContentPropertyAttributeNamespace => "Microsoft.UI.Xaml.Markup";
+
         public override string FrameworkTypeForUIElementAttachedTarget => "Microsoft.UI.Xaml.FrameworkElement";
         public override string NativeUIElementType => "Microsoft.UI.Xaml.FrameworkElement";
         public override string WrapperSuffix => "WinUI";
         protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";
+
+        public override void GenerateAttributes(Interface intface, ClassSource classSource)
+        {
+            if (intface.ContentPropertyName != null)
+            {
+                classSource.Attributes.Usings.AddNamespace(ContentPropertyAttributeNamespace);
+                classSource.Attributes.AddLine($"[ContentProperty(Name = \"{intface.ContentPropertyName}\")]");
+            }
+        }
 
         public override void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods)
         {

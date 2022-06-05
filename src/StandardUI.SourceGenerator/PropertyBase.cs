@@ -34,22 +34,6 @@ namespace Microsoft.StandardUI.SourceGenerator
         public bool IsUICollection => UICollectionElementType != null;
         public string UICollectionElementTypeName => Utils.ToTypeName(UICollectionElementType!);
 
-        public TypedConstant? GetSpecifiedDefaultValue(ImmutableArray<AttributeData> attributes)
-        {
-            foreach (AttributeData attribute in attributes)
-            {
-                var attributeTypeFullName = Utils.GetTypeFullName(attribute.AttributeClass!);
-                if (attributeTypeFullName != "System.ComponentModel.DefaultValueAttribute")
-                    continue;
-
-                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
-
-                if (constructorArguments.Length != 1)
-                    throw new UserViewableException($"Property {FullPropertyName} should have a single argument for the [DefaultValue] attribute");
-                return constructorArguments[0];
-            }
-
-            return null;
-        }
+        public TypedConstant? GetSpecifiedDefaultValue(ISymbol symbol) => Utils.GetAttributeValue(symbol, KnownTypes.DefaultValueAttribute);
     }
 }

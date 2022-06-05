@@ -26,7 +26,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             TargetType = targetParameter.Type;
             TargetTypeName = Utils.ToTypeName(TargetType);
             TargetParameterName = targetParameter.Name;
-            SpecifiedDefaultValue = GetSpecifiedDefaultValue(getterMethod.GetAttributes());
+            SpecifiedDefaultValue = GetSpecifiedDefaultValue(getterMethod);
 
             if (setterMethod != null && setterMethod.Parameters.Length != 2)
             {
