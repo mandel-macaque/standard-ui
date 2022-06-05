@@ -29,9 +29,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public virtual void GenerateAttributes(Interface intface, ClassSource classSource) { }
         public abstract void GenerateProperty(Property property, ClassSource classSource);
-        public virtual void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers) { }
-        public virtual void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods) { }
-        public virtual void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods) { }
+        public abstract void GenerateAttachedProperty(AttachedProperty attachedProperty, ClassSource mainClassSource, ClassSource attachedClassSource);
+
         public virtual void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods) { }
         public virtual void GeneratePanelMethods(Source methods) { }
         public virtual void GenerateDrawableObjectMethods(Interface intface, Source methods) { }

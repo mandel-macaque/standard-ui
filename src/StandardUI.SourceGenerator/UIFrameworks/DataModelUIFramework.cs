@@ -19,5 +19,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override void GenerateProperty(Property property, ClassSource classSource)
         {
         }
+
+        public override void GenerateAttachedProperty(AttachedProperty attachedProperty, ClassSource mainClassSource, ClassSource attachedClassSource)
+        {
+        }
     }
 }

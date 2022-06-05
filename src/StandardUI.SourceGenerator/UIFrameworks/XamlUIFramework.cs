@@ -53,24 +53,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             GeneratePropertyMethods(property, classSource.NonstaticMethods);
         }
 
-        public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
-        {
-            string? usingTypeAlias = DependencyPropertyTypeAlias;
-            if (usingTypeAlias != null)
-            {
-                staticMembers.Usings.AddTypeAlias(usingTypeAlias);
-            }
-
-            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
-            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
-            string nonNullablePropertyType = Utils.ToNonnullableType(propertyOutputTypeName);
-            string descriptorName = PropertyDescriptorName(attachedProperty);
-            string defaultValue = DefaultValue(attachedProperty);
-
-            staticMembers.AddLine(
-                $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.RegisterAttached(\"{attachedProperty.Name}\", typeof({nonNullablePropertyType}), typeof({targetOutputTypeName}), {defaultValue});");
-        }
-
         private void GeneratePropertyMethods(Property property, Source source)
         {
             var usings = source.Usings;
@@ -176,37 +158,30 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             }
         }
 
-        public override void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods)
+        public override void GenerateAttachedProperty(AttachedProperty attachedProperty, ClassSource mainClassSource, ClassSource attachedClassSource)
         {
-            methods.AddBlankLineIfNonempty();
+            string? usingTypeAlias = DependencyPropertyTypeAlias;
+            if (usingTypeAlias != null)
+                mainClassSource.Usings.AddTypeAlias(usingTypeAlias);
+
+            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
+            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
+            string nonNullablePropertyType = Utils.ToNonnullableType(propertyOutputTypeName);
             string descriptorName = PropertyDescriptorName(attachedProperty);
-            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
-            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
+            string defaultValue = DefaultValue(attachedProperty);
 
-            methods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) {attachedProperty.TargetParameterName}.GetValue({descriptorName});");
+            mainClassSource.StaticFields.AddLine(
+                $"public static readonly {DependencyPropertyType} {descriptorName} = PropertyUtils.RegisterAttached(\"{attachedProperty.Name}\", typeof({nonNullablePropertyType}), typeof({targetOutputTypeName}), {defaultValue});");
 
+            mainClassSource.StaticMethods.AddBlankLineIfNonempty();
+            mainClassSource.StaticMethods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) {attachedProperty.TargetParameterName}.GetValue({descriptorName});");
             if (attachedProperty.SetterMethod != null)
-                methods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.TargetParameterName}.SetValue({descriptorName}, value);");
+                mainClassSource.StaticMethods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.TargetParameterName}.SetValue({descriptorName}, value);");
 
-#if LATER
-            //if (!includeXmlComment)
-            propertyDeclaration = propertyDeclaration.WithLeadingTrivia(
-                    TriviaList(propertyDeclaration.GetLeadingTrivia()
-                        .Insert(0, CarriageReturnLineFeed)
-                        .Insert(0, CarriageReturnLineFeed)));
-#endif
-        }
-
-        public override void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods)
-        {
-            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
-            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
-            bool classPropertyTypeDiffersFromInterface = attachedProperty.Type.ToString() != propertyOutputTypeName;
-
-            methods.AddBlankLineIfNonempty();
-            methods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
+            attachedClassSource.NonstaticMethods.AddBlankLineIfNonempty();
+            attachedClassSource.NonstaticMethods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
             if (attachedProperty.SetterMethod != null)
-                methods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
+                attachedClassSource.NonstaticMethods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
         }
 
         public override bool IsWrappedType(ITypeSymbol type)

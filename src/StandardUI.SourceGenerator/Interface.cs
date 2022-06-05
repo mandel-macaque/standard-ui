@@ -188,10 +188,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     IMethodSymbol? setterMethod = (IMethodSymbol?) AttachedType.GetMembers(setterMethodName).FirstOrDefault();
 
                     var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
-
-                    uiFramework.GenerateAttachedPropertyDescriptor(attachedProperty, mainClassSource.StaticFields);
-                    uiFramework.GenerateAttachedPropertyMethods(attachedProperty, mainClassSource.StaticMethods);
-                    uiFramework.GenerateAttachedPropertyAttachedClassMethods(attachedProperty, attachedClassSource.NonstaticMethods);
+                    uiFramework.GenerateAttachedProperty(attachedProperty, mainClassSource, attachedClassSource);
                 }
             }
 

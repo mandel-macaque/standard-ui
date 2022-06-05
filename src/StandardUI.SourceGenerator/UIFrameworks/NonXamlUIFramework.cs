@@ -31,16 +31,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             GeneratePropertyMethods(property, classSource.NonstaticMethods);
         }
 
-        public override void GenerateAttachedPropertyDescriptor(AttachedProperty attachedProperty, Source staticMembers)
-        {
-            // Add using for AttachedUIProperty
-            staticMembers.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
-
-            string readOnlyParam = attachedProperty.IsReadOnly ? ", readOnly:true" : "";
-            staticMembers.AddLine(
-                $"public static readonly AttachedUIProperty {PropertyDescriptorName(attachedProperty)} = new AttachedUIProperty(\"{attachedProperty.Name}\", {DefaultValue(attachedProperty)}{readOnlyParam});");
-        }
-
         private void GeneratePropertyMethods(Property property, Source source)
         {
             var usings = source.Usings;
@@ -146,37 +136,28 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             }
         }
 
-        public override void GenerateAttachedPropertyMethods(AttachedProperty attachedProperty, Source methods)
+        public override void GenerateAttachedProperty(AttachedProperty attachedProperty, ClassSource mainClassSource, ClassSource attachedClassSource)
         {
-            methods.AddBlankLineIfNonempty();
+            // Add using for AttachedUIProperty
+            mainClassSource.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
+
             string descriptorName = PropertyDescriptorName(attachedProperty);
             string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
             string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
 
-            methods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) AttachedPropertiesValues.GetValue({attachedProperty.TargetParameterName}, {descriptorName});");
+            string readOnlyParam = attachedProperty.IsReadOnly ? ", readOnly:true" : "";
+            mainClassSource.StaticFields.AddLine(
+                $"public static readonly AttachedUIProperty {PropertyDescriptorName(attachedProperty)} = new AttachedUIProperty(\"{attachedProperty.Name}\", {DefaultValue(attachedProperty)}{readOnlyParam});");
 
+            mainClassSource.StaticMethods.AddBlankLineIfNonempty();
+            mainClassSource.StaticMethods.AddLine($"public static {propertyOutputTypeName} Get{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}) => ({propertyOutputTypeName}) AttachedPropertiesValues.GetValue({attachedProperty.TargetParameterName}, {descriptorName});");
             if (attachedProperty.SetterMethod != null)
-                methods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => AttachedPropertiesValues.SetValue({attachedProperty.TargetParameterName}, {descriptorName}, value);");
+                mainClassSource.StaticMethods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => AttachedPropertiesValues.SetValue({attachedProperty.TargetParameterName}, {descriptorName}, value);");
 
-#if LATER
-            //if (!includeXmlComment)
-            propertyDeclaration = propertyDeclaration.WithLeadingTrivia(
-                    TriviaList(propertyDeclaration.GetLeadingTrivia()
-                        .Insert(0, CarriageReturnLineFeed)
-                        .Insert(0, CarriageReturnLineFeed)));
-#endif
-        }
-
-        public override void GenerateAttachedPropertyAttachedClassMethods(AttachedProperty attachedProperty, Source methods)
-        {
-            string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
-            string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
-            bool classPropertyTypeDiffersFromInterface = attachedProperty.Type.ToString() != propertyOutputTypeName;
-
-            methods.AddBlankLineIfNonempty();
-            methods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
+            attachedClassSource.NonstaticMethods.AddBlankLineIfNonempty();
+            attachedClassSource.NonstaticMethods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
             if (attachedProperty.SetterMethod != null)
-                methods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
+                attachedClassSource.NonstaticMethods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
         }
     }
 }
