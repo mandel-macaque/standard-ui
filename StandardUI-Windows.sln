@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsSamplesHost", "samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleControls", "samples\controls\SimpleControls\SimpleControls.csproj", "{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{7A42AC94-2253-4EBF-9A8D-047D903E6A48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.ComponentModelEx", "external\component-model-ex\src\Microsoft.ComponentModelEx\Microsoft.ComponentModelEx.csproj", "{A3FD54C6-4006-4B77-9EC7-A809DD54B307}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -239,6 +243,22 @@ Global
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174}.Release|x64.Build.0 = Release|Any CPU
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174}.Release|x86.ActiveCfg = Release|Any CPU
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174}.Release|x86.Build.0 = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|arm64.Build.0 = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|x64.Build.0 = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Debug|x86.Build.0 = Debug|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|arm64.ActiveCfg = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|arm64.Build.0 = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|x64.ActiveCfg = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|x64.Build.0 = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +271,7 @@ Global
 		{07126363-8A68-433A-8CE0-E630DBF6A251} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
 		{BBDE2BA0-D7E7-483F-847D-7EF27CF7C3C3} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174} = {9FA8F699-79F5-48DB-A2D9-717CE875C5F0}
+		{A3FD54C6-4006-4B77-9EC7-A809DD54B307} = {7A42AC94-2253-4EBF-9A8D-047D903E6A48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5981247F-FDA6-460F-8B83-6AFBEE114226}
