@@ -8,10 +8,10 @@ namespace Microsoft.StandardUI.WinUI.Controls
     {
         public static CanvasAttached Instance = new CanvasAttached();
         
-        public double GetLeft(IUIElement element) => Canvas.GetLeft((Microsoft.UI.Xaml.FrameworkElement) element);
-        public void SetLeft(IUIElement element, double value) => Canvas.SetLeft((Microsoft.UI.Xaml.FrameworkElement) element, value);
+        public double GetLeft(IUIElement element) => Canvas.GetLeft(element.ToFrameworkElement());
+        public void SetLeft(IUIElement element, double value) => Canvas.SetLeft(element.ToFrameworkElement(), value);
         
-        public double GetTop(IUIElement element) => Canvas.GetTop((Microsoft.UI.Xaml.FrameworkElement) element);
-        public void SetTop(IUIElement element, double value) => Canvas.SetTop((Microsoft.UI.Xaml.FrameworkElement) element, value);
+        public double GetTop(IUIElement element) => Canvas.GetTop(element.ToFrameworkElement());
+        public void SetTop(IUIElement element, double value) => Canvas.SetTop(element.ToFrameworkElement(), value);
     }
 }

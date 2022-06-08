@@ -13,6 +13,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string ContentPropertyAttributeNamespace => "Microsoft.UI.Xaml.Markup";
 
         public override string FrameworkTypeForUIElementAttachedTarget => "Microsoft.UI.Xaml.FrameworkElement";
+        public override string ToFrameworkTypeForUIElementAttachedTarget => "ToFrameworkElement";
         public override string NativeUIElementType => "Microsoft.UI.Xaml.FrameworkElement";
         public override string WrapperSuffix => "WinUI";
         protected override string FontFamilyDefaultValue => "FontFamilyExtensions.DefaultFontFamily";

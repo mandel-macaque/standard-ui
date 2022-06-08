@@ -8,16 +8,16 @@ namespace Microsoft.StandardUI.Wpf.Controls
     {
         public static GridAttached Instance = new GridAttached();
         
-        public int GetRow(IUIElement element) => Grid.GetRow((System.Windows.UIElement) element);
-        public void SetRow(IUIElement element, int value) => Grid.SetRow((System.Windows.UIElement) element, value);
+        public int GetRow(IUIElement element) => Grid.GetRow(element.ToWpfUIElement());
+        public void SetRow(IUIElement element, int value) => Grid.SetRow(element.ToWpfUIElement(), value);
         
-        public int GetColumn(IUIElement element) => Grid.GetColumn((System.Windows.UIElement) element);
-        public void SetColumn(IUIElement element, int value) => Grid.SetColumn((System.Windows.UIElement) element, value);
+        public int GetColumn(IUIElement element) => Grid.GetColumn(element.ToWpfUIElement());
+        public void SetColumn(IUIElement element, int value) => Grid.SetColumn(element.ToWpfUIElement(), value);
         
-        public int GetRowSpan(IUIElement element) => Grid.GetRowSpan((System.Windows.UIElement) element);
-        public void SetRowSpan(IUIElement element, int value) => Grid.SetRowSpan((System.Windows.UIElement) element, value);
+        public int GetRowSpan(IUIElement element) => Grid.GetRowSpan(element.ToWpfUIElement());
+        public void SetRowSpan(IUIElement element, int value) => Grid.SetRowSpan(element.ToWpfUIElement(), value);
         
-        public int GetColumnSpan(IUIElement element) => Grid.GetColumnSpan((System.Windows.UIElement) element);
-        public void SetColumnSpan(IUIElement element, int value) => Grid.SetColumnSpan((System.Windows.UIElement) element, value);
+        public int GetColumnSpan(IUIElement element) => Grid.GetColumnSpan(element.ToWpfUIElement());
+        public void SetColumnSpan(IUIElement element, int value) => Grid.SetColumnSpan(element.ToWpfUIElement(), value);
     }
 }

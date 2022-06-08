@@ -8,10 +8,10 @@ namespace Microsoft.StandardUI.WinUI.Controls
     {
         public static TableAttached Instance = new TableAttached();
         
-        public int GetRowSpan(IUIElement element) => Table.GetRowSpan((Microsoft.UI.Xaml.FrameworkElement) element);
-        public void SetRowSpan(IUIElement element, int value) => Table.SetRowSpan((Microsoft.UI.Xaml.FrameworkElement) element, value);
+        public int GetRowSpan(IUIElement element) => Table.GetRowSpan(element.ToFrameworkElement());
+        public void SetRowSpan(IUIElement element, int value) => Table.SetRowSpan(element.ToFrameworkElement(), value);
         
-        public int GetColumnSpan(IUIElement element) => Table.GetColumnSpan((Microsoft.UI.Xaml.FrameworkElement) element);
-        public void SetColumnSpan(IUIElement element, int value) => Table.SetColumnSpan((Microsoft.UI.Xaml.FrameworkElement) element, value);
+        public int GetColumnSpan(IUIElement element) => Table.GetColumnSpan(element.ToFrameworkElement());
+        public void SetColumnSpan(IUIElement element, int value) => Table.SetColumnSpan(element.ToFrameworkElement(), value);
     }
 }

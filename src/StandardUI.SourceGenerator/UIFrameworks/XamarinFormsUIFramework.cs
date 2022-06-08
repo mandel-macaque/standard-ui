@@ -12,6 +12,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public override string ContentPropertyAttributeNamespace => "Xamarin.Forms";
 
         public override string FrameworkTypeForUIElementAttachedTarget => "VisualElement";
+        public override string ToFrameworkTypeForUIElementAttachedTarget => "ToVisualElement";
         public override string NativeUIElementType => "Xamarin.Forms.View";
         public override string WrapperSuffix => "XamarinForms";
         protected override string FontFamilyDefaultValue => throw new System.NotImplementedException();

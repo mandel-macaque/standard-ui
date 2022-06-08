@@ -8,10 +8,10 @@ namespace Microsoft.StandardUI.Wpf.Controls
     {
         public static CanvasAttached Instance = new CanvasAttached();
         
-        public double GetLeft(IUIElement element) => Canvas.GetLeft((System.Windows.UIElement) element);
-        public void SetLeft(IUIElement element, double value) => Canvas.SetLeft((System.Windows.UIElement) element, value);
+        public double GetLeft(IUIElement element) => Canvas.GetLeft(element.ToWpfUIElement());
+        public void SetLeft(IUIElement element, double value) => Canvas.SetLeft(element.ToWpfUIElement(), value);
         
-        public double GetTop(IUIElement element) => Canvas.GetTop((System.Windows.UIElement) element);
-        public void SetTop(IUIElement element, double value) => Canvas.SetTop((System.Windows.UIElement) element, value);
+        public double GetTop(IUIElement element) => Canvas.GetTop(element.ToWpfUIElement());
+        public void SetTop(IUIElement element, double value) => Canvas.SetTop(element.ToWpfUIElement(), value);
     }
 }

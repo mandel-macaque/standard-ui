@@ -7,7 +7,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         protected XamlUIFramework(Context context) : base(context)
         {
         }
-
+        public abstract string ToFrameworkTypeForUIElementAttachedTarget { get; }
         public virtual string? DependencyPropertyTypeAlias => null;
         public abstract string DependencyPropertyType { get; }
         public abstract string ContentPropertyAttributeNamespace { get; }
@@ -164,6 +164,10 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             if (usingTypeAlias != null)
                 mainClassSource.Usings.AddTypeAlias(usingTypeAlias);
 
+            string parameterAsAttachedTargetType = Utils.IsThisType(attachedProperty.TargetType, KnownTypes.IUIElement) ?
+                $"{attachedProperty.TargetParameterName}.{ToFrameworkTypeForUIElementAttachedTarget}()" :
+                $"({OutputTypeName(attachedProperty.TargetType)}) {attachedProperty.TargetParameterName}";
+
             string targetOutputTypeName = AttachedTargetOutputTypeName(attachedProperty);
             string propertyOutputTypeName = PropertyOutputTypeName(attachedProperty);
             string nonNullablePropertyType = Utils.ToNonnullableType(propertyOutputTypeName);
@@ -179,9 +183,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 mainClassSource.StaticMethods.AddLine($"public static void Set{attachedProperty.Name}({targetOutputTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.TargetParameterName}.SetValue({descriptorName}, value);");
 
             attachedClassSource.NonstaticMethods.AddBlankLineIfNonempty();
-            attachedClassSource.NonstaticMethods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName});");
+            attachedClassSource.NonstaticMethods.AddLine($"public {propertyOutputTypeName} Get{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}) => {attachedProperty.Interface.FrameworkClassName}.Get{attachedProperty.Name}({parameterAsAttachedTargetType});");
             if (attachedProperty.SetterMethod != null)
-                attachedClassSource.NonstaticMethods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}(({targetOutputTypeName}) {attachedProperty.TargetParameterName}, value);");
+                attachedClassSource.NonstaticMethods.AddLine($"public void Set{attachedProperty.Name}({attachedProperty.TargetTypeName} {attachedProperty.TargetParameterName}, {propertyOutputTypeName} value) => {attachedProperty.Interface.FrameworkClassName}.Set{attachedProperty.Name}({parameterAsAttachedTargetType}, value);");
         }
 
         public override bool IsWrappedType(ITypeSymbol type)
