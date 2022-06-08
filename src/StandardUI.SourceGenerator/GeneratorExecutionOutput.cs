@@ -18,7 +18,8 @@ namespace Microsoft.StandardUI.SourceGenerator
             using (var stringWriter = new StringWriter())
             {
                 source.Write(stringWriter);
-                SourceProductionContext.AddSource(fileName + ".cs", stringWriter.ToString());
+                string sourceFileContents = stringWriter.ToString();
+                SourceProductionContext.AddSource(fileName + ".cs", sourceFileContents);
             }
         }
     }

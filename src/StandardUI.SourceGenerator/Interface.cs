@@ -85,7 +85,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 throw UserVisibleErrors.StandardUIInterfaceMustStartWithI(type);
 
             InterfacePurpose? purpose = IdentifyPurpose(type);
-            if (! purpose.HasValue)
+            if (!purpose.HasValue)
                 throw UserVisibleErrors.StandardUIMissingPurposeAttribute(type);
             Purpose = purpose.Value;
 
@@ -156,6 +156,10 @@ namespace Microsoft.StandardUI.SourceGenerator
             bool first = true;
             foreach (INamedTypeSymbol additionalInterfaceType in Type.Interfaces)
             {
+                // TODO: Remove this once Roslyn source generator issue is tracked down so it's not needed.
+                if (Purpose == InterfacePurpose.StandardControl)
+                    continue;
+
                 if (first)
                 {
                     first = false;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -25,9 +26,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             // Enable this to be able to debug the source generator
 #if false
             if (!Debugger.IsAttached)
-            {
                 Debugger.Launch();
-            }
 #endif
 
             IncrementalValuesProvider<INamedTypeSymbol> importTypes = context.SyntaxProvider
@@ -94,7 +93,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
                         string ancestorFullTypeName = ancestorType.ToDisplayString(symbolDisplayFormat);
 
-                        if (ancestorFullTypeName == "Microsoft.StandardUI.Controls.IStandardControl" || generatedInterfaces.Contains(ancestorFullTypeName))
+                        if (ancestorFullTypeName == KnownTypes.IStandardControl || generatedInterfaces.Contains(ancestorFullTypeName))
                             break;
 
                         ImportedControlGenerator.GenerateSourceFile(compilation, context, ancestorFullTypeName);
