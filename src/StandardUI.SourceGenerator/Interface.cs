@@ -43,6 +43,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
         }
 
+        /// <summary>
+        /// Check if we should generate code for this interface or if it's one of the few types
+        /// where the code is hand written.
+        /// </summary>
+        public bool ShouldGenerate => !IsThisType(KnownTypes.IUIElement) && !IsThisType(KnownTypes.IUIObject);
+
         public static InterfacePurpose? IdentifyPurpose(INamedTypeSymbol type)
         {
             // Skip ...Attached interfaces, processing them when their paired main interface is processed instead
@@ -118,6 +124,9 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
+            if (!ShouldGenerate)
+                return;
+
             string generatedFrom = $"{Name}.cs";
 
             string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);

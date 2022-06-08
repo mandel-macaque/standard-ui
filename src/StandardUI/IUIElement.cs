@@ -2,6 +2,7 @@ using System.ComponentModel;
 
 namespace Microsoft.StandardUI
 {
+    [UIModelObject]
     public interface IUIElement : IUIObject
     {
         /// <summary>
@@ -25,6 +26,7 @@ namespace Microsoft.StandardUI
         /// <summary>
         /// The horizontal alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
         /// </summary>
+        [DefaultValue(HorizontalAlignment.Stretch)]
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace Microsoft.StandardUI
         /// <summary>
         /// The Vertical alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
         /// </summary>
+        [DefaultValue(VerticalAlignment.Stretch)]
         public VerticalAlignment VerticalAlignment { get; set; }
 
         /// <summary>
@@ -82,21 +85,25 @@ namespace Microsoft.StandardUI
         /// <summary>
         /// Gets the X position of this UIElement, relative to its parent, computed during the arrange pass of the layout process
         /// </summary>
+        [DefaultValue(0)]
         public double ActualX { get; }
 
         /// <summary>
         /// Gets the Y position of this UIElement, relative to its parent, computed during the arrange pass of the layout process
         /// </summary>
+        [DefaultValue(0)]
         public double ActualY { get; }
 
         /// <summary>
         /// Gets the rendered width of a UIElement.
         /// </summary>
+        [DefaultValue(0)]
         public double ActualWidth { get; }
 
         /// <summary>
         /// Gets the rendered height of a UIElement
         /// </summary>
+        [DefaultValue(0)]
         public double ActualHeight { get; }
 
         /// <summary>

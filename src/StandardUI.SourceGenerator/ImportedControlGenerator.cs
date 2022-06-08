@@ -147,7 +147,6 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             var intface = new Interface(context, interfaceSymbol);
             intface.Generate(uiFramework);
-
         }
 
         /// <summary>
