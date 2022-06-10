@@ -18,7 +18,6 @@ namespace Microsoft.StandardUI
         IRowDefinition CreateRowDefinition();
         IColumnDefinition CreateColumnDefinition();
         IGridAttached GridAttachedInstance { get; }
-        ITableAttached TableAttachedInstance { get; }
 
         IEllipse CreateEllipse();
         ILine CreateLine();

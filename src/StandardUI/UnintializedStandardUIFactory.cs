@@ -21,7 +21,6 @@ namespace Microsoft.StandardUI
         public IRowDefinition CreateRowDefinition() => throw CreateInitNotCalledException();
         public IColumnDefinition CreateColumnDefinition() => throw CreateInitNotCalledException();
         public IGridAttached GridAttachedInstance => throw CreateInitNotCalledException();
-        public ITableAttached TableAttachedInstance => throw CreateInitNotCalledException();
 
         public IEllipse CreateEllipse() => throw CreateInitNotCalledException();
         public ILine CreateLine() => throw CreateInitNotCalledException();

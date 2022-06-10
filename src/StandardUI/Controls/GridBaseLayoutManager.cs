@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StandardUI.Controls
 {
-    public abstract class GridBaseLayoutManager<TGridBase> : LayoutManager<TGridBase> where TGridBase : IGridBase
+    public abstract class GridBaseLayoutManager<TGridBase> : LayoutManager<TGridBase> where TGridBase : IGrid
     {
         abstract internal GridInfo CreateGridInfo(TGridBase grid, double widthConstraint, double heightConstraint);
 
@@ -61,7 +61,7 @@ namespace StandardUI.Controls
 
             private readonly Dictionary<SpanKey, Span> _spans = new();
 
-            public GridInfo(IGridBase gridBase, RowDefinitionInfo[] rows, ColumnDefinitionInfo[] columns, CellInfo[] cells, double widthConstraint, double heightConstraint)
+            public GridInfo(IGrid gridBase, RowDefinitionInfo[] rows, ColumnDefinitionInfo[] columns, CellInfo[] cells, double widthConstraint, double heightConstraint)
             {
                 _gridWidthConstraint = widthConstraint;
                 _gridHeightConstraint = heightConstraint;

@@ -21,6 +21,18 @@ namespace Microsoft.StandardUI.Controls
             return grid;
         }
         
+        public static T ColumnSpacing<T>(this T grid, double value) where T : IGrid
+        {
+            grid.ColumnSpacing = value;
+            return grid;
+        }
+        
+        public static T RowSpacing<T>(this T grid, double value) where T : IGrid
+        {
+            grid.RowSpacing = value;
+            return grid;
+        }
+        
         // Attached properties
         
         public static int GridRow<T>(this T uiElement) where T : IUIElement => GridAttachedInstance.GetRow(uiElement);

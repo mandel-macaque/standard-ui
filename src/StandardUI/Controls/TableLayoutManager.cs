@@ -3,6 +3,7 @@ using System;
 
 namespace Microsoft.StandardUI.Controls
 {
+#if false
     public class TableLayoutManager : GridBaseLayoutManager<ITable>
     {
         public static TableLayoutManager Instance = new TableLayoutManager();
@@ -49,4 +50,5 @@ namespace Microsoft.StandardUI.Controls
             return new GridInfo(table, rowDefinitions, columnDefinitions, cells, widthConstraint, heightConstraint);
         }
     }
+#endif
 }

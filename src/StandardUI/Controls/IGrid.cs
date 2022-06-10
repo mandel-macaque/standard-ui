@@ -1,7 +1,9 @@
+using System.ComponentModel;
+
 namespace Microsoft.StandardUI.Controls   
 {
     [StandardPanel]
-    public interface IGrid : IGridBase, IPanel
+    public interface IGrid : IPanel
     {
         /// <summary>
         /// List of column definitions defined on this instance of the grid.
@@ -12,5 +14,17 @@ namespace Microsoft.StandardUI.Controls
         /// List of row definitions defined on this instance of the grid.
         /// </summary>
         public IUICollection<IRowDefinition> RowDefinitions { get; }
+
+        /// <summary>
+        /// Uniform distance between grid columns.
+        /// </summary>
+        [DefaultValue(0.0)]
+        public double ColumnSpacing { get; set; }
+
+        /// <summary>
+        /// Uniform distance between grid rows.
+        /// </summary>
+        [DefaultValue(0.0)]
+        public double RowSpacing { get; set; }
     }
 }
