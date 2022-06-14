@@ -2,6 +2,7 @@
 {
     public enum InterfacePurpose
     {
+        UIObject,
         StandardUIObject,
         StandardControl,
         StandardPanel

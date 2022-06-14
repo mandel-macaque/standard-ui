@@ -1,4 +1,4 @@
-namespace Microsoft.StandardUI.SourceGenerator
+﻿namespace Microsoft.StandardUI.SourceGenerator
 {
     public static class KnownTypes
     {
@@ -11,6 +11,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public const string IShape = "Microsoft.StandardUI.Shapes.IShape";
 
         public const string UIModelAttribute = "Microsoft.StandardUI.UIModelObjectAttribute";
+        public const string UIObjectAttribute = "Microsoft.StandardUI.UIObjectAttribute";
         public const string StandardPanelAttribute = "Microsoft.StandardUI.StandardPanelAttribute";
         public const string StandardControlAttribute = "Microsoft.StandardUI.StandardControlAttribute";
 

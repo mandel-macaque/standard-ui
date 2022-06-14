@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -65,6 +65,8 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 if (attributeTypeFullName == KnownTypes.UIModelAttribute)
                     return InterfacePurpose.StandardUIObject;
+                else if (attributeTypeFullName == KnownTypes.UIObjectAttribute)
+                    return InterfacePurpose.UIObject;
                 else if (attributeTypeFullName == KnownTypes.StandardPanelAttribute)
                     return InterfacePurpose.StandardPanel;
                 else if (attributeTypeFullName == KnownTypes.StandardControlAttribute)
@@ -131,19 +133,17 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
 
-            string? destinationBaseClass = GetOutputBaseClass(uiFramework);
-            string mainClassDerviedFrom;
-            if (destinationBaseClass == null)
-                mainClassDerviedFrom = Name;
-            else
-                mainClassDerviedFrom = $"{destinationBaseClass}, {Name}";
-
             var properties = new List<Property>();
             var mainClassSource = new ClassSource(Context,
                 generatedFrom:generatedFrom,
                 namespaceName:frameworkNamespaceName,
-                className:FrameworkClassName,
-                derivedFrom:mainClassDerviedFrom);
+                className:FrameworkClassName);
+
+            string? destinationBaseClass = GetOutputBaseClass(uiFramework, mainClassSource.Usings);
+            if (destinationBaseClass == null)
+                mainClassSource.DerivedFrom = Name;
+            else
+                mainClassSource.DerivedFrom = $"{destinationBaseClass}, {Name}";
 
             uiFramework.GenerateAttributes(this, mainClassSource);
 
@@ -174,12 +174,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             ClassSource? attachedClassSource = null;
             if (AttachedType != null)
             {
-                string attachedClassDerivedFrom = AttachedType.Name;
                 attachedClassSource = new ClassSource(Context, generatedFrom:generatedFrom,
                     namespaceName:frameworkNamespaceName,
-                    className:FrameworkClassName + "Attached",
-                    derivedFrom:attachedClassDerivedFrom);
+                    className:FrameworkClassName + "Attached");
 
+                attachedClassSource.DerivedFrom = AttachedType.Name;
                 attachedClassSource.Usings.AddTypeNamespace(Type);
 
                 foreach (ISymbol member in AttachedType.GetMembers())
@@ -356,14 +355,14 @@ namespace Microsoft.StandardUI.SourceGenerator
             fileSource.AddBlankLine();
         }
 
-        private string? GetOutputBaseClass(UIFramework uiFramework)
+        private string? GetOutputBaseClass(UIFramework uiFramework, Usings? usings = null)
         {
             INamedTypeSymbol? baseInterface = Type.Interfaces.FirstOrDefault();
 
             if (baseInterface == null)
                 return null;
             else
-                return uiFramework.OutputTypeName(baseInterface);
+                return uiFramework.OutputTypeName(baseInterface, usings);
         }
     }
 }

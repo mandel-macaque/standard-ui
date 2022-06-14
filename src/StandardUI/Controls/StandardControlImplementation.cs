@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Microsoft.StandardUI.Controls
 {
@@ -48,7 +48,7 @@ namespace Microsoft.StandardUI.Controls
 
         public void Measure(Size availableSize)
         {
-            var desiredSize = MeasureOverride(availableSize);
+            Size desiredSize = MeasureOverride(availableSize);
 
             //enforce that MeasureCore can not return PositiveInfinity size even if given Infinte availabel size.
             //Note: NegativeInfinity can not be returned by definition of Size structure.

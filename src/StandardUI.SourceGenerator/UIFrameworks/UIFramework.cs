@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -19,7 +19,9 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string RootNamespace { get; }
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string NativeUIElementType { get; }
+        public virtual string BuiltInUIElementBaseClassNamespaceName => RootNamespace;
         public virtual string BuiltInUIElementBaseClassName => "BuiltInUIElement";
+        public virtual string BuiltInUIObjectBaseClassNamespaceName => RootNamespace;
         public virtual string BuiltInUIObjectBaseClassName => "StandardUIObject";
 
         public virtual string PropertyDescriptorName(Property property) => property.Name + "Property";
@@ -51,15 +53,21 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             else return RootNamespace + "." + childNamespaceName;
         }
 
-        public string OutputTypeName(ITypeSymbol type)
+        public string OutputTypeName(ITypeSymbol type, Usings? usings = null)
         {
             string typeName = type.Name;
 
             string destinationTypeName;
             if (Utils.IsThisType(type, KnownTypes.IUIObject))
+            {
                 destinationTypeName = BuiltInUIObjectBaseClassName;
+                usings?.AddNamespace(BuiltInUIObjectBaseClassNamespaceName);
+            }
             else if (Utils.IsThisType(type, KnownTypes.IUIElement))
+            {
                 destinationTypeName = BuiltInUIElementBaseClassName;
+                usings?.AddNamespace(BuiltInUIElementBaseClassNamespaceName);
+            }
             else if (Utils.IsUICollectionType(Context, type, out ITypeSymbol elementType))
             {
                 if (Utils.IsThisType(elementType, KnownTypes.IUIElement))

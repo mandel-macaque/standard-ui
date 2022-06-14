@@ -1,4 +1,4 @@
-using Microsoft.StandardUI.Controls;
+﻿using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Wpf.NativeVisualFramework;
 using System;
 using System.Windows.Media;
@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.Wpf
     public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
     {
         private StandardControlImplementation? _implementation;
-        private BuiltInUIElement? _buildContent;
+        private IUIElement? _buildContent;
         private bool _invalid = true;
 
         public StandardControl()
@@ -104,7 +104,7 @@ namespace Microsoft.StandardUI.Wpf
             if (index != 0)
                 throw new ArgumentOutOfRangeException("index", index, "Index out of range; control only has a single visual child.");
 
-            return _buildContent;
+            return _buildContent.ToWpfUIElement();
         }
 
         void ILogicalParent.AddLogicalChild(object child) => this.AddLogicalChild(child);
@@ -115,17 +115,19 @@ namespace Microsoft.StandardUI.Wpf
         {
             if (_buildContent != null)
             {
-                RemoveVisualChild(_buildContent);
-                RemoveLogicalChild(_buildContent);
+                System.Windows.UIElement wpfUIElement =_buildContent.ToWpfUIElement();
+                RemoveVisualChild(wpfUIElement);
+                RemoveLogicalChild(wpfUIElement);
                 _buildContent = null;
             }
 
-            _buildContent = (BuiltInUIElement?)_implementation!.Build();
+            _buildContent = _implementation!.Build();
 
             if (_buildContent != null)
             {
-                AddVisualChild(_buildContent);
-                AddLogicalChild(_buildContent);
+                System.Windows.UIElement wpfUIElement = _buildContent.ToWpfUIElement();
+                AddVisualChild(wpfUIElement);
+                AddLogicalChild(wpfUIElement);
             }
         }
 

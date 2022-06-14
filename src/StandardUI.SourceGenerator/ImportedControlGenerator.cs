@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -82,7 +82,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     if (generatedInterfaces.Contains(fullTypeName))
                         continue;
 
-                    ImportedControlGenerator.GenerateSourceFile(compilation, context, fullTypeName);
+                    GenerateSourceFile(compilation, context, fullTypeName);
                     generatedInterfaces.Add(fullTypeName);
 
                     // Generate any ancestor types
@@ -96,7 +96,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                         if (ancestorFullTypeName == KnownTypes.IStandardControl || generatedInterfaces.Contains(ancestorFullTypeName))
                             break;
 
-                        ImportedControlGenerator.GenerateSourceFile(compilation, context, ancestorFullTypeName);
+                        GenerateSourceFile(compilation, context, ancestorFullTypeName);
                         generatedInterfaces.Add(ancestorFullTypeName);
 
                         ancestorType = GetBaseInterface(ancestorType);

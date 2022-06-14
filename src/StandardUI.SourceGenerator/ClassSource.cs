@@ -1,4 +1,4 @@
-using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
+﻿using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
@@ -13,7 +13,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Source Attributes { get; }
         public string NamespaceName { get; }
         public string ClassName { get; }
-        public string DerivedFrom { get; }
+        public string DerivedFrom { get; set; }
 
         public Source StaticFields { get; }
         public Source NonstaticFields { get; }
@@ -22,7 +22,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Source StaticMethods { get; }
         public Source NonstaticMethods { get; }
 
-        public ClassSource(Context context, string generatedFrom, string namespaceName, string className, string derivedFrom)
+        public ClassSource(Context context, string generatedFrom, string namespaceName, string className)
         {
             Context = context;
             Usings = new Usings(context, namespaceName);
@@ -32,7 +32,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             Attributes = new Source(context, Usings);
             NamespaceName = namespaceName;
             ClassName = className;
-            DerivedFrom = derivedFrom;
 
             StaticFields = new Source(context, Usings);
             NonstaticFields = new Source(context, Usings);
