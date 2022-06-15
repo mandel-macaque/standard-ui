@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
-    <RootNamespace>Microsoft.StandardUI.WPF</RootNamespace>
+    <RootNamespace>Microsoft.StandardUI.Wpf</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

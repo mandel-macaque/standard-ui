@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI", "src\Microsoft
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.CommandLineSourceGenerator", "src\Microsoft.StandardUI.CommandLineSourceGenerator\Microsoft.StandardUI.CommandLineSourceGenerator.csproj", "{740943F5-2E99-4ED4-9022-BC14F480C3F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.Wpf", "src\Microsoft.StandardUI.WPF\Microsoft.StandardUI.Wpf.csproj", "{4C2D11BC-2E5C-4761-BBD1-0038BC8D6613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.Wpf", "src\Microsoft.StandardUI.Wpf\Microsoft.StandardUI.Wpf.csproj", "{4C2D11BC-2E5C-4761-BBD1-0038BC8D6613}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9B71283D-A4A6-480E-9A9B-AD446F08CCC5}"
 EndProject
