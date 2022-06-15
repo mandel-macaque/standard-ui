@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
 
 namespace Microcharts
 {
+    [StandardControl]
     public interface IChart : IStandardControl
     {
         /// <summary>
         /// The type of chart (bar chart, pie chart, etc.)
         /// </summary>
+        [DefaultValue(ChartType.BarChart)]
         ChartType ChartType { get; set; }
 
         /// <summary>

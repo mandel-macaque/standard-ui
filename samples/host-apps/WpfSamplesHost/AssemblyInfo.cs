@@ -10,5 +10,5 @@ using Microsoft.StandardUI;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: ImportStandardControl("SimpleControls.IRadialGauge")]
-[assembly: ImportStandardControl("Microcharts.IChart")]
+[assembly: ImportStandardControl(typeof(Microcharts.IChart))]
+[assembly: ImportStandardControl(typeof(AlohaKit.StandardControls.IToggleSwitch))]
