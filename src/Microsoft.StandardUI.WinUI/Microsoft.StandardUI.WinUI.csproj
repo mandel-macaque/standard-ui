@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StandardUI\StandardUI.csproj" />
+    <ProjectReference Include="..\Microsoft.StandardUI\Microsoft.StandardUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

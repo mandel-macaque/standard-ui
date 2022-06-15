@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsSamplesHost.iOS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsSamplesHost", "XamarinFormsSamplesHost\XamarinFormsSamplesHost\XamarinFormsSamplesHost.csproj", "{2F03730D-663C-49BC-BE82-76FD73878C2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.XamarinForms", "..\..\src\StandardUI.XamarinForms\StandardUI.XamarinForms.csproj", "{2D91C5B1-9E78-4242-A71B-0E64605A7B6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.XamarinForms", "..\..\src\Microsoft.StandardUI.XamarinForms\Microsoft.StandardUI.XamarinForms.csproj", "{2D91C5B1-9E78-4242-A71B-0E64605A7B6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "..\..\src\StandardUI.SourceGenerator\StandardUI.SourceGenerator.csproj", "{B3F82197-DAE3-4940-8AF7-192C69D1C563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "..\..\src\Microsoft.StandardUI.SourceGenerator\Microsoft.StandardUI.SourceGenerator.csproj", "{B3F82197-DAE3-4940-8AF7-192C69D1C563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

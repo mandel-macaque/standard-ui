@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -123,9 +123,9 @@ namespace Microsoft.StandardUI.SourceGenerator
             {
                 string assemblyName = referencedAssembly.Name;
 
-                if (assemblyName == "StandardUI.Wpf")
+                if (assemblyName == "Microsoft.StandardUI.Wpf")
                     return new WpfUIFramework(context);
-                else if (assemblyName == "StandardUI.WinForms")
+                else if (assemblyName == "Microsoft.StandardUI.WinForms")
                     return new WinFormsUIFramework(context);
             }
 

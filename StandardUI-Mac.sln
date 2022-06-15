@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31813.321
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI", "src\StandardUI\StandardUI.csproj", "{752F4208-8318-4C57-9868-9921FF743AA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI", "src\Microsoft.StandardUI\Microsoft.StandardUI.csproj", "{752F4208-8318-4C57-9868-9921FF743AA9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.CommandLineSourceGenerator", "src\StandardUI.CommandLineSourceGenerator\StandardUI.CommandLineSourceGenerator.csproj", "{740943F5-2E99-4ED4-9022-BC14F480C3F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.CommandLineSourceGenerator", "src\Microsoft.StandardUI.CommandLineSourceGenerator\Microsoft.StandardUI.CommandLineSourceGenerator.csproj", "{740943F5-2E99-4ED4-9022-BC14F480C3F8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9B71283D-A4A6-480E-9A9B-AD446F08CCC5}"
 EndProject
@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microcharts", "samples\Micr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfSamplesHost", "samples\WpfSamplesHost\WpfSamplesHost.csproj", "{6947DA6C-110C-4175-A38A-030F33CA3420}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.VisualEnvironment.Skia", "src\StandardUI.VisualEnvironment.Skia\StandardUI.VisualEnvironment.Skia.csproj", "{7B85BF7F-1265-4A34-9865-A371FB3D71F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.VisualEnvironment.Skia", "src\Microsoft.StandardUI.VisualEnvironment.Skia\Microsoft.StandardUI.VisualEnvironment.Skia.csproj", "{7B85BF7F-1265-4A34-9865-A371FB3D71F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleControls", "samples\SimpleControls\SimpleControls.csproj", "{2A1EDFC0-2865-4DC8-A232-6D2CCB7FA7E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "src\StandardUI.SourceGenerator\StandardUI.SourceGenerator.csproj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "src\Microsoft.StandardUI.SourceGenerator\Microsoft.StandardUI.SourceGenerator.csproj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardUI.Mac", "src\StandardUI.Mac\StandardUI.Mac.csproj", "{0743C3F9-AE96-4477-89E0-C2D203C65F8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardUI.Mac", "src\Microsoft.StandardUI.Mac\Microsoft.StandardUI.Mac.csproj", "{0743C3F9-AE96-4477-89E0-C2D203C65F8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
