@@ -4,9 +4,8 @@ namespace Microsoft.StandardUI.WinUI
 {
     public static class HorizontalAlignmentExtensions
     {
-        public static Microsoft.UI.Xaml.HorizontalAlignment ToWinUIHorizontalAlignment(this HorizontalAlignment horizontalAligmnet)
-        {
-            return horizontalAligmnet switch
+        public static Microsoft.UI.Xaml.HorizontalAlignment ToWinUIHorizontalAlignment(this HorizontalAlignment horizontalAligmnet) =>
+            horizontalAligmnet switch
             {
                 HorizontalAlignment.Left => Microsoft.UI.Xaml.HorizontalAlignment.Left,
                 HorizontalAlignment.Center => Microsoft.UI.Xaml.HorizontalAlignment.Center,
@@ -14,11 +13,9 @@ namespace Microsoft.StandardUI.WinUI
                 HorizontalAlignment.Stretch => Microsoft.UI.Xaml.HorizontalAlignment.Stretch,
                 _ => throw new ArgumentOutOfRangeException(nameof(horizontalAligmnet), $"Invalid HorizontalAlignment value: {horizontalAligmnet}"),
             };
-        }
 
-        public static HorizontalAlignment FromWinUIHorizontalAlignment(Microsoft.UI.Xaml.HorizontalAlignment horizontalAlignment)
-        {
-            return horizontalAlignment switch
+        public static HorizontalAlignment FromWinUIHorizontalAlignment(Microsoft.UI.Xaml.HorizontalAlignment horizontalAlignment) =>
+            horizontalAlignment switch
             {
                 Microsoft.UI.Xaml.HorizontalAlignment.Left => HorizontalAlignment.Left,
                 Microsoft.UI.Xaml.HorizontalAlignment.Center => HorizontalAlignment.Center,
@@ -26,6 +23,5 @@ namespace Microsoft.StandardUI.WinUI
                 Microsoft.UI.Xaml.HorizontalAlignment.Stretch => HorizontalAlignment.Stretch,
                 _ => throw new ArgumentOutOfRangeException(nameof(horizontalAlignment), $"Invalid HorizontalAlignment value: {horizontalAlignment}"),
             };
-        }
     }
 }
