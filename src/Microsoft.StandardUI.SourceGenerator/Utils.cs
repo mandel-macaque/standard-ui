@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -254,9 +254,8 @@ namespace Microsoft.StandardUI.SourceGenerator
                     continue;
 
                 ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
-
                 if (constructorArguments.Length != 1)
-                    throw UserVisibleErrors.AttributeShouldHaveSingleArgument(symbol, attributeTypeName);
+                    throw UserVisibleErrors.AttributeShouldHaveSingleArgument(symbol, GetAttributeName(attributeTypeName));
 
                 return constructorArguments[0];
             }
@@ -271,7 +270,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 return null;
 
             if (value is not string stringValue)
-                throw new UserViewableException($"{symbol.Name} should have a string value for the [{GetAttributeName(attributeTypeName)}] attribute");
+                throw UserVisibleErrors.AttributeShouldHaveAStringArgument(symbol, GetAttributeName(attributeTypeName));
 
             return stringValue;
         }

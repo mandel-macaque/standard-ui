@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -7,6 +7,8 @@ using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 using Microsoft.CodeAnalysis;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis.MSBuild;
+using System.Linq;
+using System.Collections.Immutable;
 
 namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
@@ -51,18 +53,24 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             }
         }
 
-        public class GatherInterfacesToGenerateFrom : SymbolVisitor
+        public class GatherInterfacesVisitor : SymbolVisitor
         {
-            private List<INamedTypeSymbol> _interfaces = new List<INamedTypeSymbol>();
+            private readonly Context _context;
+            private readonly List<Interface> _interfaces = new();
 
-            public IEnumerable<INamedTypeSymbol> Interfaces => _interfaces;
+            public GatherInterfacesVisitor(Context context)
+            {
+                _context = context;
+            }
+
+            public List<Interface> Interfaces => _interfaces;
 
             public override void VisitNamespace(INamespaceSymbol symbol)
             {
                 foreach (var childSymbol in symbol.GetMembers())
                 {
-                    //We must implement the visitor pattern ourselves and 
-                    //accept the child symbols in order to visit their children
+                    // We must implement the visitor pattern ourselves and 
+                    // accept the child symbols in order to visit their children
                     childSymbol.Accept(this);
                 }
             }
@@ -72,7 +80,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 InterfacePurpose? interfacePuprpose = Interface.IdentifyPurpose(symbol);
                 if (interfacePuprpose.HasValue)
                 {
-                    _interfaces.Add(symbol);
+                    var intface = new Interface(_context, symbol);
+                    _interfaces.Add(intface);
                 }
             }
         }
@@ -83,10 +92,20 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             if (compilation == null)
                 return;
 
-            var gatherInterfacesToGenerateFrom = new GatherInterfacesToGenerateFrom();
-            gatherInterfacesToGenerateFrom.Visit(compilation.GlobalNamespace);
+            var context = new Context(compilation, new DirectoryOutput(rootDirectory));
 
-            Context context = new Context(compilation, new DirectoryOutput(rootDirectory));
+            // Get all the interfaces that should generate source, namely those with
+            // attributes that indicate the InterfacePurpose is related to Standard UI
+            // (e.g. [StandardControl], [UIObject], etc.)
+            var gatherInterfacesVisitor = new GatherInterfacesVisitor(context);
+            gatherInterfacesVisitor.Visit(compilation.GlobalNamespace);
+
+            AttributeData? attribute = compilation.Assembly.GetAttributes()
+                .FirstOrDefault(a => a.AttributeClass?.ToString() == KnownTypes.ControlLibraryAttribute);
+            if (attribute == null)
+                throw UserVisibleErrors.MissingControlLibraryAttribute();
+
+            var controlLibrary = new ControlLibrary(context, attribute, gatherInterfacesVisitor.Interfaces);
 
             var wpfUIFramework = new WpfUIFramework(context);
             var winUIUIFramework = new WinUIUIFramework(context);
@@ -94,11 +113,11 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             var macUIFramework = new MacUIFramework(context);
             var mauiUIFramework = new MauiUIFramework(context);
 
-            foreach (INamedTypeSymbol interfaceType in gatherInterfacesToGenerateFrom.Interfaces)
+            // Generate source for the various UI frameworks and shared source
+            foreach (Interface intface in gatherInterfacesVisitor.Interfaces)
             {
-                Console.WriteLine($"Processing {interfaceType.Name}");
+                Console.WriteLine($"Processing {intface.Name}");
 
-                var intface = new Interface(context, interfaceType);
                 intface.Generate(wpfUIFramework);
                 intface.Generate(winUIUIFramework);
                 intface.Generate(winFormsUIFramework);
@@ -106,6 +125,9 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 intface.Generate(mauiUIFramework);
                 intface.GenerateExtensionsClass();
             }
+
+            //controlLibrary.GenerateFactoryClass();
+            //controlLibrary.GenerateStaticsClass();
         }
 
         private static string NormalizePath(string path)

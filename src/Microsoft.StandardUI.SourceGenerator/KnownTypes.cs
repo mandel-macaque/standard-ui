@@ -15,6 +15,10 @@
         public const string StandardPanelAttribute = "Microsoft.StandardUI.StandardPanelAttribute";
         public const string StandardControlAttribute = "Microsoft.StandardUI.StandardControlAttribute";
 
+        public const string ImportStandardControlAttribute = "Microsoft.StandardUI.ImportStandardControlAttribute";
+
+        public const string ControlLibraryAttribute = "Microsoft.StandardUI.ControlLibraryAttribute";
+
         public const string DefaultValueAttribute = "System.ComponentModel.DefaultValueAttribute";
         public const string ContentPropertyAttribute = "Microsoft.ComponentModelEx.ContentPropertyAttribute";
     }

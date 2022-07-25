@@ -1,3 +1,4 @@
+﻿using System.Text;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -8,10 +9,11 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public Usings Usings { get; }
 
-        public string GeneratedFrom { get; }
+        public string? GeneratedFrom { get; }
 
         public Source Attributes { get; }
         public string NamespaceName { get; }
+        public bool IsStatic { get; }
         public string ClassName { get; }
         public string? DerivedFrom { get; set; }
 
@@ -22,7 +24,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Source StaticMethods { get; }
         public Source NonstaticMethods { get; }
 
-        public ClassSource(Context context, string generatedFrom, string namespaceName, string className)
+        public ClassSource(Context context, string namespaceName, string className, string? generatedFrom = null, bool isStatic = false,
+            string? derivedFrom = null)
         {
             Context = context;
             Usings = new Usings(context, namespaceName);
@@ -32,6 +35,9 @@ namespace Microsoft.StandardUI.SourceGenerator
             Attributes = new Source(context, Usings);
             NamespaceName = namespaceName;
             ClassName = className;
+
+            IsStatic = isStatic;
+            DerivedFrom = derivedFrom;
 
             StaticFields = new Source(context, Usings);
             NonstaticFields = new Source(context, Usings);
@@ -45,7 +51,10 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             Source fileSource = new Source(Context);
 
-            fileSource.AddLine($"// This file is generated from {GeneratedFrom}. Update the source file to change its contents.");
+            if (GeneratedFrom != null)
+                fileSource.AddLine($"// This file is generated from {GeneratedFrom}. Update the source file to change its contents.");
+            else
+                fileSource.AddLine($"// This file is generated. Update the source to change its contents.");
             fileSource.AddBlankLine();
 
             Source usingsDeclarations = Usings.Generate();
@@ -94,12 +103,15 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 if (! Attributes.IsEmpty)
                     fileSource.AddSource(Attributes);
+
+                StringBuilder classLine = new StringBuilder("public");
+                if (IsStatic)
+                    classLine.Append(" static");
+                classLine.Append($" class {ClassName}");
                 if (DerivedFrom != null)
-                    fileSource.AddLine(
-                        $"public class {ClassName} : {DerivedFrom}");
-                else
-                    fileSource.AddLine(
-                        $"public class {ClassName}");
+                    classLine.Append($" : {DerivedFrom}");
+                fileSource.AddLine(classLine.ToString());
+
                 fileSource.AddLine(
                     "{");
                 using (fileSource.Indent())
@@ -114,7 +126,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             return fileSource;
         }
 
-        public void AddToOutput(UIFramework uiFramework)
+        public void AddToOutput(UIFramework? uiFramework)
         {
             Source fileSource = Generate();
             Context.Output.AddSource(uiFramework, NamespaceName, ClassName, fileSource);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -45,7 +45,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             //context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
-        static INamedTypeSymbol? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
+        private static INamedTypeSymbol? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
         {
             var attributeSyntax = (AttributeSyntax)context.Node;
 
@@ -56,7 +56,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
             string fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-            if (fullName != "Microsoft.StandardUI.ImportStandardControlAttribute")
+            if (fullName != KnownTypes.ImportStandardControlAttribute)
                 return null;
 
             ExpressionSyntax? attributeArg = attributeSyntax.ArgumentList!.Arguments[0].Expression;

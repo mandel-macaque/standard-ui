@@ -134,10 +134,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
 
             var properties = new List<Property>();
+
             var mainClassSource = new ClassSource(Context,
-                generatedFrom:generatedFrom,
-                namespaceName:frameworkNamespaceName,
-                className:FrameworkClassName);
+                generatedFrom: generatedFrom,
+                namespaceName: frameworkNamespaceName,
+                className: FrameworkClassName);
 
             string? destinationBaseClass = GetOutputBaseClass(uiFramework, mainClassSource.Usings);
             if (destinationBaseClass == null)
@@ -174,11 +175,12 @@ namespace Microsoft.StandardUI.SourceGenerator
             ClassSource? attachedClassSource = null;
             if (AttachedType != null)
             {
-                attachedClassSource = new ClassSource(Context, generatedFrom:generatedFrom,
-                    namespaceName:frameworkNamespaceName,
-                    className:FrameworkClassName + "Attached");
+                attachedClassSource = new ClassSource(Context,
+                    generatedFrom: generatedFrom,
+                    namespaceName: frameworkNamespaceName,
+                    className: FrameworkClassName + "Attached",
+                    derivedFrom: AttachedType.Name);
 
-                attachedClassSource.DerivedFrom = AttachedType.Name;
                 attachedClassSource.Usings.AddTypeNamespace(Type);
 
                 foreach (ISymbol member in AttachedType.GetMembers())

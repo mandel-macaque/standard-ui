@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
@@ -30,7 +30,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             CreateError(6, message: $"Property {fullPropertyName} has no [DefaultValue] attribute nor hardcoded default",
                 GetLocation(symbol));
 
-
         public static UserViewableException AttributeShouldHaveSingleArgument(ISymbol symbol, string attributeName) =>
             CreateError(7, message: $"{symbol.Name} should have a single argument for the [{attributeName}] attribute",
                 GetLocation(symbol));
@@ -39,11 +38,23 @@ namespace Microsoft.StandardUI.SourceGenerator
             CreateError(8, message: $"{symbol.Name} should have a string value for the [{attributeName}] attribute",
                 GetLocation(symbol));
 
+        public static UserViewableException ControlLibraryAttributeInvalid(AttributeData attribute) =>
+            CreateError(9, message: $"The [ControlLibrary] attribute should have a single argument with the fully qualified library name",
+                GetLocation(attribute.ApplicationSyntaxReference));
+
+        public static UserViewableException MissingControlLibraryAttribute() =>
+            CreateError(10, message: $"No [ControlLibrary] assembly attribute found; it should be added");
+
         public static string InternalErrorId = ErrorIdFromInt(99);
 
         public static Location? GetLocation(ISymbol symbol)
         {
             SyntaxReference? syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
+            return GetLocation(syntaxReference);
+        }
+
+        public static Location? GetLocation(SyntaxReference? syntaxReference)
+        {
             if (syntaxReference == null)
                 return null;
 
