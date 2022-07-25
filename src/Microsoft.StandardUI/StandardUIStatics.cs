@@ -12,7 +12,7 @@ namespace Microsoft.StandardUI
         public static IStackPanel StackPanel() => Factory.CreateStackPanel();
         public static IVerticalStack VerticalStack() => Factory.CreateVerticalStack();
         public static IHorizontalStack HorizontalStack() => Factory.CreateHorizontalStack();
-        public static IGrid Grid() => Factory.CreateGrid();S
+        public static IGrid Grid() => Factory.CreateGrid();
         public static IRowDefinition RowDefinition() => Factory.CreateRowDefinition();
         public static IColumnDefinition ColumnDefinition() => Factory.CreateColumnDefinition();
         public static IEllipse Ellipse() => Factory.CreateEllipse();
