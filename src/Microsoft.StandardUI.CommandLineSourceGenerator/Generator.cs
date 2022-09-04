@@ -94,8 +94,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             var context = new Context(compilation, new DirectoryOutput(rootDirectory));
 
-            // Get all the interfaces that should generate source, namely those with
             // attributes that indicate the InterfacePurpose is related to Standard UI
+            // Get all the interfaces that should generate source, namely those with
             // (e.g. [StandardControl], [UIObject], etc.)
             var gatherInterfacesVisitor = new GatherInterfacesVisitor(context);
             gatherInterfacesVisitor.Visit(compilation.GlobalNamespace);

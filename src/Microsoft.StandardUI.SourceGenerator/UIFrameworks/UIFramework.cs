@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
-using System.IO;
 
 namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
@@ -35,6 +34,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public virtual void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods) { }
         public virtual void GeneratePanelMethods(Source methods) { }
         public virtual void GenerateDrawableObjectMethods(Interface intface, Source methods) { }
+        public virtual void GenerateIUIElementMethods(ClassSource classSource) { }
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)
         {
@@ -250,5 +250,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         }
 
         protected abstract string FontFamilyDefaultValue { get; }
+
+        public virtual void GenerateBuiltInIUIElementPartialClasses() { }
     }
 }

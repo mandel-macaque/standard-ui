@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator
+﻿using Microsoft.CodeAnalysis;
+
+namespace Microsoft.StandardUI.SourceGenerator
 {
     public class TypeName
     {
@@ -12,6 +14,12 @@
         {
             Namespace = @namespace;
             Name = type;
+        }
+
+        public TypeName(INamedTypeSymbol namedType)
+        {
+            Namespace = Utils.GetNamespaceFullName(namedType.ContainingNamespace);
+            Name = namedType.Name;
         }
     }
 }

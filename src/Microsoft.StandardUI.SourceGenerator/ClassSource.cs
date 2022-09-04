@@ -14,7 +14,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Source Attributes { get; }
         public string NamespaceName { get; }
         public bool IsStatic { get; }
+        public bool IsPartial { get; }
         public string ClassName { get; }
+        public string? FileNameOverride { get; }
         public string? DerivedFrom { get; set; }
 
         public Source StaticFields { get; }
@@ -24,8 +26,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Source StaticMethods { get; }
         public Source NonstaticMethods { get; }
 
-        public ClassSource(Context context, string namespaceName, string className, string? generatedFrom = null, bool isStatic = false,
-            string? derivedFrom = null)
+        public ClassSource(Context context, string namespaceName, string className, string? fileNameOverride = null, string? generatedFrom = null,
+            bool isStatic = false, bool isPartial = false, string? derivedFrom = null)
         {
             Context = context;
             Usings = new Usings(context, namespaceName);
@@ -35,8 +37,10 @@ namespace Microsoft.StandardUI.SourceGenerator
             Attributes = new Source(context, Usings);
             NamespaceName = namespaceName;
             ClassName = className;
+            FileNameOverride = fileNameOverride;
 
             IsStatic = isStatic;
+            IsPartial = isPartial;
             DerivedFrom = derivedFrom;
 
             StaticFields = new Source(context, Usings);
@@ -107,6 +111,8 @@ namespace Microsoft.StandardUI.SourceGenerator
                 StringBuilder classLine = new StringBuilder("public");
                 if (IsStatic)
                     classLine.Append(" static");
+                if (IsPartial)
+                    classLine.Append(" partial");
                 classLine.Append($" class {ClassName}");
                 if (DerivedFrom != null)
                     classLine.Append($" : {DerivedFrom}");
@@ -129,7 +135,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public void AddToOutput(UIFramework? uiFramework)
         {
             Source fileSource = Generate();
-            Context.Output.AddSource(uiFramework, NamespaceName, ClassName, fileSource);
+            Context.Output.AddSource(uiFramework, NamespaceName, FileNameOverride ?? ClassName, fileSource);
         }
     }
 }

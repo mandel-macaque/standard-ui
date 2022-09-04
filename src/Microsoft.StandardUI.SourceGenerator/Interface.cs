@@ -43,12 +43,6 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
         }
 
-        /// <summary>
-        /// Check if we should generate code for this interface or if it's one of the few types
-        /// where the code is hand written.
-        /// </summary>
-        public bool ShouldGenerate => !IsThisType(KnownTypes.IUIElement) && !IsThisType(KnownTypes.IUIObject);
-
         public static InterfacePurpose? IdentifyPurpose(INamedTypeSymbol type)
         {
             // Skip ...Attached interfaces, processing them when their paired main interface is processed instead
@@ -126,14 +120,17 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
-            if (!ShouldGenerate)
+            if (IsThisType(KnownTypes.IUIElement))
+           {
+                uiFramework.GenerateBuiltInIUIElementPartialClasses();
+                return;
+            }
+            else if (IsThisType(KnownTypes.IUIObject))
                 return;
 
             string generatedFrom = $"{Name}.cs";
 
             string frameworkNamespaceName = uiFramework.ToFrameworkNamespaceName(Namespace);
-
-            var properties = new List<Property>();
 
             var mainClassSource = new ClassSource(Context,
                 generatedFrom: generatedFrom,
@@ -149,6 +146,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             uiFramework.GenerateAttributes(this, mainClassSource);
 
             // Add the property descriptors and accessors
+            var properties = new List<Property>();
             GenerateTypeProperties(this, uiFramework, properties, mainClassSource);
 
             // If the interface has multiple parent interfaces, the generated superclass will implement the properties
@@ -185,7 +183,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 foreach (ISymbol member in AttachedType.GetMembers())
                 {
-                    if (!(member is IMethodSymbol getterMethod))
+                    if (member is not IMethodSymbol getterMethod)
                         continue;
 
                     // We just process the Get 
@@ -234,6 +232,24 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 attachedClassSource.AddToOutput(uiFramework);
             }
+        }
+
+        public void GenerateNativeUIElementPartialClass(UIFramework uiFramework, TypeName className, string? derivedFrom)
+        {
+            var classSource = new ClassSource(Context,
+                namespaceName: className.Namespace,
+                isPartial: true,
+                className: className.Name,
+                derivedFrom: derivedFrom,
+                fileNameOverride: className.Name + ".UIElement");
+
+            // Add the property descriptors and accessors
+            var properties = new List<Property>();
+            GenerateTypeProperties(this, uiFramework, properties, classSource);
+
+            uiFramework.GenerateIUIElementMethods(classSource);
+
+            classSource.AddToOutput(uiFramework);
         }
 
         private static void GenerateTypeProperties(Interface intface, UIFramework uiFramework, List<Property> properties, ClassSource classSource)

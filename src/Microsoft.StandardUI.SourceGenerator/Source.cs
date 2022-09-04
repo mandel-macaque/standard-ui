@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -57,6 +57,20 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             foreach (var line in lines)
                 AddLine(line);
+        }
+
+        public void AddProperty(string propertyDeclaration, string getter, string setter)
+        {
+            AddLine(propertyDeclaration);
+            AddLine("{");
+
+            using (Indent())
+            {
+                AddLine($"get => {getter};");
+                AddLine($"set => {setter};");
+            }
+
+            AddLine("}");
         }
 
         public bool IsEmpty => _lines.Count == 0;
