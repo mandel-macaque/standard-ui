@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Microsoft.StandardUI.SourceGenerator\Microsoft.StandardUI.SourceGenerator.csproj" />
+		<ProjectReference Include="..\Microsoft.StandardUI.Analyzers\Microsoft.StandardUI.Analyzers.csproj" />
 	</ItemGroup>
 
 </Project>
