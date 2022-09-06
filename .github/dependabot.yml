@@ -13,3 +13,12 @@ updates:
     open-pull-requests-limit: 10
     assignees:
     - BretJohnson
+
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: '19:30'
+    open-pull-requests-limit: 10
+    assignees:
+    - BretJohnson
