@@ -98,39 +98,39 @@ For new UI platforms, like WinUI3 and .NET MAUI, ideally they have their native
 
 Or the interface can be implemented via a wrapper, which requires no changes to the underlying UI platform at all. That's a good choice for platforms like WPF.
 
-The API interfaces are all defined [here](src/StandardUI). Implementations for the different UI frameworks are created through a mix of [code generation](src/StandardUI.CodeGenerator) from those interfaces and hand coding.
+The API interfaces are all defined [here](src/Microsoft.StandardUI). Implementations for the different UI frameworks are created through a mix of [code generation](src/Microsoft.StandardUI.Analyzers) from those interfaces and hand coding.
 
 This project is an evolution of my [XGraphics](https://github.com/BretJohnson/XGraphics) project, taking it beyond just shapes.
 
 ### Control hierarchy
 
-[IUIElement](src/StandardUI/IUIElement.cs),
-[IUIElementCollection](src/StandardUI/Controls/IUIElementCollection.cs),
-[IControl](src/StandardUI/Controls/IControl.cs),
-[IUserControl](src/StandardUI/Controls/IUserControl.cs)
+[IUIElement](src/Microsoft.StandardUI/IUIElement.cs),
+[IUIElementCollection](src/Microsoft.StandardUI/Controls/IUIElementCollection.cs),
+[IControl](src/Microsoft.StandardUI/Controls/IControl.cs),
+[IUserControl](src/Microsoft.StandardUI/Controls/IUserControl.cs)
 
 ### Shapes and Drawing
 
 _Shapes:_
-[IShape](src/StandardUI/Shapes/IShape.cs),
-[IEllipse](src/StandardUI/Shapes/IEllipse.cs),
-[ILine](src/StandardUI/Shapes/ILine.cs),
-[IPath](src/StandardUI/Shapes/IPath.cs),
-[IPolygon](src/StandardUI/Shapes/IPolygon.cs),
-[IPolyline](src/StandardUI/Shapes/IPolyline.cs),
-[IRectangle](src/StandardUI/Shapes/IRectangle.cs)
+[IShape](src/Microsoft.StandardUI/Shapes/IShape.cs),
+[IEllipse](src/Microsoft.StandardUI/Shapes/IEllipse.cs),
+[ILine](src/Microsoft.StandardUI/Shapes/ILine.cs),
+[IPath](src/Microsoft.StandardUI/Shapes/IPath.cs),
+[IPolygon](src/Microsoft.StandardUI/Shapes/IPolygon.cs),
+[IPolyline](src/Microsoft.StandardUI/Shapes/IPolyline.cs),
+[IRectangle](src/Microsoft.StandardUI/Shapes/IRectangle.cs)
 
 _Geometries:_
-[IGeometry](src/StandardUI/Media/IGeometry.cs),
-[IArcSegement](src/StandardUI/Media/IArcSegement.cs),
-[IBezierSegment](src/StandardUI/Media/IBezierSegment.cs),
-[ILineSegment](src/StandardUI/Media/ILineSegment.cs),
-[IPathFigure](src/StandardUI/Media/IPathFigure.cs),
-[IPathGeometry](src/StandardUI/Media/IPathGeometry.cs),
-[IPathSegment](src/StandardUI/Media/IPathSegment.cs),
-[IPolyBezierSegment](src/StandardUI/Media/IPolyBezierSegment.cs)
-[IPolyQuadraticBezierSegment](src/StandardUI/Media/IPolyQuadraticBezierSegment.cs)
-[IQuadraticBezierSegment](src/StandardUI/Media/IQuadraticBezierSegment.cs)
+[IGeometry](src/Microsoft.StandardUI/Media/IGeometry.cs),
+[IArcSegement](src/Microsoft.StandardUI/Media/IArcSegement.cs),
+[IBezierSegment](src/Microsoft.StandardUI/Media/IBezierSegment.cs),
+[ILineSegment](src/Microsoft.StandardUI/Media/ILineSegment.cs),
+[IPathFigure](src/Microsoft.StandardUI/Media/IPathFigure.cs),
+[IPathGeometry](src/Microsoft.StandardUI/Media/IPathGeometry.cs),
+[IPathSegment](src/Microsoft.StandardUI/Media/IPathSegment.cs),
+[IPolyBezierSegment](src/Microsoft.StandardUI/Media/IPolyBezierSegment.cs)
+[IPolyQuadraticBezierSegment](src/Microsoft.StandardUI/Media/IPolyQuadraticBezierSegment.cs)
+[IQuadraticBezierSegment](src/Microsoft.StandardUI/Media/IQuadraticBezierSegment.cs)
 
 _Transforms:_
 [ITransform](src/StandardUI/Media/ITransform.cs),
