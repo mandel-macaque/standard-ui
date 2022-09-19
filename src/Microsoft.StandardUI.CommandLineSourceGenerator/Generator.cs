@@ -67,7 +67,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             public override void VisitNamespace(INamespaceSymbol symbol)
             {
-                foreach (var childSymbol in symbol.GetMembers())
+                foreach (INamespaceOrTypeSymbol childSymbol in symbol.GetMembers())
                 {
                     // We must implement the visitor pattern ourselves and 
                     // accept the child symbols in order to visit their children
@@ -77,8 +77,8 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
             public override void VisitNamedType(INamedTypeSymbol symbol)
             {
-                InterfacePurpose? interfacePuprpose = Interface.IdentifyPurpose(symbol);
-                if (interfacePuprpose.HasValue)
+                InterfacePurpose interfacePuprpose = Interface.IdentifyPurpose(symbol);
+                if (interfacePuprpose != InterfacePurpose.Unspecified)
                 {
                     var intface = new Interface(_context, symbol);
                     _interfaces.Add(intface);

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -60,12 +59,18 @@ namespace Microsoft.StandardUI.SourceGenerator
                 if (interfaceType == null)
                     continue;
 
-                SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(classDeclarationSyntax);
-                if (symbolInfo.Symbol is not INamedTypeSymbol classType)
-                    continue;
+                string classNamespace = GetNamespace(classDeclarationSyntax);
 
-                var className = new TypeName(classType);
+                var className = new TypeName(classNamespace, classDeclarationSyntax.Identifier.Text);
+
+                // Get the parent classes/interfaces, removing the ":" prefix, so the partial class we
+                // output derives from the same types as the original class
                 string? derivedFrom = classDeclarationSyntax.BaseList?.ToString();
+                if (derivedFrom != null && derivedFrom.StartsWith(":"))
+                {
+                    derivedFrom = derivedFrom.Substring(1);
+                    derivedFrom = derivedFrom.TrimStart(' ', '\t');
+                }
 
                 var intface = new Interface(context, interfaceType);
                 intface.GenerateNativeUIElementPartialClass(uiFramework, className, derivedFrom);

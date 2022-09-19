@@ -5,6 +5,7 @@
         UIObject,
         StandardUIObject,
         StandardControl,
-        StandardPanel
+        StandardPanel,
+        Unspecified
     }
 }
