@@ -1,4 +1,4 @@
-namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class WinUIUIFramework : XamlUIFramework
     {
@@ -6,8 +6,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         {
         }
 
-        public override string ProjectBaseDirectory => "Microsoft.StandardUI.WinUI";
-        public override string RootNamespace => "Microsoft.StandardUI.WinUI";
+        public override string Name => "WinUI";
         public override TypeName DependencyPropertyType => new("Microsoft.UI.Xaml", "DependencyProperty");
         public override TypeName ContentPropertyAttribute => new("Microsoft.UI.Xaml.Markup", "ContentPropertyAttribute");
 

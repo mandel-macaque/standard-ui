@@ -6,8 +6,7 @@
         {
         }
 
-        public override string ProjectBaseDirectory => "Microsoft.StandardUI.Wpf";
-        public override string RootNamespace => "Microsoft.StandardUI.Wpf";
+        public override string Name => "Wpf";
         public override TypeName DependencyPropertyType => new("System.Windows", "DependencyProperty");
         public override TypeName ContentPropertyAttribute => new("System.Windows.Markup", "ContentPropertyAttribute");
 
@@ -94,6 +93,10 @@
         {
             Source methods = classSource.NonstaticMethods;
 
+            classSource.Usings.AddNamespace("Microsoft.StandardUI");
+            classSource.Usings.AddNamespace("Microsoft.StandardUI.Wpf");
+            classSource.Usings.AddTypeAlias("Visibility = System.Windows.Visibility");
+
             // TODO: Error if appropriate when set to Visibility.Hidden
 
             methods.AddLines(
@@ -101,8 +104,8 @@
                 "void IUIElement.Arrange(Rect finalRect) => Arrange(finalRect.ToWpfRect());",
                 "Size IUIElement.DesiredSize => DesiredSize.ToStandardUISize();",
                 "",
-                "double IUIElement.ActualX => throw new NotImplementedException();",
-                "double IUIElement.ActualY => throw new NotImplementedException();",
+                "double IUIElement.ActualX => throw new System.NotImplementedException();",
+                "double IUIElement.ActualY => throw new System.NotImplementedException();",
                 "");
             methods.AddProperty("Thickness IUIElement.Margin", "Margin.ToStandardUIThickness()", "Margin = value.ToWpfThickness()");
             methods.AddBlankLine();
@@ -127,7 +130,6 @@
             methods.AddProperty("double IUIElement.MaxHeight", "MaxHeight", "MaxHeight = value");
             methods.AddBlankLine();
             methods.AddLines(
-                "",
                 "double IUIElement.ActualWidth => ActualWidth;",
                 "double IUIElement.ActualHeight => ActualHeight;",
                 "",
