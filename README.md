@@ -1,13 +1,16 @@
-# .NET Standard Controls
+# .NET Standard UI
 
-.NET Standard Controls is a project, currently experimental, that enables building controls and other UI that can be used across multiple .NET UI frameworks - WPF, .NET MAUI, WinForms, WinUI, macOS Cocoa, and potentially Blazor, Uno, Avalonia, and more.
+.NET Standard UI is a project, currently experimental, that enables building controls and other UI that can
+be used across multiple .NET UI frameworks -WPF, .NET MAUI, WinForms, WinUI, macOS Cocoa, and potentially
+Blazor, Uno, Avalonia, and more.
 
 Today the .NET UI ecosystem is fragmented - lots of the frameworks above work similarly, but they
 are all slightly different and incompatible. Control authors that want to support multiple frameworks
 need to write their own abstraction layer. Many do that, but it's a pain and new frameworks aren't
 automatically supported.  Rather than everyone writing their own abstraction layer, it would be better
 if Microsoft provided a standard set of APIs, where if you use those to author your control it'll
-work everywhere. That's the intention of .NET Standard Controls.
+work everywhere. That's the intention of this project. Controls written using these standard APIs,
+that can work anywhere, are called .NET Standard Controls.
 
 Here's how it works:
 1. You create a .NET Standard Control by defining an interface for the control's public API, including
@@ -38,12 +41,18 @@ standard control, it can also be used in WinForms, MAUI, and other frameworks, a
 **Grow the .NET UI control ecosystem** - Writing a single control that can target several UI
 frameworks means it's easier to write controls and they can target a bigger set of users. This
 helps control vendors, community members that build controls, and Microsoft as it builds out first
-party controls - cheaper + wider reach should mean more controls in the ecosystem. For Microsoft controls, possibilities include cross platform Fluent UI or controls that interoperate with MS services, like the MS Graph controls [here](https://docs.microsoft.com/en-us/windows/communitytoolkit/graph/controls/peoplepicker).
+party controls - cheaper + wider reach should mean more controls in the ecosystem. For Microsoft controls,
+possibilities include cross platform Fluent UI or controls that interoperate with MS services,
+like the MS Graph controls [here](https://docs.microsoft.com/en-us/windows/communitytoolkit/graph/controls/peoplepicker).
 
-**Reduce .NET UI Fragementation** - Today there are multiple XAML UI frameworks (WPF, UWP, WinUI, Xamarin.Forms, .NET MAUI, Uno, Avalonia, etc.). All are pretty similar, though slightly different.
-For the most part they don't share code. The naming differences are annoying.
-This project is similar in some ways to [XAML Standard](https://github.com/microsoft/xaml-standard), but this is a binary standard, not just aligned naming conventions. A binary standard is much more useful, at it allows writing shared code.
-As the standard is based on WPF/UWP/WinUI, it means that it isn't a big leap to take an existing WPF/UWP/WinUI control definition (something like [this](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/controls/button-styles-and-templates?view=netframeworkdesktop-4.8) for instance, contructed out of shape primitives, visual states, and storyboards) and make it a cross platform control.
+**Reduce .NET UI Fragementation** - Today there are several XAML UI frameworks (WPF, UWP, WinUI, Xamarin.Forms,
+.NET MAUI, Uno, Avalonia, etc.). Even though they are very similar, they are incompatible - controls and other
+code developed for one framework don't work on others.
+This project is similar in some ways to [XAML Standard](https://github.com/microsoft/xaml-standard), but this is a binary
+standard, not just aligned naming conventions. A binary standard is much more useful, at it allows writing shared code.
+As the standard is based on WPF/UWP/WinUI, it means that it isn't a big leap to take an existing WPF/UWP/WinUI control
+definition (something like [this](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/controls/button-styles-and-templates?view=netframeworkdesktop-4.8)
+for instance, contructed out of shape primitives, visual states, and storyboards) and make it a cross platform control.
 
 
 # Documentation
