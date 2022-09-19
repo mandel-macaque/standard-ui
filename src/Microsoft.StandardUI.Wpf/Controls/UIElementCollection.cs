@@ -370,7 +370,7 @@ namespace Microsoft.StandardUI.Wpf
                 if (element is TNativeUIElment nativeUIElement)
                     return nativeUIElement;
 
-                if (element is NativeUIElement wrappedNativeUIElement)
+                if (element is WrappedNativeUIElement wrappedNativeUIElement)
                 {
                     FrameworkElement frameworkElement = wrappedNativeUIElement.FrameworkElement;
                     if (frameworkElement is TNativeUIElment frameworkElementOfNeededType)
@@ -387,7 +387,7 @@ namespace Microsoft.StandardUI.Wpf
 
                 if (element is FrameworkElement frameworkElement)
                 {
-                    var wrappedNativeUIElement = new NativeUIElement(frameworkElement);
+                    var wrappedNativeUIElement = new WrappedNativeUIElement(frameworkElement);
                     if (wrappedNativeUIElement is TStandardUIElement standardUIElementOfNeededType)
                         return standardUIElementOfNeededType;
                 }

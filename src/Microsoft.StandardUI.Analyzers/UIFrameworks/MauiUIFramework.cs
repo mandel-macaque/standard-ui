@@ -1,4 +1,4 @@
-namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class MauiUIFramework : XamlUIFramework
     {
@@ -6,8 +6,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         {
         }
 
-        public override string ProjectBaseDirectory => "Microsoft.StandardUI.Maui";
-        public override string RootNamespace => "Microsoft.StandardUI.Maui";
+        public override string Name => "Maui";
         public override TypeName DependencyPropertyType => new("Microsoft.Maui.Controls", "BindableProperty");
         public override TypeName ContentPropertyAttribute => new("Microsoft.Maui.Controls", "ContentPropertyAttribute");
 

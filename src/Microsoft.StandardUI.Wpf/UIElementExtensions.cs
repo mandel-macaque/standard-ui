@@ -9,7 +9,7 @@ namespace Microsoft.StandardUI.Wpf
             if (standardUIElement is System.Windows.UIElement wpfUIElement)
                 return wpfUIElement;
 
-            if (standardUIElement is NativeUIElement nativeUIElement)
+            if (standardUIElement is WrappedNativeUIElement nativeUIElement)
                 return nativeUIElement.FrameworkElement;
 
             throw new InvalidOperationException($"UIElement is of unexpected type '{standardUIElement.GetType()}' and can't be converted to a native WPF UIElement");

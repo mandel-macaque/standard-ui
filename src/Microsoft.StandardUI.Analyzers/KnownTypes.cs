@@ -16,7 +16,7 @@
         public const string StandardControlAttribute = "Microsoft.StandardUI.StandardControlAttribute";
 
         public const string ImportStandardControlAttribute = "Microsoft.StandardUI.ImportStandardControlAttribute";
-        public const string WpfStandardUIElementAttribute = "Microsoft.StandardUI.WpfStandardUIElement";
+        public const string WpfStandardUIElementAttribute = "Microsoft.StandardUI.WpfStandardUIElementAttribute";
 
         public const string ControlLibraryAttribute = "Microsoft.StandardUI.ControlLibraryAttribute";
 

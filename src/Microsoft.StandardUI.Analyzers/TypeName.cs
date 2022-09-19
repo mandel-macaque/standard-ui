@@ -8,7 +8,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public string Name { get; }
 
-        public string FullName => $"{Namespace}.{Name}";
+        public string FullName => Namespace.Length > 0 ? $"{Namespace}.{Name}" : Name;
 
         public TypeName(string @namespace, string type)
         {

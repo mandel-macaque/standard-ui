@@ -14,8 +14,10 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             Context = context;
         }
 
-        public abstract string ProjectBaseDirectory { get; }
-        public abstract string RootNamespace { get; }
+        public abstract string Name { get; }
+        public virtual string NamespaceSuffix => Name;
+        public virtual string ProjectBaseDirectory => $"Microsoft.StandardUI.{Name}";
+        public string RootNamespace => $"Microsoft.StandardUI.{NamespaceSuffix}";
         public abstract string FrameworkTypeForUIElementAttachedTarget { get; }
         public abstract string NativeUIElementType { get; }
         public virtual TypeName BuiltInUIElementBaseClassType => new(RootNamespace, "BuiltInUIElement");
@@ -42,7 +44,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             // just keep with a the original namespace, not using a child namespace per platform
             string namespaceName = Utils.GetNamespaceFullName(namespc);
             if (!namespaceName.StartsWith(Utils.StandardUIRootNamespace))
-                return namespaceName;
+                return $"{namespaceName}.{NamespaceSuffix}";
 
             // Map e.g. Microsoft.StandardUI.Media source namespace => Microsoft.StandardUI.Wpf.Media destination namespace
             // If the source namespace is just Microsoft.StandardUI, don't change anything here
@@ -106,7 +108,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 OutputTypeName(attachedProperty.TargetType);
         }
 
-        public virtual string WrapperSuffix => throw new NotImplementedException("WrapperSuffix doesn't have a default implementation; implement it if IsWrappedType can ever return true");
+        public virtual string WrapperSuffix => Name;
 
         public virtual bool IsWrappedType(ITypeSymbol type) => false;
 

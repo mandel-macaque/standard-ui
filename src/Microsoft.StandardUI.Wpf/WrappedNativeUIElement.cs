@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 
 namespace Microsoft.StandardUI.Wpf
@@ -7,13 +7,13 @@ namespace Microsoft.StandardUI.Wpf
     /// This class is for UI controls passed in from the host, for native WPF controls (not
     /// Standard UI built in controls or StandardControl controls), which we wrap with an IUIElement here.
     /// </summary>
-    public class NativeUIElement : IUIElement
+    public class WrappedNativeUIElement : IUIElement
     {
-        private FrameworkElement _frameworkElement;
+        private readonly FrameworkElement _frameworkElement;
 
-        public NativeUIElement(FrameworkElement frameworkElement)
+        public WrappedNativeUIElement(FrameworkElement frameworkElement)
         {
-            this._frameworkElement = frameworkElement;
+            _frameworkElement = frameworkElement;
         }
 
         public FrameworkElement FrameworkElement => _frameworkElement;

@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{9B71
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.SkiaVisualFramework", "src\Microsoft.StandardUI.SkiaVisualFramework\Microsoft.StandardUI.SkiaVisualFramework.csproj", "{7B85BF7F-1265-4A34-9865-A371FB3D71F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.SourceGenerator", "src\Microsoft.StandardUI.SourceGenerator\Microsoft.StandardUI.SourceGenerator.csproj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.Analyzers", "src\Microsoft.StandardUI.Analyzers\Microsoft.StandardUI.Analyzers.csproj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "controls", "controls", "{9FA8F699-79F5-48DB-A2D9-717CE875C5F0}"
 EndProject

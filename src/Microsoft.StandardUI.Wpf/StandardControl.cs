@@ -1,11 +1,11 @@
-using Microsoft.StandardUI.Controls;
+﻿using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Wpf.NativeVisualFramework;
 using System;
 using System.Windows.Media;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
+    public partial class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
     {
         private StandardControlImplementation? _implementation;
         private IUIElement? _buildContent;
@@ -22,16 +22,6 @@ namespace Microsoft.StandardUI.Wpf
         protected void InitImplementation(StandardControlImplementation implementation)
         {
             _implementation = implementation;
-        }
-
-        void IUIElement.Measure(Size availableSize)
-        {
-            Measure(availableSize.ToWpfSize());
-        }
-
-        void IUIElement.Arrange(Rect finalRect)
-        {
-            Arrange(finalRect.ToWpfRect());
         }
 
         IUIObject? IStandardControl.GetTemplateChild(string childName)
@@ -56,48 +46,6 @@ namespace Microsoft.StandardUI.Wpf
             _implementation!.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
             return arrangeSize;
         }
-
-        Size IUIElement.DesiredSize => SizeExtensions.ToStandardUISize(DesiredSize);
-
-        double IUIElement.ActualX => throw new NotImplementedException();
-
-        double IUIElement.ActualY => throw new NotImplementedException();
-
-        Thickness IUIElement.Margin
-        {
-            get => Margin.ToStandardUIThickness();
-            set => Margin = value.ToWpfThickness();
-        }
-
-        HorizontalAlignment IUIElement.HorizontalAlignment
-        {
-            get => HorizontalAlignment.ToStandardUIHorizontalAlignment();
-            set => HorizontalAlignment = value.ToWpfHorizontalAlignment();
-        }
-
-        VerticalAlignment IUIElement.VerticalAlignment
-        {
-            get => VerticalAlignment.ToStandardUIVerticalAlignment();
-            set => VerticalAlignment = value.ToWpfVerticalAlignment();
-        }
-
-        FlowDirection IUIElement.FlowDirection
-        {
-            get => FlowDirection.ToStandardUIFlowDirection();
-            set => FlowDirection = value.ToWpfFlowDirection();
-        }
-
-        // TODO: Error if appropriate when set to Visibility.Hidden
-        bool IUIElement.Visible
-        {
-            get => this.Visibility != System.Windows.Visibility.Collapsed;
-            set => this.Visibility = value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-        }
-
-        object? IUIObject.GetValue(IUIProperty property) => GetValue(((UIProperty)property).DependencyProperty);
-        object? IUIObject.ReadLocalValue(IUIProperty property) => ReadLocalValue(((UIProperty)property).DependencyProperty);
-        void IUIObject.SetValue(IUIProperty property, object? value) => SetValue(((UIProperty)property).DependencyProperty, value);
-        void IUIObject.ClearValue(IUIProperty property) => ClearValue(((UIProperty)property).DependencyProperty);
 
         protected override int VisualChildrenCount => _buildContent != null ? 1 : 0;
 

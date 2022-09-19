@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -109,6 +110,44 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Return the namespace for a given type, by inspecting the syntax tree. This can
+        /// be used when the semantic model (symbols) isn't available.
+        /// </summary>
+        /// <param name="typeDeclationSyntax">type syntax node</param>
+        /// <returns>namespace for that type or the empty string if there's no namespace</returns>
+        public static string GetNamespace(BaseTypeDeclarationSyntax typeDeclationSyntax)
+        {
+            string typeNamespace = string.Empty;
+
+            // Search up the syntax tree for a namespace declaration
+            SyntaxNode? potentialNamespaceParent = typeDeclationSyntax.Parent;
+            while (potentialNamespaceParent != null &&
+                    potentialNamespaceParent is not NamespaceDeclarationSyntax &&
+                    potentialNamespaceParent is not FileScopedNamespaceDeclarationSyntax)
+            {
+                potentialNamespaceParent = potentialNamespaceParent.Parent;
+            }
+
+            if (potentialNamespaceParent is BaseNamespaceDeclarationSyntax namespaceParent)
+            {
+                typeNamespace = namespaceParent.Name.ToString();
+
+                // Search up the tree again for outer namespace declarations that enclose
+                // this one, adding each that we find as a prefix
+                while (true)
+                {
+                    if (namespaceParent.Parent is not NamespaceDeclarationSyntax parent)
+                        break;
+
+                    typeNamespace = $"{namespaceParent.Name}.{typeNamespace}";
+                    namespaceParent = parent;
+                }
+            }
+
+            return typeNamespace;
         }
     }
 }

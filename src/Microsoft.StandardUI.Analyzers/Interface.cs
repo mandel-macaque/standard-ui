@@ -43,11 +43,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
         }
 
-        public static InterfacePurpose? IdentifyPurpose(INamedTypeSymbol type)
+        public static InterfacePurpose IdentifyPurpose(INamedTypeSymbol type)
         {
             // Skip ...Attached interfaces, processing them when their paired main interface is processed instead
             if (type.Name.EndsWith("Attached"))
-                return null;
+                return InterfacePurpose.Unspecified;
 
             foreach (AttributeData attribute in type.GetAttributes())
             {
@@ -68,7 +68,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 else continue;
             }
 
-            return null;
+            return InterfacePurpose.Unspecified;
         }
 
         public Interface(Context context, INamedTypeSymbol type)
@@ -80,10 +80,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             if (!Name.StartsWith("I"))
                 throw UserVisibleErrors.StandardUIInterfaceMustStartWithI(type);
 
-            InterfacePurpose? purpose = IdentifyPurpose(type);
-            if (!purpose.HasValue)
-                throw UserVisibleErrors.StandardUIMissingPurposeAttribute(type);
-            Purpose = purpose.Value;
+            Purpose = IdentifyPurpose(type);
 
             FrameworkClassName = Name.Substring(1);
 
@@ -120,7 +117,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
-            if (IsThisType(KnownTypes.IUIElement))
+           if (IsThisType(KnownTypes.IUIElement))
            {
                 uiFramework.GenerateBuiltInIUIElementPartialClasses();
                 return;
@@ -247,6 +244,9 @@ namespace Microsoft.StandardUI.SourceGenerator
             var properties = new List<Property>();
             GenerateTypeProperties(this, uiFramework, properties, classSource);
 
+            classSource.NonstaticMethods.AddBlankLineIfNonempty();
+            classSource.NonstaticMethods.AddLine("// IUIElement methods");
+            classSource.NonstaticMethods.AddBlankLine();
             uiFramework.GenerateIUIElementMethods(classSource);
 
             classSource.AddToOutput(uiFramework);
