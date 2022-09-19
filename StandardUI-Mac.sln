@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.VisualEnvironmen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleControls", "samples\SimpleControls\SimpleControls.csproj", "{2A1EDFC0-2865-4DC8-A232-6D2CCB7FA7E2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "src\Microsoft.StandardUI.SourceGenerator\Microsoft.StandardUI.SourceGenerator.csproj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardUI.SourceGenerator", "src\Microsoft.StandardUI.Analyzers\MicrosMicrosoft.StandardUI.Analyzersj", "{26E564DA-4315-44EF-B287-A9B3BC87BF1C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardUI.Mac", "src\Microsoft.StandardUI.Mac\Microsoft.StandardUI.Mac.csproj", "{0743C3F9-AE96-4477-89E0-C2D203C65F8C}"
 EndProject
