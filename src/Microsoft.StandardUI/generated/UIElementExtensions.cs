@@ -22,12 +22,6 @@ namespace Microsoft.StandardUI
             return uiElement;
         }
         
-        public static T HorizontalAlignment<T>(this T uiElement, HorizontalAlignment value) where T : IUIElement
-        {
-            uiElement.HorizontalAlignment = value;
-            return uiElement;
-        }
-        
         public static T Height<T>(this T uiElement, double value) where T : IUIElement
         {
             uiElement.Height = value;
@@ -49,6 +43,12 @@ namespace Microsoft.StandardUI
         public static T Margin<T>(this T uiElement, Thickness value) where T : IUIElement
         {
             uiElement.Margin = value;
+            return uiElement;
+        }
+        
+        public static T HorizontalAlignment<T>(this T uiElement, HorizontalAlignment value) where T : IUIElement
+        {
+            uiElement.HorizontalAlignment = value;
             return uiElement;
         }
         

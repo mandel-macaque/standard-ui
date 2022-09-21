@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -31,6 +32,9 @@ namespace Microsoft.StandardUI.SourceGenerator
             // If the file namespace is the same or a child of the specified namespace, it's referenced implicitly
             if (_fileNamespaceName == namespaceName || _fileNamespaceName.StartsWith(namespaceName + "."))
                 return;
+
+            if (string.IsNullOrEmpty(namespaceName))
+                throw new InvalidOperationException($"Can't add null or empty using {namespaceName}");
 
             _usings.Add(namespaceName);
         }

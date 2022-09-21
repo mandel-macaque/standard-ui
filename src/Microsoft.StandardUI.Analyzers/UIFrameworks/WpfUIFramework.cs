@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class WpfUIFramework : XamlUIFramework
     {
@@ -67,23 +67,17 @@
 
         public override void GenerateBuiltInIUIElementPartialClasses()
         {
-            GenerateBuiltInIUIElementPartialClass("BuiltInUIElement", "FrameworkElement, IUIElement, ILogicalParent");
-            GenerateBuiltInIUIElementPartialClass("StandardControl", "System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent", "");
+            GenerateBuiltInIUIElementPartialClass("BuiltInUIElement");
+            GenerateBuiltInIUIElementPartialClass("StandardControl");
         }
 
-        private void GenerateBuiltInIUIElementPartialClass(string className, string derviedFrom, params string[] extraUsings)
+        private void GenerateBuiltInIUIElementPartialClass(string className)
         {
             var classSource = new ClassSource(Context,
                 namespaceName: RootNamespace,
                 isPartial: true,
                 className: className,
-                derivedFrom: derviedFrom,
                 fileNameOverride: className + ".UIElement");
-
-            classSource.Usings.AddNamespace("System");
-            classSource.Usings.AddNamespace("System.Windows");
-            foreach (string extraUsing in extraUsings)
-                classSource.Usings.AddNamespace(extraUsing);
 
             GenerateIUIElementMethods(classSource);
             classSource.AddToOutput(this);
@@ -93,8 +87,6 @@
         {
             Source methods = classSource.NonstaticMethods;
 
-            classSource.Usings.AddNamespace("Microsoft.StandardUI");
-            classSource.Usings.AddNamespace("Microsoft.StandardUI.Wpf");
             classSource.Usings.AddTypeAlias("Visibility = System.Windows.Visibility");
 
             // TODO: Error if appropriate when set to Visibility.Hidden

@@ -1,19 +1,17 @@
-﻿// This file is generated. Update the source to change its contents.
+// This file is generated. Update the source to change its contents.
 
-using System;
-using System.Windows;
-using Microsoft.StandardUI.Controls;
+using Visibility = System.Windows.Visibility;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public partial class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
+    public partial class StandardControl
     {
         void IUIElement.Measure(Size availableSize) => Measure(availableSize.ToWpfSize());
         void IUIElement.Arrange(Rect finalRect) => Arrange(finalRect.ToWpfRect());
         Size IUIElement.DesiredSize => DesiredSize.ToStandardUISize();
         
-        double IUIElement.ActualX => throw new NotImplementedException();
-        double IUIElement.ActualY => throw new NotImplementedException();
+        double IUIElement.ActualX => throw new System.NotImplementedException();
+        double IUIElement.ActualY => throw new System.NotImplementedException();
         
         Thickness IUIElement.Margin
         {
@@ -80,7 +78,6 @@ namespace Microsoft.StandardUI.Wpf
             get => MaxHeight;
             set => MaxHeight = value;
         }
-        
         
         double IUIElement.ActualWidth => ActualWidth;
         double IUIElement.ActualHeight => ActualHeight;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.DefaultImplementations
@@ -15,8 +16,18 @@ namespace Microsoft.StandardUI.DefaultImplementations
         {
             if (_propertiesToValue.TryGetValue(property, out object? value))
                 return value;
-
             return property.DefaultValue;
+        }
+
+        public object GetNonNullValue(UIProperty property)
+        {
+            object? value;
+            if (!_propertiesToValue.TryGetValue(property, out value))
+                value = property.DefaultValue;
+
+            if (value == null)
+                throw new InvalidOperationException($"Non-nullable property {property.Name} unexpectedly has a null value");
+            return value;
         }
 
         public object? ReadLocalValue(UIProperty property)

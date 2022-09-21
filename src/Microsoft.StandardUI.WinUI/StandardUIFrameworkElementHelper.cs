@@ -23,9 +23,9 @@ namespace Microsoft.StandardUI.WinUI
     /// </summary>
     internal struct StandardUIFrameworkElementHelper
     {
+#if LATER
         private WriteableBitmap? _bitmap;
 
-#if LATER
         public void OnRender(IVisual visual, double width, double height, DrawingContext drawingContext)
         {
             if (visual.NativeVisual is DrawingGroup drawingGroup)

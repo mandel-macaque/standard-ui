@@ -10,7 +10,10 @@ namespace Microsoft.StandardUI.WinUI
         where TNativeUIElment : FrameworkElement where TStandardUIElement : IUIElement
     {
         private readonly FrameworkElement _parent;
+
+#if LATER
         private IUICollection<TStandardUIElement>? _standardUIElementCollection;
+#endif
 
         /// <summary>
         ///     The colleciton is the children collection of the visualParent. The logicalParent 

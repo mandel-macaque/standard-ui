@@ -1,4 +1,4 @@
-﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
     public class UIFrameworkType
     {
@@ -18,5 +18,6 @@
         public static UIFrameworkType Maui = new((Context context) => new MauiUIFramework(context));
         public static UIFrameworkType WinUI = new((Context context) => new WinUIUIFramework(context));
         public static UIFrameworkType WinForms = new((Context context) => new WinFormsUIFramework(context));
+        public static UIFrameworkType Blazor = new((Context context) => new BlazorUIFramework(context));
     }
 }

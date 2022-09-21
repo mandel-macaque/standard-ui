@@ -2,6 +2,7 @@ using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.WinUI.NativeVisualFramework;
 using Microsoft.UI.Xaml;
 using System;
+using System.Diagnostics.Metrics;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace Microsoft.StandardUI.WinUI
@@ -9,7 +10,11 @@ namespace Microsoft.StandardUI.WinUI
     public class StandardControl : Microsoft.UI.Xaml.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer
     {
         private StandardControlImplementation? _implementation;
-        private BuiltInUIElement? _buildContent;
+
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
+        private readonly BuiltInUIElement? _buildContent;
+#pragma warning restore CS0649
+
         private bool _invalid = true;
 
         public StandardControl()

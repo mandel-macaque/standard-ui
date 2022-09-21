@@ -1,11 +1,16 @@
 using System.Runtime.CompilerServices;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 namespace Microsoft.StandardUI.DefaultImplementations
 {
     public class AttachedPropertyValues
     {
-        private AttachedUIProperty _property;
-        private ConditionalWeakTable<object, object?> _objectToValue;
+        private readonly AttachedUIProperty _property;
+
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
+        private readonly ConditionalWeakTable<object, object?> _objectToValue;
+#pragma warning restore CS0649 
 
         public AttachedPropertyValues(AttachedUIProperty property)
         {

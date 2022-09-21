@@ -15,7 +15,8 @@
         public object OldValue { get; }
 #endif
 
-        /// <summary>
-        /// Gets the property where the value change occurred.  
+        // <summary>
+        // Gets the property where the value change occurred.
+        // </summary>
     }
 }

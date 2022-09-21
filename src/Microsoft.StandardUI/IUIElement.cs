@@ -24,12 +24,6 @@ namespace Microsoft.StandardUI
         public double MaxWidth { get; set; }
 
         /// <summary>
-        /// The horizontal alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
-        /// </summary>
-        [DefaultValue(HorizontalAlignment.Stretch)]
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-
-        /// <summary>
         /// The height of the object, in pixels. The default is NaN. Except for the special NaN value, this value must be equal to or greater than 0.
         /// </summary>
         [DefaultValue(double.NaN)]
@@ -51,6 +45,12 @@ namespace Microsoft.StandardUI
         /// The outer margin of the element, the distance between it and its adjacent elements
         /// </summary>
         public Thickness Margin { get; set; }
+
+        /// <summary>
+        /// The horizontal alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.
+        /// </summary>
+        [DefaultValue(HorizontalAlignment.Stretch)]
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// The Vertical alignment characteristics that are applied to this UIElement when it is composed in a layout parent, such as a panel or items control.

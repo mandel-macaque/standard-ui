@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.StandardUI.DefaultImplementations
@@ -12,6 +13,18 @@ namespace Microsoft.StandardUI.DefaultImplementations
                 return property.DefaultValue;
 
             return values.GetValue(obj);
+        }
+
+        public static object GetNonNullValue(object obj, AttachedUIProperty property)
+        {
+            object? value;
+            if (_propertiesToValues.TryGetValue(property, out AttachedPropertyValues values))
+                value = values.GetValue(obj);
+            else value = property.DefaultValue;
+
+            if (value == null)
+                throw new InvalidOperationException($"Non-nullable property {property.Name} unexpectedly has a null value");
+            return value;
         }
 
         public static object? ReadLocalValue(object obj, AttachedUIProperty property)

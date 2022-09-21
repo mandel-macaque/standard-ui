@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -77,6 +77,8 @@ namespace Microsoft.StandardUI.SourceGenerator
                     return new WpfUIFramework(context);
                 else if (assemblyName == "Microsoft.StandardUI.WinForms")
                     return new WinFormsUIFramework(context);
+                else if (assemblyName == "Microsoft.StandardUI.Blazor")
+                    return new BlazorUIFramework(context);
             }
 
             throw UserVisibleErrors.CouldNotIdentifyUIFramework();

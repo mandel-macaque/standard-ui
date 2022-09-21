@@ -30,6 +30,7 @@
         /// </summary>
         public static FontWeight Normal => new FontWeight(400);
 
+        /// <summary>
         /// Specifies a font weight value of 500.
         /// </summary>
         public static FontWeight Medium => new FontWeight(500);

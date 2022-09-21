@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -112,6 +112,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             var winFormsUIFramework = new WinFormsUIFramework(context);
             var macUIFramework = new MacUIFramework(context);
             var mauiUIFramework = new MauiUIFramework(context);
+            var blazorUIFramework = new BlazorUIFramework(context);
 
             // Generate source for the various UI frameworks and shared source
             foreach (Interface intface in gatherInterfacesVisitor.Interfaces)
@@ -123,6 +124,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
                 intface.Generate(winFormsUIFramework);
                 intface.Generate(macUIFramework);
                 intface.Generate(mauiUIFramework);
+                intface.Generate(blazorUIFramework);
                 intface.GenerateExtensionsClass();
             }
 

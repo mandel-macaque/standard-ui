@@ -10,8 +10,9 @@ namespace Microsoft.StandardUI.WinUI
     /// </summary>
     public class BuiltInUIElement : FrameworkElement, IUIElement
     {
-        private StandardUIFrameworkElementHelper _helper = new();
-
+#if false
+    private StandardUIFrameworkElementHelper _helper = new();
+#endif
         void IUIElement.Measure(Size availableSize)
         {
             Measure(availableSize.ToWindowsFoundationSize());
@@ -121,7 +122,7 @@ namespace Microsoft.StandardUI.WinUI
             return ReadLocalValue(dependencyProperty);
         }
 
-        public void SetValue(IUIProperty property, object value)
+        public void SetValue(IUIProperty property, object? value)
         {
             DependencyProperty dependencyProperty = ((UIProperty)property).DependencyProperty;
             SetValue(dependencyProperty, value);

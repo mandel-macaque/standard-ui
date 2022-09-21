@@ -213,12 +213,16 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             mainClassSource.Usings.AddTypeNamespace(Type);
 
+#pragma warning disable CS8604 // Possible null reference argument.
+
             if (Purpose == InterfacePurpose.StandardControl)
             {
                 string implementationFullTypeName = Utils.GetTypeFullName(StandardControlImpelementationType);
                 mainClassSource.DefaultConstructorBody.AddLine(
                     $"InitImplementation(new {implementationFullTypeName}(this));");
             }
+
+#pragma warning restore CS8604
 
             mainClassSource.AddToOutput(uiFramework);
 
