@@ -49,4 +49,11 @@
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Microsoft.StandardUI.Analyzers\Microsoft.StandardUI.Analyzers.csproj" />
+      <ProjectReference Include="..\..\..\src\Microsoft.StandardUI.Blazor\Microsoft.StandardUI.Blazor.csproj" />
+      <ProjectReference Include="..\..\controls\Microcharts\Microcharts.csproj" />
+      <ProjectReference Include="..\..\controls\SimpleControls\SimpleControls.csproj" />
+    </ItemGroup>
+
 </Project>
