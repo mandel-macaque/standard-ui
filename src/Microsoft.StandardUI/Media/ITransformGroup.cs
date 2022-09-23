@@ -2,7 +2,7 @@
 
 namespace Microsoft.StandardUI.Media
 {
-	[UIModelObject]
+    [UIModelObject]
     public interface ITransformGroup : ITransform
     {
         IEnumerable<ITransform> Children { get; }

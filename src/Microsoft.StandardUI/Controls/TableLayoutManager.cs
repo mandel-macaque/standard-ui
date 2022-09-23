@@ -1,6 +1,3 @@
-using StandardUI.Controls;
-using System;
-
 namespace Microsoft.StandardUI.Controls
 {
 #if false

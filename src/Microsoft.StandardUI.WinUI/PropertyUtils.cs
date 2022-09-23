@@ -1,7 +1,7 @@
-using Microsoft.UI.Xaml;
 using System;
 using System.Collections;
 using System.Linq;
+using Microsoft.UI.Xaml;
 
 namespace Microsoft.StandardUI.WinUI
 {

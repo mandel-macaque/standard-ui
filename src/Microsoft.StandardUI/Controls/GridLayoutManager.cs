@@ -1,5 +1,5 @@
-using StandardUI.Controls;
 using System;
+using StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Controls
 {

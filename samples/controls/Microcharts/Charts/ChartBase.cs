@@ -11,10 +11,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Shapes;
 using SkiaSharp;
 using static Microsoft.StandardUI.StandardUIStatics;
-using Microsoft.StandardUI.Shapes;
-using Microsoft.StandardUI.Media;
 
 namespace Microcharts
 {
@@ -252,10 +252,10 @@ namespace Microcharts
 
         public virtual IUIElement Build()
         {
-            int width = (int) Control.Width;
+            int width = (int)Control.Width;
             int height = (int)Control.Height;
 
-            ICanvas canvas = Canvas() .Width(width) .Height(height);
+            ICanvas canvas = Canvas().Width(width).Height(height);
 
             DrawableChartArea = new Rect(0, 0, width, height);
             BuildContent(canvas, width, height);
@@ -529,7 +529,7 @@ namespace Microcharts
         /// Raises the property change.
         /// </summary>
         /// <param name="property">The property name.</param>
-        protected void RaisePropertyChanged([CallerMemberName]string property = null)
+        protected void RaisePropertyChanged([CallerMemberName] string property = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
@@ -542,7 +542,7 @@ namespace Microcharts
         /// <param name="value">The new value.</param>
         /// <param name="property">The property name.</param>
         /// <typeparam name="T">The 1st type parameter.</typeparam>
-        protected bool Set<T>(ref T field, T value, [CallerMemberName]string property = null)
+        protected bool Set<T>(ref T field, T value, [CallerMemberName] string property = null)
         {
             if (!EqualityComparer<T>.Equals(field, property))
             {

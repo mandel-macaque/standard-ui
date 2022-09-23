@@ -1,7 +1,3 @@
-using System.Windows;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
-
 namespace Microsoft.StandardUI.WinUI
 {
     internal struct SizeInPixels

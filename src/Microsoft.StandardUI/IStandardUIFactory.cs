@@ -14,7 +14,7 @@ namespace Microsoft.StandardUI
         IStackPanel CreateStackPanel();
         IVerticalStack CreateVerticalStack();
         IHorizontalStack CreateHorizontalStack();
-		IGrid CreateGrid();
+        IGrid CreateGrid();
         IRowDefinition CreateRowDefinition();
         IColumnDefinition CreateColumnDefinition();
         IGridAttached GridAttachedInstance { get; }

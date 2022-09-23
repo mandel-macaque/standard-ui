@@ -4,5 +4,5 @@ namespace Microsoft.StandardUI.Media
     {
         EvenOdd = 0,
         Nonzero = 1
-    }   
+    }
 }

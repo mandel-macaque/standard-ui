@@ -1,6 +1,6 @@
-using Microsoft.StandardUI.Shapes;
 using System;
 using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI
 {

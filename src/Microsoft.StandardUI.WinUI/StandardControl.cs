@@ -1,8 +1,7 @@
+using System;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.WinUI.NativeVisualFramework;
 using Microsoft.UI.Xaml;
-using System;
-using System.Diagnostics.Metrics;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace Microsoft.StandardUI.WinUI

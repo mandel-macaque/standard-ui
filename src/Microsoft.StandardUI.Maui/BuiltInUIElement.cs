@@ -1,6 +1,49 @@
+
+/* Unmerged change from project 'Microsoft.StandardUI.Maui (net6.0-android)'
+Before:
 using Microsoft.Maui.Controls;
 using Microsoft.StandardUI.Maui;
 using System;
+After:
+using System;
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+*/
+
+/* Unmerged change from project 'Microsoft.StandardUI.Maui (net6.0-ios)'
+Before:
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+using System;
+After:
+using System;
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+*/
+
+/* Unmerged change from project 'Microsoft.StandardUI.Maui (net6.0-maccatalyst)'
+Before:
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+using System;
+After:
+using System;
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+*/
+
+/* Unmerged change from project 'Microsoft.StandardUI.Maui (net6.0-windows10.0.19041.0)'
+Before:
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+using System;
+After:
+using System;
+using Microsoft.Maui.Controls;
+using Microsoft.StandardUI.Maui;
+*/
+using System;
+using Microsoft.Maui.Controls;
 
 namespace Microsoft.StandardUI.Maui
 {
@@ -133,7 +176,7 @@ namespace Microsoft.StandardUI.Maui
         {
         }
 
-        object? IUIObject.GetValue(IUIProperty property) => GetValue(((UIProperty) property).BindableProperty);
+        object? IUIObject.GetValue(IUIProperty property) => GetValue(((UIProperty)property).BindableProperty);
         object? IUIObject.ReadLocalValue(IUIProperty property) => throw new NotSupportedException("ReadLocalValue isn't currently supported");   // ReadLocalValue(((UIProperty)property).BindableProperty);
         void IUIObject.SetValue(IUIProperty property, object? value) => SetValue(((UIProperty)property).BindableProperty, value);
         void IUIObject.ClearValue(IUIProperty property) => ClearValue(((UIProperty)property).BindableProperty);

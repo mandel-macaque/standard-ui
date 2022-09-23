@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Microsoft.StandardUI
+﻿namespace Microsoft.StandardUI
 {
     public delegate void ObjectOrSubobjectChangedEventHandler();
 

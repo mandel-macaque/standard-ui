@@ -1,9 +1,9 @@
+using System;
+using System.Numerics;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
-using System;
 using Microsoft.UI.Composition;
-using System.Numerics;
 using Microsoft.UI.Xaml.Hosting;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;

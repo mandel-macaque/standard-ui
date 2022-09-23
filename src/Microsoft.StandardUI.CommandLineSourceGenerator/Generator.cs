@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Locator;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.StandardUI.SourceGenerator;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
-using Microsoft.CodeAnalysis;
-using Microsoft.Build.Locator;
-using Microsoft.CodeAnalysis.MSBuild;
-using System.Linq;
-using System.Collections.Immutable;
 
 namespace Microsoft.StandardUI.CommandLineSourceGenerator
 {
@@ -88,7 +87,7 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
 
         private static void GenerateClasses(string rootDirectory, Project project)
         {
-			Compilation? compilation = project.GetCompilationAsync().Result;
+            Compilation? compilation = project.GetCompilationAsync().Result;
             if (compilation == null)
                 return;
 

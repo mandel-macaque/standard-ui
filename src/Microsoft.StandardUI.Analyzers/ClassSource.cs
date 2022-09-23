@@ -105,7 +105,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     classBody.AddSource(NonstaticMethods);
                 }
 
-                if (! Attributes.IsEmpty)
+                if (!Attributes.IsEmpty)
                     fileSource.AddSource(Attributes);
 
                 StringBuilder classLine = new StringBuilder("public");

@@ -1,5 +1,3 @@
-using static Microsoft.StandardUI.StandardUIStatics;
-
 namespace Microsoft.StandardUI.Controls
 {
     public static class CanvasHelperExtensions

@@ -1,8 +1,8 @@
-﻿using Microsoft.StandardUI;
+﻿using System.ComponentModel;
+using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
-using System.ComponentModel;
 using static Microsoft.StandardUI.StandardUIStatics;
 
 namespace SimpleControls
@@ -16,12 +16,12 @@ namespace SimpleControls
     public class RadialGauge<T> : StandardControlImplementation<T> where T : IRadialGauge
     {
         public RadialGauge(T control) : base(control)
-            { }
+        { }
 
         public override IUIElement? Build()
         {
             var blueBrush = SolidColorBrush().Color(Colors.Blue);
-            return Rectangle() .Width(50) .Height(50) .Stroke(blueBrush) .Fill(Control.Fill);
+            return Rectangle().Width(50).Height(50).Stroke(blueBrush).Fill(Control.Fill);
         }
     }
 }

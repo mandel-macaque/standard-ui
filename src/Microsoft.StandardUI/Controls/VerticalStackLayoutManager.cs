@@ -9,9 +9,9 @@
             return MeasureOverrideVertical(stack, constraint);
         }
 
-		public override Size ArrangeOverride(IVerticalStack stack, Size finalSize)
-		{
-			return ArrangeOverrideVertical(stack, finalSize);
-		}
-	}
+        public override Size ArrangeOverride(IVerticalStack stack, Size finalSize)
+        {
+            return ArrangeOverrideVertical(stack, finalSize);
+        }
+    }
 }

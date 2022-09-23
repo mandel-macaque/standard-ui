@@ -4,5 +4,5 @@ namespace Microsoft.StandardUI.Media
     {
         Counterclockwise = 0,
         Clockwise = 1
-    }   
+    }
 }

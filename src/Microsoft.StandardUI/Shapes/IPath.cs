@@ -1,5 +1,5 @@
-using Microsoft.StandardUI.Media;
 using System.ComponentModel;
+using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Shapes
 {

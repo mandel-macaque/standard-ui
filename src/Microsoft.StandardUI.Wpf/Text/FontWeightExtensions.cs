@@ -8,6 +8,6 @@ namespace Microsoft.StandardUI.Wpf.Text
             System.Windows.FontWeight.FromOpenTypeWeight(fontWeight.Weight);
 
         public static FontWeight ToStandardUIFontWeight(this System.Windows.FontWeight fontWeight) =>
-            new FontWeight((ushort) fontWeight.ToOpenTypeWeight());
+            new FontWeight((ushort)fontWeight.ToOpenTypeWeight());
     }
 }

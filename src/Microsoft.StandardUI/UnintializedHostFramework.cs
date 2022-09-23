@@ -1,4 +1,3 @@
-using Microsoft.StandardUI.Media;
 using System;
 
 namespace Microsoft.StandardUI

@@ -1,11 +1,5 @@
 //using Blazor.Extensions.Canvas.Canvas2D;
 //using Microcharts;
-using Microsoft.StandardUI;
-using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.Shapes;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
 {

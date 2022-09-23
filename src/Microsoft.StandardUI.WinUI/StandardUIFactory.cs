@@ -16,9 +16,9 @@ namespace Microsoft.StandardUI.WinUI
         public ICanvas CreateCanvas() => new Canvas();
         public ICanvasAttached CanvasAttachedInstance => CanvasAttached.Instance;
         public IStackPanel CreateStackPanel() => new StackPanel();
-		public IVerticalStack CreateVerticalStack() => new VerticalStack();
-		public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
-		public IGrid CreateGrid() => new Grid();
+        public IVerticalStack CreateVerticalStack() => new VerticalStack();
+        public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
+        public IGrid CreateGrid() => new Grid();
         public IGridAttached GridAttachedInstance => GridAttached.Instance;
 
         public IRowDefinition CreateRowDefinition() => new RowDefinition();

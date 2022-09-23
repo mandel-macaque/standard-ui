@@ -22,7 +22,8 @@ namespace Microsoft.StandardUI.Wpf
             Rect cullingRect = new Rect(0, 0, 200, 200);
 
             IVisual? visual;
-            using (IDrawingContext drawingContext = visualFramework.CreateDrawingContext(this)) {
+            using (IDrawingContext drawingContext = visualFramework.CreateDrawingContext(this))
+            {
                 Draw(drawingContext);
                 visual = drawingContext.Close();
             }

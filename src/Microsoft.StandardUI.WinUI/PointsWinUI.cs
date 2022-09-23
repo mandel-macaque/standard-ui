@@ -1,6 +1,3 @@
-using System.ComponentModel;
-
-
 namespace Microsoft.StandardUI.WinUI
 {
     //[TypeConverter(typeof(PointsTypeConverter))]

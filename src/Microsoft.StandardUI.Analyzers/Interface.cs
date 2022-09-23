@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -117,8 +116,8 @@ namespace Microsoft.StandardUI.SourceGenerator
 
         public void Generate(UIFramework uiFramework)
         {
-           if (IsThisType(KnownTypes.IUIElement))
-           {
+            if (IsThisType(KnownTypes.IUIElement))
+            {
                 uiFramework.GenerateBuiltInIUIElementPartialClasses();
                 return;
             }
@@ -194,7 +193,7 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                     string propertyName = methodName.Substring("Get".Length);
                     string setterMethodName = "Set" + propertyName;
-                    IMethodSymbol? setterMethod = (IMethodSymbol?) AttachedType.GetMembers(setterMethodName).FirstOrDefault();
+                    IMethodSymbol? setterMethod = (IMethodSymbol?)AttachedType.GetMembers(setterMethodName).FirstOrDefault();
 
                     var attachedProperty = new AttachedProperty(Context, this, AttachedType, getterMethod, setterMethod);
                     uiFramework.GenerateAttachedProperty(attachedProperty, mainClassSource, attachedClassSource);

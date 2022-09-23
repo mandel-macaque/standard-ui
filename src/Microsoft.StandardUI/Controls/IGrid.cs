@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Microsoft.StandardUI.Controls   
+namespace Microsoft.StandardUI.Controls
 {
     [StandardPanel]
     public interface IGrid : IPanel

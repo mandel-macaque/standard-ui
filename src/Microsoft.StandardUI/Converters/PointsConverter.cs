@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Microsoft.StandardUI.Converters
 {
-	public static class PointsConverter
-	{
+    public static class PointsConverter
+    {
         public static Points ConvertFromString(string value)
         {
             return Parse(value);

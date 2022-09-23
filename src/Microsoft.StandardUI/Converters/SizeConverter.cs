@@ -3,8 +3,8 @@ using System.Globalization;
 
 namespace Microsoft.StandardUI.Converters
 {
-	public static class SizeConverter
-	{
+    public static class SizeConverter
+    {
         public static Size ConvertFromString(string value)
         {
             if (value != null)
@@ -18,5 +18,5 @@ namespace Microsoft.StandardUI.Converters
 
             throw new InvalidOperationException($"Cannot convert \"{value}\" into {typeof(Size)}");
         }
-	}
+    }
 }

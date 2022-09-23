@@ -1,6 +1,5 @@
-using Microsoft.StandardUI.Media;
 using System;
-using System.Windows;
+using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.WinUI.Text
 {

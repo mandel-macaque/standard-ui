@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {
-	public class SourceLine
+    public class SourceLine
     {
         public int Indent { get; }
         public string Text { get; }

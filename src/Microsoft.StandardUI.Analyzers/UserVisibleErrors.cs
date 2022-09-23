@@ -1,6 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {

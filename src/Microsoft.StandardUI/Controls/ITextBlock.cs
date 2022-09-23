@@ -1,6 +1,6 @@
+using System.ComponentModel;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Text;
-using System.ComponentModel;
 
 namespace Microsoft.StandardUI.Controls
 {

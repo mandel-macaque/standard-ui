@@ -9,9 +9,9 @@
             return MeasureOverrideHorizontal(stack, constraint);
         }
 
-		public override Size ArrangeOverride(IHorizontalStack stack, Size finalSize)
-		{
-			return ArrangeOverrideHorizontal(stack, finalSize);
-		}
-	}
+        public override Size ArrangeOverride(IHorizontalStack stack, Size finalSize)
+        {
+            return ArrangeOverrideHorizontal(stack, finalSize);
+        }
+    }
 }

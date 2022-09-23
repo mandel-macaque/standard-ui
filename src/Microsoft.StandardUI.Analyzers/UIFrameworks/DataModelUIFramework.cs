@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
+﻿namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 {
 #if LATER
     public class DataModelUIFramework : UIFramework

@@ -1,5 +1,3 @@
-using Microsoft.StandardUI.Text;
-
 namespace Microsoft.StandardUI.WinUI.Text
 {
     public static class FontWeightExtensions

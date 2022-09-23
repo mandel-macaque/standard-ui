@@ -73,7 +73,7 @@
                     return true;
 
                 case 8: //#aarrggbb
-                    byte a1 = (byte) (ToHex(hex[idx++]) << 4 | ToHex(hex[idx++]));
+                    byte a1 = (byte)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++]));
                     color = FromArgb(
                         a1,
                         (byte)(ToHex(hex[idx++]) << 4 | ToHex(hex[idx++])),

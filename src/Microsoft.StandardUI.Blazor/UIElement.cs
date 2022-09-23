@@ -1,7 +1,6 @@
+using System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.DefaultImplementations;
-using System;
-using System.ComponentModel;
 
 namespace Microsoft.StandardUI.Blazor
 {

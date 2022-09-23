@@ -1,6 +1,3 @@
-
-using Microsoft.AspNetCore.Components;
-
 namespace Microsoft.StandardUI.Blazor
 {
     /// <summary>

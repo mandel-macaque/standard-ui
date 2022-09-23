@@ -613,7 +613,7 @@ namespace Microsoft.StandardUI
 
 
 #if false
-    #region Nongeneric IList members
+#region Nongeneric IList members
 
         object ICollection.SyncRoot => ((ICollection)_items).SyncRoot;
 
@@ -685,6 +685,6 @@ namespace Microsoft.StandardUI
                 OnItemRemoved(item);
         }
 
-    #endregion
+#endregion
 #endif
 #endif

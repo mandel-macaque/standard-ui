@@ -1,5 +1,5 @@
-using Microsoft.StandardUI.Text;
 using System;
+using Microsoft.StandardUI.Text;
 
 namespace Microsoft.StandardUI.WinUI.Text
 {

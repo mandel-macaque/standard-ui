@@ -1,5 +1,5 @@
-﻿using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
-using System.IO;
+﻿using System.IO;
+using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
 
 namespace Microsoft.StandardUI.SourceGenerator
 {

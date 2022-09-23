@@ -1,6 +1,6 @@
+using System;
 using Microsoft.StandardUI.Blazor.NativeVisualFramework;
 using Microsoft.StandardUI.Controls;
-using System;
 
 namespace Microsoft.StandardUI.Blazor
 {

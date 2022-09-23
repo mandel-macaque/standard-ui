@@ -1,10 +1,10 @@
+using System;
+using System.Globalization;
+using System.Windows.Media;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 using Microsoft.StandardUI.Wpf.Text;
-using System;
-using System.Globalization;
-using System.Windows.Media;
 using PenLineCap = Microsoft.StandardUI.Media.PenLineCap;
 using PenLineJoin = Microsoft.StandardUI.Media.PenLineJoin;
 
@@ -110,7 +110,7 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualFramework
             if (brush == null)
                 return;
 
-            var typeface = new Typeface( textBlock.FontFamily.ToWpfFontFamily(),
+            var typeface = new Typeface(textBlock.FontFamily.ToWpfFontFamily(),
                 textBlock.FontStyle.ToWpfFontStyle(),
                 textBlock.FontWeight.ToWpfFontWeight(),
                 textBlock.FontStretch.ToWpfFontStretch());

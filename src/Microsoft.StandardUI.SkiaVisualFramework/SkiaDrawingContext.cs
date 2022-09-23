@@ -1,9 +1,9 @@
-using Microsoft.StandardUI.Media;
-using Microsoft.StandardUI.Shapes;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Shapes;
+using SkiaSharp;
 
 namespace Microsoft.StandardUI.SkiaVisualFramework
 {

@@ -4,8 +4,8 @@ using System.Globalization;
 
 namespace Microsoft.StandardUI.Wpf.Converters
 {
-	public class TypeConverterBase : TypeConverter
-	{
+    public class TypeConverterBase : TypeConverter
+    {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => sourceType == typeof(string);
 
         public string GetValueAsString(object valueObject)

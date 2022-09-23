@@ -1,5 +1,5 @@
-using Microsoft.StandardUI.Maui.Converters;
 using System.ComponentModel;
+using Microsoft.StandardUI.Maui.Converters;
 
 namespace Microsoft.StandardUI.Maui
 {

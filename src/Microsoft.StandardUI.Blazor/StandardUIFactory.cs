@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.Media;
-using Microsoft.StandardUI.Shapes;
 using Microsoft.StandardUI.Blazor.Controls;
 using Microsoft.StandardUI.Blazor.Media;
 using Microsoft.StandardUI.Blazor.Shapes;
+using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI.Blazor
 {
@@ -16,9 +16,9 @@ namespace Microsoft.StandardUI.Blazor
         public ICanvas CreateCanvas() => new Canvas();
         public ICanvasAttached CanvasAttachedInstance => CanvasAttached.Instance;
         public IStackPanel CreateStackPanel() => new StackPanel();
-		public IVerticalStack CreateVerticalStack() => new VerticalStack();
-		public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
-		public IGrid CreateGrid() => new Grid();
+        public IVerticalStack CreateVerticalStack() => new VerticalStack();
+        public IHorizontalStack CreateHorizontalStack() => new HorizontalStack();
+        public IGrid CreateGrid() => new Grid();
         public IGridAttached GridAttachedInstance => GridAttached.Instance;
         public IRowDefinition CreateRowDefinition() => new RowDefinition();
         public IColumnDefinition CreateColumnDefinition() => new ColumnDefinition();

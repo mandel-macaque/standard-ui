@@ -1,8 +1,8 @@
-﻿using Microsoft.StandardUI;
+﻿using System.ComponentModel;
+using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
-using System.ComponentModel;
 using static Microsoft.StandardUI.StandardUIStatics;
 
 namespace AlohaKit.StandardControls

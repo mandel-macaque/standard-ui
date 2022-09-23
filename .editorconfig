@@ -1,0 +1,10 @@
+[*]
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+
+[*.{csproj,proj,targets,props,projitems,shproj}]
+indent_size = 2

@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Aloïs DENIEL. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Linq;
-using SkiaSharp;
-
 namespace Microcharts
 {
 #if LATER
@@ -15,7 +11,7 @@ namespace Microcharts
     /// </summary>
     public class RadialGaugeChart : Chart
     {
-#region Properties
+    #region Properties
 
         /// <summary>
         /// Gets or sets the size of each gauge. If negative, then its will be calculated from the available space.
@@ -41,9 +37,9 @@ namespace Microcharts
 
         private float ValueRange => AbsoluteMaximum - AbsoluteMinimum;
 
-#endregion
+    #endregion
 
-#region Methods
+    #region Methods
 
         public void DrawGaugeArea(SKCanvas canvas, ChartEntry entry, float radius, int cx, int cy, float strokeWidth)
         {
@@ -113,7 +109,7 @@ namespace Microcharts
             DrawCaptionElements(canvas, width, height, leftValues, true, false);
         }
 
-#endregion
+    #endregion
     }
 #endif
 }

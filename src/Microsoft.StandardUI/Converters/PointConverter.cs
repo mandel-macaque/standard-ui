@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Microsoft.StandardUI.Converters
 {
-	public static class PointConverter
-	{
+    public static class PointConverter
+    {
         public static Point ConvertFromString(string value)
         {
             if (value != null)

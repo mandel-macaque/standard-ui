@@ -11,11 +11,11 @@
                 MeasureOverrideVertical(stack, constraint);
         }
 
-		public override Size ArrangeOverride(IStack stack, Size finalSize)
-		{
+        public override Size ArrangeOverride(IStack stack, Size finalSize)
+        {
             return stack.Orientation == Orientation.Horizontal ?
                 ArrangeOverrideHorizontal(stack, finalSize) :
                 ArrangeOverrideVertical(stack, finalSize);
-		}
-	}
+        }
+    }
 }

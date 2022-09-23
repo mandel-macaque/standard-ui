@@ -1,5 +1,5 @@
-using Microsoft.StandardUI.Wpf.Converters;
 using System.ComponentModel;
+using Microsoft.StandardUI.Wpf.Converters;
 
 namespace Microsoft.StandardUI.Wpf
 {

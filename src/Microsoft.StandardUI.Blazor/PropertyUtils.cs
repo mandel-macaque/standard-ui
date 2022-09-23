@@ -1,6 +1,3 @@
-using System;
-using System.Windows;
-
 namespace Microsoft.StandardUI.Blazor
 {
     public static class PropertyUtils

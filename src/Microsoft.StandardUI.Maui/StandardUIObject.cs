@@ -1,5 +1,5 @@
-using Microsoft.Maui.Controls;
 using System;
+using Microsoft.Maui.Controls;
 
 namespace Microsoft.StandardUI.Maui
 {

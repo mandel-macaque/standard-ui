@@ -15,7 +15,7 @@ namespace Microsoft.StandardUI.SourceGenerator
         public Context Context { get; }
 
         public Usings Usings
-        { 
+        {
             get
             {
                 if (_usings == null)
@@ -37,9 +37,9 @@ namespace Microsoft.StandardUI.SourceGenerator
         }
 
         public void AddBlankLine()
-		{
+        {
             AddLine("");
-		}
+        }
 
         public void AddBlankLineIfNonempty()
         {
@@ -48,10 +48,10 @@ namespace Microsoft.StandardUI.SourceGenerator
         }
 
         public void AddLine(string text)
-		{
+        {
             var sourceLine = new SourceLine(_indent, text);
             _lines.Add(sourceLine);
-		}
+        }
 
         public void AddLines(params string[] lines)
         {
@@ -78,29 +78,29 @@ namespace Microsoft.StandardUI.SourceGenerator
         public IEnumerable<SourceLine> SourceLines => _lines;
 
         public IndentRestorer Indent()
-		{
+        {
             IndentRestorer indentRestorer = new IndentRestorer(this, _indent);
             _indent += Context.IndentSize;
             return indentRestorer;
-		}
+        }
 
         public void RestoreIndent(int previousIndent)
-		{
+        {
             _indent = previousIndent;
-		}
+        }
 
         public void AddSource(Source source)
-		{
+        {
             foreach (SourceLine sourceLine in source._lines)
-			{
+            {
                 if (_indent == 0)
                     _lines.Add(sourceLine);
                 else _lines.Add(new SourceLine(_indent + sourceLine.Indent, sourceLine.Text));
-			}
-		}
+            }
+        }
 
         public void WriteToFile(string directory, string fileName)
-		{
+        {
             Directory.CreateDirectory(directory);
 
             string destinationFilePath = Path.Combine(directory, fileName);
@@ -118,20 +118,20 @@ namespace Microsoft.StandardUI.SourceGenerator
         }
 
         public class IndentRestorer : IDisposable
-		{
+        {
             private Source _source;
             private int _previousIndent;
 
             public IndentRestorer(Source source, int previousIndent)
-			{
+            {
                 _source = source;
                 _previousIndent = previousIndent;
-			}
+            }
 
-			public void Dispose()
-			{
+            public void Dispose()
+            {
                 _source.RestoreIndent(_previousIndent);
-			}
-		}
-	}
+            }
+        }
+    }
 }

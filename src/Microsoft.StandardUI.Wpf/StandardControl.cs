@@ -1,7 +1,7 @@
-﻿using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.Wpf.NativeVisualFramework;
-using System;
+﻿using System;
 using System.Windows.Media;
+using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Wpf.NativeVisualFramework;
 
 namespace Microsoft.StandardUI.Wpf
 {
@@ -69,7 +69,7 @@ namespace Microsoft.StandardUI.Wpf
         {
             if (_buildContent != null)
             {
-                System.Windows.UIElement wpfUIElement =_buildContent.ToWpfUIElement();
+                System.Windows.UIElement wpfUIElement = _buildContent.ToWpfUIElement();
                 RemoveVisualChild(wpfUIElement);
                 RemoveLogicalChild(wpfUIElement);
                 _buildContent = null;

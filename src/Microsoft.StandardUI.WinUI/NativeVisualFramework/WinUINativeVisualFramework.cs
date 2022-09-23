@@ -1,8 +1,5 @@
 using System;
-using System.Globalization;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.WinUI.Text;
 
 namespace Microsoft.StandardUI.WinUI.NativeVisualFramework
 {

@@ -4,7 +4,7 @@ namespace Microsoft.StandardUI.Maui
 {
     public class UIProperty : IUIProperty
     {
-        public BindableProperty BindableProperty { get;  }
+        public BindableProperty BindableProperty { get; }
 
         public UIProperty(BindableProperty property)
         {

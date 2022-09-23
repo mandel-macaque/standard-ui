@@ -5,9 +5,9 @@ using System;
 using System.Linq;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Shapes;
 using static Microsoft.StandardUI.StandardUIStatics;
-using Microsoft.StandardUI.Media;
 
 namespace Microcharts
 {
@@ -128,7 +128,7 @@ namespace Microcharts
 
                     // Border center bars
                     var borderPoint = GetPoint(MaxValue, center, angle, radius);
-                    var line = Line() .X1(point.X) .Y1(point.Y) .X2(borderPoint.X) .Y2(borderPoint.Y) .Stroke(SolidColorBrush().Color(BorderLineColor)) .StrokeThickness(BorderLineSize);
+                    var line = Line().X1(point.X).Y1(point.Y).X2(borderPoint.X).Y2(borderPoint.Y).Stroke(SolidColorBrush().Color(BorderLineColor)).StrokeThickness(BorderLineSize);
                     canvas.Add(0, 0, line);
 
                     // Values points and lines
@@ -137,12 +137,12 @@ namespace Microcharts
                     var amount = Math.Abs(entry.Value - AbsoluteMinimum) / ValueRange;
                     var diameter = radius * amount * 2;
                     var circleColor = entry.Color.WithA((byte)(entry.Color.A * 0.75f * AnimationProgress));
-                    var circle = Ellipse() .Width(diameter) .Height(diameter) .Stroke(SolidColorBrush().Color(circleColor)) .StrokeThickness(BorderLineSize);
+                    var circle = Ellipse().Width(diameter).Height(diameter).Stroke(SolidColorBrush().Color(circleColor)).StrokeThickness(BorderLineSize);
                     canvas.Add(center.X - diameter / 2, center.Y - diameter / 2, circle);
 
                     canvas.DrawGradientLine(center, entry.Color.WithA(0), point, entry.Color.WithA((byte)(entry.Color.A * 0.75f)), LineSize);
                     canvas.DrawGradientLine(point, entry.Color, nextPoint, nextEntry.Color, LineSize);
-                    canvas.DrawPoint(point, entry.Color, (float) PointSize, PointMode);
+                    canvas.DrawPoint(point, entry.Color, (float)PointSize, PointMode);
                 }
 
 #if LATER
@@ -189,7 +189,7 @@ namespace Microcharts
         {
             var diameter = radius * 2;
 
-            var circle = Ellipse() .Width(diameter) .Height(diameter) .Stroke(SolidColorBrush().Color(BorderLineColor)) .StrokeThickness(BorderLineSize);
+            var circle = Ellipse().Width(diameter).Height(diameter).Stroke(SolidColorBrush().Color(BorderLineColor)).StrokeThickness(BorderLineSize);
             canvas.Add(center.X - radius, center.Y - radius, circle);
         }
     }

@@ -1,8 +1,8 @@
+using System.Windows;
 using Microcharts;
 using Microsoft.StandardUI;
 using Microsoft.StandardUI.Wpf;
 using Microsoft.StandardUI.Wpf.NativeVisualFramework;
-using System.Windows;
 
 namespace WpfHost
 {

@@ -189,7 +189,7 @@ namespace Microcharts
                     var y = Math.Min(origin, point.Y);
 
                     var color = Color.FromRgb(230, 230, 230);
-                    var brush = SolidColorBrush() .Color(color);
+                    var brush = SolidColorBrush().Color(color);
 
                     // TODO: Support gradient bruhes here
 #if LATER
@@ -202,7 +202,7 @@ namespace Microcharts
 #endif
                     var height = Math.Max(2, Math.Abs(origin - point.Y));
 
-                    var barArea = Rectangle() .Width(PointSize) .Height(height) .Fill(brush);
+                    var barArea = Rectangle().Width(PointSize).Height(height).Fill(brush);
                     canvas.Add(point.X - (PointSize / 2), y, barArea);
                 }
             }
@@ -321,7 +321,7 @@ namespace Microcharts
 
             if (Entries.Any(e => !string.IsNullOrEmpty(e.Label)))
             {
-                if(orientation == Orientation.Vertical)
+                if (orientation == Orientation.Vertical)
                 {
                     var maxValueWidth = valueLabelSizes.Max(x => x.Width);
                     if (maxValueWidth > 0)

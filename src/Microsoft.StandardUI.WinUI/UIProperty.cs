@@ -1,11 +1,10 @@
 using Microsoft.UI.Xaml;
-using System.Windows;
 
 namespace Microsoft.StandardUI.WinUI
 {
     public class UIProperty : IUIProperty
     {
-        public DependencyProperty DependencyProperty { get;  }
+        public DependencyProperty DependencyProperty { get; }
 
         public UIProperty(DependencyProperty property)
         {

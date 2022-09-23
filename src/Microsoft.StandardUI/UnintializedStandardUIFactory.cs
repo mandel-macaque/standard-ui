@@ -1,8 +1,8 @@
-using Microsoft.StandardUI.Media;
 using System;
-using Microsoft.StandardUI.Controls;
-using Microsoft.StandardUI.Shapes;
 using System.Collections.Generic;
+using Microsoft.StandardUI.Controls;
+using Microsoft.StandardUI.Media;
+using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI
 {
@@ -15,9 +15,9 @@ namespace Microsoft.StandardUI
         public ICanvas CreateCanvas() => throw CreateInitNotCalledException();
         public ICanvasAttached CanvasAttachedInstance => throw CreateInitNotCalledException();
         public IStackPanel CreateStackPanel() => throw CreateInitNotCalledException();
-		public IVerticalStack CreateVerticalStack() => throw CreateInitNotCalledException ();
-		public IHorizontalStack CreateHorizontalStack() => throw CreateInitNotCalledException ();
-		public IGrid CreateGrid() => throw CreateInitNotCalledException();
+        public IVerticalStack CreateVerticalStack() => throw CreateInitNotCalledException();
+        public IHorizontalStack CreateHorizontalStack() => throw CreateInitNotCalledException();
+        public IGrid CreateGrid() => throw CreateInitNotCalledException();
         public IRowDefinition CreateRowDefinition() => throw CreateInitNotCalledException();
         public IColumnDefinition CreateColumnDefinition() => throw CreateInitNotCalledException();
         public IGridAttached GridAttachedInstance => throw CreateInitNotCalledException();

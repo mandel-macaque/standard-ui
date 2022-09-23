@@ -1,7 +1,7 @@
-using Microsoft.StandardUI;
-using Microsoft.StandardUI.Controls;
 using System;
 using System.Collections.Generic;
+using Microsoft.StandardUI;
+using Microsoft.StandardUI.Controls;
 
 namespace StandardUI.Controls
 {
@@ -126,7 +126,7 @@ namespace StandardUI.Controls
                 bool isGridHeightConstraintInfinite = double.IsInfinity(_gridHeightConstraint);
 
                 CellInfo[] cells = Cells;
-                for (var n = 0; n < cells.Length; n++) 
+                for (var n = 0; n < cells.Length; n++)
                 {
                     CellInfo cell = cells[n];
 

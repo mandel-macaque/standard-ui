@@ -1,6 +1,6 @@
+using System;
 using Microsoft.StandardUI.Controls;
 using SkiaSharp;
-using System;
 
 namespace Microsoft.StandardUI.SkiaVisualFramework
 {

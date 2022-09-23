@@ -55,7 +55,7 @@ namespace Microcharts
                 var headerHeight = CalculateFooterHeaderHeight(valueLabelSizes, ValueLabelOrientation);
 
                 var itemSize = CalculateItemSize(width, height, footerHeight, headerHeight);
-                var origin = CalculateYOrigin((float) itemSize.Height, headerHeight);
+                var origin = CalculateYOrigin((float)itemSize.Height, headerHeight);
                 var points = CalculatePoints(itemSize, origin, headerHeight);
 
                 BuildBarAreas(canvas, points, itemSize, headerHeight);
@@ -98,7 +98,7 @@ namespace Microcharts
                         }
                     }
 
-                    var barRect = Rectangle() .Width(itemSize.Width) .Height(height) .Fill(SolidColorBrush() .Color(entry.Color));
+                    var barRect = Rectangle().Width(itemSize.Width).Height(height).Fill(SolidColorBrush().Color(entry.Color));
                     canvas.Add(x, y, barRect);
                 }
             }
@@ -121,13 +121,13 @@ namespace Microcharts
                     var point = points[i];
 
                     var color = entry.Color.WithA((byte)(this.BarAreaAlpha * this.AnimationProgress));
-                    var brush = SolidColorBrush(). Color(color);
+                    var brush = SolidColorBrush().Color(color);
 
                     var max = entry.Value > 0 ? headerHeight : headerHeight + itemSize.Height;
                     var height = Math.Abs(max - point.Y);
                     var y = Math.Min(max, point.Y);
 
-                    var barArea = Rectangle() .Width(itemSize.Width) .Height(height) .Fill(brush);
+                    var barArea = Rectangle().Width(itemSize.Width).Height(height).Fill(brush);
                     canvas.Add(point.X - (itemSize.Width / 2), y, barArea);
                 }
             }
