@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorHost", "samples\h
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.Maui", "src\Microsoft.StandardUI.Maui\Microsoft.StandardUI.Maui.csproj", "{40D16031-9B65-4CC5-A8AA-8F3479706E09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSamplesHost", "samples\host-apps\MauiSamplesHost\MauiSamplesHost.csproj", "{08CA747A-B0BF-4A4D-93AB-0317188C9167}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1D9AD821-E4C9-44C5-9807-DC296C17A38B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -103,6 +105,12 @@ Global
 		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +123,7 @@ Global
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174} = {9FA8F699-79F5-48DB-A2D9-717CE875C5F0}
 		{A3FD54C6-4006-4B77-9EC7-A809DD54B307} = {7A42AC94-2253-4EBF-9A8D-047D903E6A48}
 		{D3493E9A-35A1-402C-BE45-172A2D021968} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
+		{08CA747A-B0BF-4A4D-93AB-0317188C9167} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5981247F-FDA6-460F-8B83-6AFBEE114226}
