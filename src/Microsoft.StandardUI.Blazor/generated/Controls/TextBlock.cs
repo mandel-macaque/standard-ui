@@ -3,6 +3,7 @@
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Blazor.Media;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Text;
 using Microsoft.StandardUI.Controls;
 
@@ -19,57 +20,62 @@ namespace Microsoft.StandardUI.Blazor.Controls
         public static readonly UIProperty FontStretchProperty = new UIProperty(nameof(FontStretch), FontStretch.Normal);
         public static readonly UIProperty TextAlignmentProperty = new UIProperty(nameof(TextAlignment), TextAlignment.Left);
         
-        public Brush Foreground
+        [Parameter]
+        public IBrush Foreground
         {
-            get => (Brush) GetValue(ForegroundProperty);
+            get => (Brush) GetNonNullValue(ForegroundProperty);
             set => SetValue(ForegroundProperty, value);
         }
-        IBrush ITextBlock.Foreground
-        {
-            get => Foreground;
-            set => Foreground = (Brush) value;
-        }
         
+        [Parameter]
         public string Text
         {
-            get => (string) GetValue(TextProperty);
+            get => (string) GetNonNullValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
         
+        [Parameter]
         public FontFamily FontFamily
         {
-            get => (FontFamily) GetValue(FontFamilyProperty);
+            get => (FontFamily) GetNonNullValue(FontFamilyProperty);
             set => SetValue(FontFamilyProperty, value);
         }
         
+        [Parameter]
         public FontStyle FontStyle
         {
-            get => (FontStyle) GetValue(FontStyleProperty);
+            get => (FontStyle) GetNonNullValue(FontStyleProperty);
             set => SetValue(FontStyleProperty, value);
         }
         
+        [Parameter]
         public FontWeight FontWeight
         {
-            get => (FontWeight) GetValue(FontWeightProperty);
+            get => (FontWeight) GetNonNullValue(FontWeightProperty);
             set => SetValue(FontWeightProperty, value);
         }
         
+        [Parameter]
         public double FontSize
         {
-            get => (double) GetValue(FontSizeProperty);
+            get => (double) GetNonNullValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
         
+        [Parameter]
         public FontStretch FontStretch
         {
-            get => (FontStretch) GetValue(FontStretchProperty);
+            get => (FontStretch) GetNonNullValue(FontStretchProperty);
             set => SetValue(FontStretchProperty, value);
         }
         
+        [Parameter]
         public TextAlignment TextAlignment
         {
-            get => (TextAlignment) GetValue(TextAlignmentProperty);
+            get => (TextAlignment) GetNonNullValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
     }
 }

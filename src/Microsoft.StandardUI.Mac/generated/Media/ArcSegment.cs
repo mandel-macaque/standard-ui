@@ -15,31 +15,31 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public Point Point
         {
-            get => (Point) GetValue(PointProperty);
+            get => (Point) GetNonNullValue(PointProperty);
             set => SetValue(PointProperty, value);
         }
         
         public Size Size
         {
-            get => (Size) GetValue(SizeProperty);
+            get => (Size) GetNonNullValue(SizeProperty);
             set => SetValue(SizeProperty, value);
         }
         
         public double RotationAngle
         {
-            get => (double) GetValue(RotationAngleProperty);
+            get => (double) GetNonNullValue(RotationAngleProperty);
             set => SetValue(RotationAngleProperty, value);
         }
         
         public bool IsLargeArc
         {
-            get => (bool) GetValue(IsLargeArcProperty);
+            get => (bool) GetNonNullValue(IsLargeArcProperty);
             set => SetValue(IsLargeArcProperty, value);
         }
         
         public SweepDirection SweepDirection
         {
-            get => (SweepDirection) GetValue(SweepDirectionProperty);
+            get => (SweepDirection) GetNonNullValue(SweepDirectionProperty);
             set => SetValue(SweepDirectionProperty, value);
         }
     }

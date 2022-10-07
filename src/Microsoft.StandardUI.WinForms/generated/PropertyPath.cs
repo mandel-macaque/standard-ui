@@ -8,6 +8,6 @@ namespace Microsoft.StandardUI.WinForms
     {
         public static readonly UIProperty PathProperty = new UIProperty(nameof(Path), "", readOnly:true);
         
-        public string Path => (string) GetValue(PathProperty);
+        public string Path => (string) GetNonNullValue(PathProperty);
     }
 }

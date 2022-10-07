@@ -1,0 +1,20 @@
+﻿@page "/controls"
+
+<PageTitle>Controls</PageTitle>
+
+<h1>Controls AA</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<Rectangle @ref="myRect" RadiusX="8" RadiusY="8" Width="150" Height="100" Stroke="@(SolidColorBrush().Color(Colors.Green))"/>
+
+@code {
+    Rectangle? myRect;
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

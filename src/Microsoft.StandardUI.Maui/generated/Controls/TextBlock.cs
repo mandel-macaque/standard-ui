@@ -78,5 +78,7 @@ namespace Microsoft.StandardUI.Maui.Controls
             get => (TextAlignment) GetValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
     }
 }

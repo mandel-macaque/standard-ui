@@ -2,6 +2,7 @@
 
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI.Blazor.Shapes
@@ -11,16 +12,20 @@ namespace Microsoft.StandardUI.Blazor.Shapes
         public static readonly UIProperty FillRuleProperty = new UIProperty(nameof(FillRule), FillRule.EvenOdd);
         public static readonly UIProperty PointsProperty = new UIProperty(nameof(Points), Points.Default);
         
+        [Parameter]
         public FillRule FillRule
         {
-            get => (FillRule) GetValue(FillRuleProperty);
+            get => (FillRule) GetNonNullValue(FillRuleProperty);
             set => SetValue(FillRuleProperty, value);
         }
         
+        [Parameter]
         public Points Points
         {
-            get => (Points) GetValue(PointsProperty);
+            get => (Points) GetNonNullValue(PointsProperty);
             set => SetValue(PointsProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPolyline(this);
     }
 }

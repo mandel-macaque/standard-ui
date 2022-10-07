@@ -1,6 +1,7 @@
 // This file is generated from IPathFigure.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -20,24 +21,26 @@ namespace Microsoft.StandardUI.Blazor.Media
             SetValue(SegmentsProperty, _segments);
         }
         
-        public UICollection<IPathSegment> Segments => _segments;
-        IUICollection<IPathSegment> IPathFigure.Segments => Segments;
+        public IUICollection<IPathSegment> Segments => (UICollection<IPathSegment>) GetNonNullValue(SegmentsProperty);
         
+        [Parameter]
         public Point StartPoint
         {
-            get => (Point) GetValue(StartPointProperty);
+            get => (Point) GetNonNullValue(StartPointProperty);
             set => SetValue(StartPointProperty, value);
         }
         
+        [Parameter]
         public bool IsClosed
         {
-            get => (bool) GetValue(IsClosedProperty);
+            get => (bool) GetNonNullValue(IsClosedProperty);
             set => SetValue(IsClosedProperty, value);
         }
         
+        [Parameter]
         public bool IsFilled
         {
-            get => (bool) GetValue(IsFilledProperty);
+            get => (bool) GetNonNullValue(IsFilledProperty);
             set => SetValue(IsFilledProperty, value);
         }
     }

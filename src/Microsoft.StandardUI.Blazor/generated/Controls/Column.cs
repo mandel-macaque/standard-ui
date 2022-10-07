@@ -1,6 +1,7 @@
 // This file is generated from IColumn.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Blazor.Controls
@@ -12,24 +13,27 @@ namespace Microsoft.StandardUI.Blazor.Controls
         public static readonly UIProperty MaxWidthProperty = new UIProperty(nameof(MaxWidth), double.PositiveInfinity);
         public static readonly UIProperty ActualWidthProperty = new UIProperty(nameof(ActualWidth), 0.0, readOnly:true);
         
+        [Parameter]
         public GridLength Width
         {
-            get => (GridLength) GetValue(WidthProperty);
+            get => (GridLength) GetNonNullValue(WidthProperty);
             set => SetValue(WidthProperty, value);
         }
         
+        [Parameter]
         public double MinWidth
         {
-            get => (double) GetValue(MinWidthProperty);
+            get => (double) GetNonNullValue(MinWidthProperty);
             set => SetValue(MinWidthProperty, value);
         }
         
+        [Parameter]
         public double MaxWidth
         {
-            get => (double) GetValue(MaxWidthProperty);
+            get => (double) GetNonNullValue(MaxWidthProperty);
             set => SetValue(MaxWidthProperty, value);
         }
         
-        public double ActualWidth => (double) GetValue(ActualWidthProperty);
+        public double ActualWidth => (double) GetNonNullValue(ActualWidthProperty);
     }
 }

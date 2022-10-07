@@ -20,24 +20,23 @@ namespace Microsoft.StandardUI.WinForms.Media
             SetValue(SegmentsProperty, _segments);
         }
         
-        public UICollection<IPathSegment> Segments => _segments;
-        IUICollection<IPathSegment> IPathFigure.Segments => Segments;
+        public IUICollection<IPathSegment> Segments => (UICollection<IPathSegment>) GetNonNullValue(SegmentsProperty);
         
         public Point StartPoint
         {
-            get => (Point) GetValue(StartPointProperty);
+            get => (Point) GetNonNullValue(StartPointProperty);
             set => SetValue(StartPointProperty, value);
         }
         
         public bool IsClosed
         {
-            get => (bool) GetValue(IsClosedProperty);
+            get => (bool) GetNonNullValue(IsClosedProperty);
             set => SetValue(IsClosedProperty, value);
         }
         
         public bool IsFilled
         {
-            get => (bool) GetValue(IsFilledProperty);
+            get => (bool) GetNonNullValue(IsFilledProperty);
             set => SetValue(IsFilledProperty, value);
         }
     }

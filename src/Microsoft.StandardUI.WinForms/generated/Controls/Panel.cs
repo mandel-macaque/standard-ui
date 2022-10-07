@@ -17,7 +17,6 @@ namespace Microsoft.StandardUI.WinForms.Controls
             SetValue(ChildrenProperty, _children);
         }
         
-        public UIElementCollection<Microsoft.StandardUI.IUIElement> Children => _children;
-        IUICollection<IUIElement> IPanel.Children => Children.ToStandardUIElementCollection();
+        public IUICollection<IUIElement> Children => _children.ToStandardUIElementCollection();
     }
 }

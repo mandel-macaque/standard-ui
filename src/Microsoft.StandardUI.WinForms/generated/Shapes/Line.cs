@@ -14,26 +14,28 @@ namespace Microsoft.StandardUI.WinForms.Shapes
         
         public double X1
         {
-            get => (double) GetValue(X1Property);
+            get => (double) GetNonNullValue(X1Property);
             set => SetValue(X1Property, value);
         }
         
         public double Y1
         {
-            get => (double) GetValue(Y1Property);
+            get => (double) GetNonNullValue(Y1Property);
             set => SetValue(Y1Property, value);
         }
         
         public double X2
         {
-            get => (double) GetValue(X2Property);
+            get => (double) GetNonNullValue(X2Property);
             set => SetValue(X2Property, value);
         }
         
         public double Y2
         {
-            get => (double) GetValue(Y2Property);
+            get => (double) GetNonNullValue(Y2Property);
             set => SetValue(Y2Property, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawLine(this);
     }
 }

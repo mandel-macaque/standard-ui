@@ -19,18 +19,17 @@ namespace Microsoft.StandardUI.Mac.Media
             SetValue(GradientStopsProperty, _gradientStops);
         }
         
-        public UICollection<IGradientStop> GradientStops => _gradientStops;
-        IUICollection<IGradientStop> IGradientBrush.GradientStops => GradientStops;
+        public IUICollection<IGradientStop> GradientStops => (UICollection<IGradientStop>) GetNonNullValue(GradientStopsProperty);
         
         public BrushMappingMode MappingMode
         {
-            get => (BrushMappingMode) GetValue(MappingModeProperty);
+            get => (BrushMappingMode) GetNonNullValue(MappingModeProperty);
             set => SetValue(MappingModeProperty, value);
         }
         
         public GradientSpreadMethod SpreadMethod
         {
-            get => (GradientSpreadMethod) GetValue(SpreadMethodProperty);
+            get => (GradientSpreadMethod) GetNonNullValue(SpreadMethodProperty);
             set => SetValue(SpreadMethodProperty, value);
         }
     }

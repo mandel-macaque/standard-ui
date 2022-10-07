@@ -12,14 +12,16 @@ namespace Microsoft.StandardUI.WinForms.Shapes
         
         public double RadiusX
         {
-            get => (double) GetValue(RadiusXProperty);
+            get => (double) GetNonNullValue(RadiusXProperty);
             set => SetValue(RadiusXProperty, value);
         }
         
         public double RadiusY
         {
-            get => (double) GetValue(RadiusYProperty);
+            get => (double) GetNonNullValue(RadiusYProperty);
             set => SetValue(RadiusYProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawRectangle(this);
     }
 }

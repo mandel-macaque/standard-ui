@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public Color Color
         {
-            get => (Color) GetValue(ColorProperty);
+            get => (Color) GetNonNullValue(ColorProperty);
             set => SetValue(ColorProperty, value);
         }
     }

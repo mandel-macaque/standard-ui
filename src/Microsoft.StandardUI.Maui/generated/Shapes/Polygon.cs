@@ -27,5 +27,7 @@ namespace Microsoft.StandardUI.Maui.Shapes
             get => Points.Points;
             set => Points = new PointsMaui(value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPolygon(this);
     }
 }

@@ -18,12 +18,10 @@ namespace Microsoft.StandardUI.WinForms
             SetValue(StatesProperty, _states);
         }
         
-        public VisualState CurrentState => (VisualState) GetValue(CurrentStateProperty);
-        IVisualState IVisualStateGroup.CurrentState => CurrentState;
+        public IVisualState CurrentState => (VisualState) GetNonNullValue(CurrentStateProperty);
         
-        public string Name => (string) GetValue(NameProperty);
+        public string Name => (string) GetNonNullValue(NameProperty);
         
-        public UICollection<IVisualState> States => _states;
-        IUICollection<IVisualState> IVisualStateGroup.States => States;
+        public IUICollection<IVisualState> States => (UICollection<IVisualState>) GetNonNullValue(StatesProperty);
     }
 }

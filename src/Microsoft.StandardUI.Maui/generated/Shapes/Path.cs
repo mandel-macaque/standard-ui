@@ -21,5 +21,7 @@ namespace Microsoft.StandardUI.Maui.Shapes
             get => Data;
             set => Data = (Geometry) value;
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPath(this);
     }
 }

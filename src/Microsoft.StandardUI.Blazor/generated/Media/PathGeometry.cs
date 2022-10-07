@@ -2,6 +2,7 @@
 
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
+using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.StandardUI.Blazor.Media
 {
@@ -18,12 +19,12 @@ namespace Microsoft.StandardUI.Blazor.Media
             SetValue(FiguresProperty, _figures);
         }
         
-        public UICollection<IPathFigure> Figures => _figures;
-        IUICollection<IPathFigure> IPathGeometry.Figures => Figures;
+        public IUICollection<IPathFigure> Figures => (UICollection<IPathFigure>) GetNonNullValue(FiguresProperty);
         
+        [Parameter]
         public FillRule FillRule
         {
-            get => (FillRule) GetValue(FillRuleProperty);
+            get => (FillRule) GetNonNullValue(FillRuleProperty);
             set => SetValue(FillRuleProperty, value);
         }
     }

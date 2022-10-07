@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.WinForms.Media
         
         public Points Points
         {
-            get => (Points) GetValue(PointsProperty);
+            get => (Points) GetNonNullValue(PointsProperty);
             set => SetValue(PointsProperty, value);
         }
     }

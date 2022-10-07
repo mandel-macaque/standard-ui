@@ -1,6 +1,7 @@
 // This file is generated from ISolidColorBrush.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -9,9 +10,10 @@ namespace Microsoft.StandardUI.Blazor.Media
     {
         public static readonly UIProperty ColorProperty = new UIProperty(nameof(Color), Color.Default);
         
+        [Parameter]
         public Color Color
         {
-            get => (Color) GetValue(ColorProperty);
+            get => (Color) GetNonNullValue(ColorProperty);
             set => SetValue(ColorProperty, value);
         }
     }

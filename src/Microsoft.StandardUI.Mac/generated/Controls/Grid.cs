@@ -39,21 +39,19 @@ namespace Microsoft.StandardUI.Mac.Controls
             SetValue(RowDefinitionsProperty, _rowDefinitions);
         }
         
-        public UICollection<IColumnDefinition> ColumnDefinitions => _columnDefinitions;
-        IUICollection<IColumnDefinition> IGrid.ColumnDefinitions => ColumnDefinitions;
+        public IUICollection<IColumnDefinition> ColumnDefinitions => (UICollection<IColumnDefinition>) GetNonNullValue(ColumnDefinitionsProperty);
         
-        public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
-        IUICollection<IRowDefinition> IGrid.RowDefinitions => RowDefinitions;
+        public IUICollection<IRowDefinition> RowDefinitions => (UICollection<IRowDefinition>) GetNonNullValue(RowDefinitionsProperty);
         
         public double ColumnSpacing
         {
-            get => (double) GetValue(ColumnSpacingProperty);
+            get => (double) GetNonNullValue(ColumnSpacingProperty);
             set => SetValue(ColumnSpacingProperty, value);
         }
         
         public double RowSpacing
         {
-            get => (double) GetValue(RowSpacingProperty);
+            get => (double) GetNonNullValue(RowSpacingProperty);
             set => SetValue(RowSpacingProperty, value);
         }
     }

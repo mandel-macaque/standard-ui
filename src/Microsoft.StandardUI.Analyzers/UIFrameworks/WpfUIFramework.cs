@@ -49,9 +49,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public override void GenerateDrawableObjectMethods(Interface intface, Source methods)
         {
-            methods.AddBlankLineIfNonempty();
-            methods.AddLine(
-                $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{intface.FrameworkClassName}(this);");
+            base.GenerateDrawableObjectMethods(intface, methods);
 
             if (intface.IsThisType(KnownTypes.ITextBlock))
             {

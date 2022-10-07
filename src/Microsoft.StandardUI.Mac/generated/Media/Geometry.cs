@@ -12,19 +12,14 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public double StandardFlatteningTolerance
         {
-            get => (double) GetValue(StandardFlatteningToleranceProperty);
+            get => (double) GetNonNullValue(StandardFlatteningToleranceProperty);
             set => SetValue(StandardFlatteningToleranceProperty, value);
         }
         
-        public Transform Transform
+        public ITransform Transform
         {
-            get => (Transform) GetValue(TransformProperty);
+            get => (Transform) GetNonNullValue(TransformProperty);
             set => SetValue(TransformProperty, value);
-        }
-        ITransform IGeometry.Transform
-        {
-            get => Transform;
-            set => Transform = (Transform) value;
         }
     }
 }

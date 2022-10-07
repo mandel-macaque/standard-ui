@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.Mac.Controls
         
         public double Spacing
         {
-            get => (double) GetValue(SpacingProperty);
+            get => (double) GetNonNullValue(SpacingProperty);
             set => SetValue(SpacingProperty, value);
         }
     }

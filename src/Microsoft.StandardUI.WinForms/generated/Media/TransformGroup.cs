@@ -10,6 +10,6 @@ namespace Microsoft.StandardUI.WinForms.Media
     {
         public static readonly UIProperty ChildrenProperty = new UIProperty(nameof(Children), null, readOnly:true);
         
-        public IEnumerable<ITransform> Children => (IEnumerable<ITransform>) GetValue(ChildrenProperty);
+        public IEnumerable<ITransform> Children => (IEnumerable<ITransform>) GetNonNullValue(ChildrenProperty);
     }
 }

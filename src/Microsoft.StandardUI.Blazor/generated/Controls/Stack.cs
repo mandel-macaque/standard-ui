@@ -2,6 +2,7 @@
 
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Controls;
+using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.StandardUI.Blazor.Controls
 {
@@ -9,9 +10,10 @@ namespace Microsoft.StandardUI.Blazor.Controls
     {
         public static readonly UIProperty OrientationProperty = new UIProperty(nameof(Orientation), Orientation.Vertical);
         
+        [Parameter]
         public Orientation Orientation
         {
-            get => (Orientation) GetValue(OrientationProperty);
+            get => (Orientation) GetNonNullValue(OrientationProperty);
             set => SetValue(OrientationProperty, value);
         }
     }

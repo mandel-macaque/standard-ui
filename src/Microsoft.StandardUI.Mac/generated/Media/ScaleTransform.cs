@@ -14,25 +14,25 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public double CenterX
         {
-            get => (double) GetValue(CenterXProperty);
+            get => (double) GetNonNullValue(CenterXProperty);
             set => SetValue(CenterXProperty, value);
         }
         
         public double CenterY
         {
-            get => (double) GetValue(CenterYProperty);
+            get => (double) GetNonNullValue(CenterYProperty);
             set => SetValue(CenterYProperty, value);
         }
         
         public double ScaleX
         {
-            get => (double) GetValue(ScaleXProperty);
+            get => (double) GetNonNullValue(ScaleXProperty);
             set => SetValue(ScaleXProperty, value);
         }
         
         public double ScaleY
         {
-            get => (double) GetValue(ScaleYProperty);
+            get => (double) GetNonNullValue(ScaleYProperty);
             set => SetValue(ScaleYProperty, value);
         }
     }

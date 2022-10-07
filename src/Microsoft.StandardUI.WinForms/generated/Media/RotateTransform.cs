@@ -13,19 +13,19 @@ namespace Microsoft.StandardUI.WinForms.Media
         
         public double Angle
         {
-            get => (double) GetValue(AngleProperty);
+            get => (double) GetNonNullValue(AngleProperty);
             set => SetValue(AngleProperty, value);
         }
         
         public double CenterX
         {
-            get => (double) GetValue(CenterXProperty);
+            get => (double) GetNonNullValue(CenterXProperty);
             set => SetValue(CenterXProperty, value);
         }
         
         public double CenterY
         {
-            get => (double) GetValue(CenterYProperty);
+            get => (double) GetNonNullValue(CenterYProperty);
             set => SetValue(CenterYProperty, value);
         }
     }

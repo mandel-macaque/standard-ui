@@ -4,7 +4,6 @@
 namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
 {
 #if LATER
-
     public class BlazorDrawingContext : IDrawingContext
     {
         Canvas2DContext canvas2Dcontext;

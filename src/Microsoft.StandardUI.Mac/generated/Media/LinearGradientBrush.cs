@@ -12,13 +12,13 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public Point StartPoint
         {
-            get => (Point) GetValue(StartPointProperty);
+            get => (Point) GetNonNullValue(StartPointProperty);
             set => SetValue(StartPointProperty, value);
         }
         
         public Point EndPoint
         {
-            get => (Point) GetValue(EndPointProperty);
+            get => (Point) GetNonNullValue(EndPointProperty);
             set => SetValue(EndPointProperty, value);
         }
     }

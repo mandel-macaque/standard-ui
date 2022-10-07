@@ -6,6 +6,8 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         {
         }
 
+        public virtual void GeneratePropertyAttribute(Property property, Source source) {}
+
         public override void GenerateProperty(Property property, ClassSource classSource)
         {
             classSource.Usings.AddNamespace("Microsoft.StandardUI.DefaultImplementations");
@@ -31,10 +33,22 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             GeneratePropertyMethods(property, classSource.NonstaticMethods);
         }
 
+        protected string GetValueExpression(Property property)
+        {
+            string propertyOutputTypeName = PropertyOutputTypeName(property);
+            string descriptorName = PropertyDescriptorName(property);
+
+            if (property.IsNonNullable())
+                return $"({propertyOutputTypeName}) GetNonNullValue({descriptorName})";
+            else
+                return $"({propertyOutputTypeName}) GetValue({descriptorName})";
+        }
+
         private void GeneratePropertyMethods(Property property, Source source)
         {
             var usings = source.Usings;
             string propertyOutputTypeName = PropertyOutputTypeName(property);
+            string getValueMethod = property.IsNonNullable() ? "GetNonNullValue" : "GetValue";
 
             // Add the type - for interface type and the framework type (if different)
             usings.AddTypeNamespace(property.Type);
@@ -42,8 +56,6 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
                 usings.AddNamespace(ToFrameworkNamespaceName(property.Type.ContainingNamespace));
 
             AddTypeAliasUsingIfNeeded(usings, propertyOutputTypeName);
-
-            bool classPropertyTypeDiffersFromInterface = property.TypeName != propertyOutputTypeName;
 
 #if LATER
             SyntaxTokenList modifiers;
@@ -61,78 +73,43 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
             string descriptorName = PropertyDescriptorName(property);
 
             string getterValue;
-            if (property.IsUICollection)
-                getterValue = $"{PropertyFieldName(property)}";
+            string setterAssignment;
+            if (IsWrappedType(property.Type))
+            {
+                getterValue = $"({propertyOutputTypeName}) {getValueMethod}({descriptorName}).{property.TypeName}";
+                setterAssignment = $"SetValue({descriptorName}, new {propertyOutputTypeName}(value)";
+            }
+            else if (Utils.IsUICollectionType(Context, property.Type, out var elementType) && propertyOutputTypeName.StartsWith("UIElementCollection<"))
+            {
+                getterValue = $"{PropertyFieldName(property)}.ToStandardUIElementCollection()";
+                setterAssignment = ""; // Not used
+            }
             else
-                getterValue = $"({propertyOutputTypeName}) GetValue({descriptorName})";
+            {
+                getterValue = $"({propertyOutputTypeName}) {getValueMethod}({descriptorName})";
+                setterAssignment = $"SetValue({descriptorName}, value)";
+            }
 
+            GeneratePropertyAttribute(property, source);
             if (property.IsReadOnly)
-                source.AddLine($"public {propertyOutputTypeName} {property.Name} => {getterValue};");
+            {
+                source.AddLine(
+                    $"public {property.TypeName} {property.Name} => {getterValue};");
+            }
             else
             {
                 source.AddLines(
-                    $"public {propertyOutputTypeName} {property.Name}",
+                    $"public {property.TypeName} {property.Name}",
                     "{");
                 using (source.Indent())
                 {
-                    source.AddLine(
-                        $"get => {getterValue};");
-                    source.AddLine(
-                        $"set => SetValue({descriptorName}, value);");
+                    source.AddLines(
+                        $"get => {getterValue};",
+                        $"set => {setterAssignment};"
+                    );
                 }
                 source.AddLine(
                     "}");
-            }
-
-#if LATER
-            //if (!includeXmlComment)
-            propertyDeclaration = propertyDeclaration.WithLeadingTrivia(
-                    TriviaList(propertyDeclaration.GetLeadingTrivia()
-                        .Insert(0, CarriageReturnLineFeed)
-                        .Insert(0, CarriageReturnLineFeed)));
-#endif
-
-            // If the interface property has a different type, add another property that explicitly implements it
-            if (classPropertyTypeDiffersFromInterface)
-            {
-                string otherGetterValue;
-                string setterAssignment;
-                if (IsWrappedType(property.Type))
-                {
-                    otherGetterValue = $"{property.Name}.{property.TypeName}";
-                    setterAssignment = $"{property.Name} = new {propertyOutputTypeName}(value)";
-                }
-                else if (Utils.IsUICollectionType(Context, property.Type, out var elementType) && propertyOutputTypeName.StartsWith("UIElementCollection<"))
-                {
-                    otherGetterValue = $"{property.Name}.ToStandardUIElementCollection()";
-                    setterAssignment = ""; // Not used
-                }
-                else
-                {
-                    otherGetterValue = property.Name;
-                    setterAssignment = $"{property.Name} = ({propertyOutputTypeName}) value";
-                }
-
-                if (property.IsReadOnly)
-                {
-                    source.AddLine(
-                        $"{property.TypeName} {property.Interface.Name}.{property.Name} => {otherGetterValue};");
-                }
-                else
-                {
-                    source.AddLines(
-                        $"{property.TypeName} {property.Interface.Name}.{property.Name}",
-                        "{");
-                    using (source.Indent())
-                    {
-                        source.AddLine(
-                            $"get => {otherGetterValue};");
-                        source.AddLine(
-                            $"set => {setterAssignment};");
-                    }
-                    source.AddLine(
-                        "}");
-                }
             }
         }
 

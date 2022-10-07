@@ -1,6 +1,7 @@
 // This file is generated from IGrid.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Blazor.Controls
@@ -39,21 +40,21 @@ namespace Microsoft.StandardUI.Blazor.Controls
             SetValue(RowDefinitionsProperty, _rowDefinitions);
         }
         
-        public UICollection<IColumnDefinition> ColumnDefinitions => _columnDefinitions;
-        IUICollection<IColumnDefinition> IGrid.ColumnDefinitions => ColumnDefinitions;
+        public IUICollection<IColumnDefinition> ColumnDefinitions => (UICollection<IColumnDefinition>) GetNonNullValue(ColumnDefinitionsProperty);
         
-        public UICollection<IRowDefinition> RowDefinitions => _rowDefinitions;
-        IUICollection<IRowDefinition> IGrid.RowDefinitions => RowDefinitions;
+        public IUICollection<IRowDefinition> RowDefinitions => (UICollection<IRowDefinition>) GetNonNullValue(RowDefinitionsProperty);
         
+        [Parameter]
         public double ColumnSpacing
         {
-            get => (double) GetValue(ColumnSpacingProperty);
+            get => (double) GetNonNullValue(ColumnSpacingProperty);
             set => SetValue(ColumnSpacingProperty, value);
         }
         
+        [Parameter]
         public double RowSpacing
         {
-            get => (double) GetValue(RowSpacingProperty);
+            get => (double) GetNonNullValue(RowSpacingProperty);
             set => SetValue(RowSpacingProperty, value);
         }
     }

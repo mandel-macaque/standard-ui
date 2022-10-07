@@ -6,5 +6,6 @@ namespace Microsoft.StandardUI.Mac.Shapes
 {
     public class Ellipse : Shape, IEllipse
     {
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawEllipse(this);
     }
 }

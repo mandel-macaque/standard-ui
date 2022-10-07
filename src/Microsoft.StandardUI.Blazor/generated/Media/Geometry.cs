@@ -1,6 +1,7 @@
 // This file is generated from IGeometry.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -10,21 +11,18 @@ namespace Microsoft.StandardUI.Blazor.Media
         public static readonly UIProperty StandardFlatteningToleranceProperty = new UIProperty(nameof(StandardFlatteningTolerance), 0.25);
         public static readonly UIProperty TransformProperty = new UIProperty(nameof(Transform), null);
         
+        [Parameter]
         public double StandardFlatteningTolerance
         {
-            get => (double) GetValue(StandardFlatteningToleranceProperty);
+            get => (double) GetNonNullValue(StandardFlatteningToleranceProperty);
             set => SetValue(StandardFlatteningToleranceProperty, value);
         }
         
-        public Transform Transform
+        [Parameter]
+        public ITransform Transform
         {
-            get => (Transform) GetValue(TransformProperty);
+            get => (Transform) GetNonNullValue(TransformProperty);
             set => SetValue(TransformProperty, value);
-        }
-        ITransform IGeometry.Transform
-        {
-            get => Transform;
-            set => Transform = (Transform) value;
         }
     }
 }

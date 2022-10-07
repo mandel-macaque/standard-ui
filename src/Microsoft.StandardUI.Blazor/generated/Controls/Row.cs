@@ -1,6 +1,7 @@
 // This file is generated from IRow.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Blazor.Controls
@@ -12,24 +13,27 @@ namespace Microsoft.StandardUI.Blazor.Controls
         public static readonly UIProperty MaxHeightProperty = new UIProperty(nameof(MaxHeight), double.PositiveInfinity);
         public static readonly UIProperty ActualHeightProperty = new UIProperty(nameof(ActualHeight), 0.0, readOnly:true);
         
+        [Parameter]
         public GridLength Height
         {
-            get => (GridLength) GetValue(HeightProperty);
+            get => (GridLength) GetNonNullValue(HeightProperty);
             set => SetValue(HeightProperty, value);
         }
         
+        [Parameter]
         public double MinHeight
         {
-            get => (double) GetValue(MinHeightProperty);
+            get => (double) GetNonNullValue(MinHeightProperty);
             set => SetValue(MinHeightProperty, value);
         }
         
+        [Parameter]
         public double MaxHeight
         {
-            get => (double) GetValue(MaxHeightProperty);
+            get => (double) GetNonNullValue(MaxHeightProperty);
             set => SetValue(MaxHeightProperty, value);
         }
         
-        public double ActualHeight => (double) GetValue(ActualHeightProperty);
+        public double ActualHeight => (double) GetNonNullValue(ActualHeightProperty);
     }
 }

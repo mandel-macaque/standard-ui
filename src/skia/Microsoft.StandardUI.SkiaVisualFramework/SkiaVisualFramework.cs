@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace Microsoft.StandardUI.SkiaVisualFramework
 {
-    public class SkiaVisualFramework : IVisualFramework
+    public abstract class SkiaVisualFramework : IVisualFramework
     {
         public IDrawingContext CreateDrawingContext(IUIElement uiElement) => new SkiaDrawingContext();
 
@@ -20,10 +20,7 @@ namespace Microsoft.StandardUI.SkiaVisualFramework
             }
         }
 
-        public IVisualHostControl CreateHostControl(object? arg1 = null, object? arg2 = null, object? arg3 = null)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IVisualHostControl CreateHostControl(object? arg1 = null, object? arg2 = null, object? arg3 = null);
 
         public Size MeasureTextBlock(ITextBlock textBlock)
         {

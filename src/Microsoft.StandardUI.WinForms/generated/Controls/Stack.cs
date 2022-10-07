@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.WinForms.Controls
         
         public Orientation Orientation
         {
-            get => (Orientation) GetValue(OrientationProperty);
+            get => (Orientation) GetNonNullValue(OrientationProperty);
             set => SetValue(OrientationProperty, value);
         }
     }

@@ -13,19 +13,19 @@ namespace Microsoft.StandardUI.WinForms.Media
         
         public Point Center
         {
-            get => (Point) GetValue(CenterProperty);
+            get => (Point) GetNonNullValue(CenterProperty);
             set => SetValue(CenterProperty, value);
         }
         
         public Point GradientOrigin
         {
-            get => (Point) GetValue(GradientOriginProperty);
+            get => (Point) GetNonNullValue(GradientOriginProperty);
             set => SetValue(GradientOriginProperty, value);
         }
         
         public double RadiusX
         {
-            get => (double) GetValue(RadiusXProperty);
+            get => (double) GetNonNullValue(RadiusXProperty);
             set => SetValue(RadiusXProperty, value);
         }
     }

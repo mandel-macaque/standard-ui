@@ -1,6 +1,7 @@
 // This file is generated from IRotateTransform.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -11,21 +12,24 @@ namespace Microsoft.StandardUI.Blazor.Media
         public static readonly UIProperty CenterXProperty = new UIProperty(nameof(CenterX), 0.0);
         public static readonly UIProperty CenterYProperty = new UIProperty(nameof(CenterY), 0.0);
         
+        [Parameter]
         public double Angle
         {
-            get => (double) GetValue(AngleProperty);
+            get => (double) GetNonNullValue(AngleProperty);
             set => SetValue(AngleProperty, value);
         }
         
+        [Parameter]
         public double CenterX
         {
-            get => (double) GetValue(CenterXProperty);
+            get => (double) GetNonNullValue(CenterXProperty);
             set => SetValue(CenterXProperty, value);
         }
         
+        [Parameter]
         public double CenterY
         {
-            get => (double) GetValue(CenterYProperty);
+            get => (double) GetNonNullValue(CenterYProperty);
             set => SetValue(CenterYProperty, value);
         }
     }

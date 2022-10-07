@@ -3,6 +3,7 @@
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Blazor.Media;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Shapes;
 
 namespace Microsoft.StandardUI.Blazor.Shapes
@@ -11,15 +12,13 @@ namespace Microsoft.StandardUI.Blazor.Shapes
     {
         public static readonly UIProperty DataProperty = new UIProperty(nameof(Data), null);
         
-        public Geometry Data
+        [Parameter]
+        public IGeometry Data
         {
-            get => (Geometry) GetValue(DataProperty);
+            get => (Geometry) GetNonNullValue(DataProperty);
             set => SetValue(DataProperty, value);
         }
-        IGeometry IPath.Data
-        {
-            get => Data;
-            set => Data = (Geometry) value;
-        }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPath(this);
     }
 }

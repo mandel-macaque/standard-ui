@@ -12,13 +12,13 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public Color Color
         {
-            get => (Color) GetValue(ColorProperty);
+            get => (Color) GetNonNullValue(ColorProperty);
             set => SetValue(ColorProperty, value);
         }
         
         public double Offset
         {
-            get => (double) GetValue(OffsetProperty);
+            get => (double) GetNonNullValue(OffsetProperty);
             set => SetValue(OffsetProperty, value);
         }
     }

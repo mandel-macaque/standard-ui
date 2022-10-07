@@ -1,5 +1,5 @@
-using System;
 using Microsoft.StandardUI.Controls;
+using System;
 
 namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
 {
@@ -29,7 +29,6 @@ namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
         {
             throw new NotImplementedException();
         }
-
 
 #if LATER
         private Canvas2DContext context;

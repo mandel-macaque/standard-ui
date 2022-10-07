@@ -12,13 +12,13 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public double X
         {
-            get => (double) GetValue(XProperty);
+            get => (double) GetNonNullValue(XProperty);
             set => SetValue(XProperty, value);
         }
         
         public double Y
         {
-            get => (double) GetValue(YProperty);
+            get => (double) GetNonNullValue(YProperty);
             set => SetValue(YProperty, value);
         }
     }

@@ -6,5 +6,6 @@ namespace Microsoft.StandardUI.Blazor.Shapes
 {
     public class Ellipse : Shape, IEllipse
     {
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawEllipse(this);
     }
 }

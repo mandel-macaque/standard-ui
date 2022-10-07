@@ -10,31 +10,21 @@ namespace Microsoft.StandardUI.WinForms
         public static readonly UIProperty TargetProperty = new UIProperty(nameof(Target), null);
         public static readonly UIProperty ValueProperty = new UIProperty(nameof(Value), null);
         
-        public UIProperty? Property
+        public IUIProperty? Property
         {
             get => (UIProperty?) GetValue(PropertyProperty);
             set => SetValue(PropertyProperty, value);
         }
-        IUIProperty? ISetter.Property
-        {
-            get => Property;
-            set => Property = (UIProperty?) value;
-        }
         
-        public TargetPropertyPath Target
+        public ITargetPropertyPath Target
         {
-            get => (TargetPropertyPath) GetValue(TargetProperty);
+            get => (TargetPropertyPath) GetNonNullValue(TargetProperty);
             set => SetValue(TargetProperty, value);
-        }
-        ITargetPropertyPath ISetter.Target
-        {
-            get => Target;
-            set => Target = (TargetPropertyPath) value;
         }
         
         public object Value
         {
-            get => (object) GetValue(ValueProperty);
+            get => (object) GetNonNullValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
     }

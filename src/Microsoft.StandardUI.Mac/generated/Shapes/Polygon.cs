@@ -13,14 +13,16 @@ namespace Microsoft.StandardUI.Mac.Shapes
         
         public FillRule FillRule
         {
-            get => (FillRule) GetValue(FillRuleProperty);
+            get => (FillRule) GetNonNullValue(FillRuleProperty);
             set => SetValue(FillRuleProperty, value);
         }
         
         public Points Points
         {
-            get => (Points) GetValue(PointsProperty);
+            get => (Points) GetNonNullValue(PointsProperty);
             set => SetValue(PointsProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPolygon(this);
     }
 }

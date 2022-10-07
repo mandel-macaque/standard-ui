@@ -14,22 +14,22 @@ namespace Microsoft.StandardUI.Mac.Controls
         
         public GridLength Width
         {
-            get => (GridLength) GetValue(WidthProperty);
+            get => (GridLength) GetNonNullValue(WidthProperty);
             set => SetValue(WidthProperty, value);
         }
         
         public double MinWidth
         {
-            get => (double) GetValue(MinWidthProperty);
+            get => (double) GetNonNullValue(MinWidthProperty);
             set => SetValue(MinWidthProperty, value);
         }
         
         public double MaxWidth
         {
-            get => (double) GetValue(MaxWidthProperty);
+            get => (double) GetNonNullValue(MaxWidthProperty);
             set => SetValue(MaxWidthProperty, value);
         }
         
-        public double ActualWidth => (double) GetValue(ActualWidthProperty);
+        public double ActualWidth => (double) GetNonNullValue(ActualWidthProperty);
     }
 }

@@ -9,20 +9,15 @@ namespace Microsoft.StandardUI.Mac
         public static readonly UIProperty PropertyProperty = new UIProperty(nameof(Property), null);
         public static readonly UIProperty TargetProperty = new UIProperty(nameof(Target), null);
         
-        public PropertyPath Property
+        public IPropertyPath Property
         {
-            get => (PropertyPath) GetValue(PropertyProperty);
+            get => (PropertyPath) GetNonNullValue(PropertyProperty);
             set => SetValue(PropertyProperty, value);
-        }
-        IPropertyPath ITargetPropertyPath.Property
-        {
-            get => Property;
-            set => Property = (PropertyPath) value;
         }
         
         public object Target
         {
-            get => (object) GetValue(TargetProperty);
+            get => (object) GetNonNullValue(TargetProperty);
             set => SetValue(TargetProperty, value);
         }
     }

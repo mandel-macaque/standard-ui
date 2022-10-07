@@ -1,6 +1,7 @@
 // This file is generated from ILinearGradientBrush.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -10,15 +11,17 @@ namespace Microsoft.StandardUI.Blazor.Media
         public static readonly UIProperty StartPointProperty = new UIProperty(nameof(StartPoint), Point.Default);
         public static readonly UIProperty EndPointProperty = new UIProperty(nameof(EndPoint), Point.Default);
         
+        [Parameter]
         public Point StartPoint
         {
-            get => (Point) GetValue(StartPointProperty);
+            get => (Point) GetNonNullValue(StartPointProperty);
             set => SetValue(StartPointProperty, value);
         }
         
+        [Parameter]
         public Point EndPoint
         {
-            get => (Point) GetValue(EndPointProperty);
+            get => (Point) GetNonNullValue(EndPointProperty);
             set => SetValue(EndPointProperty, value);
         }
     }

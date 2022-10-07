@@ -1,6 +1,7 @@
 // This file is generated from IArcSegment.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -13,33 +14,38 @@ namespace Microsoft.StandardUI.Blazor.Media
         public static readonly UIProperty IsLargeArcProperty = new UIProperty(nameof(IsLargeArc), false);
         public static readonly UIProperty SweepDirectionProperty = new UIProperty(nameof(SweepDirection), SweepDirection.Counterclockwise);
         
+        [Parameter]
         public Point Point
         {
-            get => (Point) GetValue(PointProperty);
+            get => (Point) GetNonNullValue(PointProperty);
             set => SetValue(PointProperty, value);
         }
         
+        [Parameter]
         public Size Size
         {
-            get => (Size) GetValue(SizeProperty);
+            get => (Size) GetNonNullValue(SizeProperty);
             set => SetValue(SizeProperty, value);
         }
         
+        [Parameter]
         public double RotationAngle
         {
-            get => (double) GetValue(RotationAngleProperty);
+            get => (double) GetNonNullValue(RotationAngleProperty);
             set => SetValue(RotationAngleProperty, value);
         }
         
+        [Parameter]
         public bool IsLargeArc
         {
-            get => (bool) GetValue(IsLargeArcProperty);
+            get => (bool) GetNonNullValue(IsLargeArcProperty);
             set => SetValue(IsLargeArcProperty, value);
         }
         
+        [Parameter]
         public SweepDirection SweepDirection
         {
-            get => (SweepDirection) GetValue(SweepDirectionProperty);
+            get => (SweepDirection) GetNonNullValue(SweepDirectionProperty);
             set => SetValue(SweepDirectionProperty, value);
         }
     }

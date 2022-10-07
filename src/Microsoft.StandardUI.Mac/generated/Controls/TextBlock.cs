@@ -19,57 +19,54 @@ namespace Microsoft.StandardUI.Mac.Controls
         public static readonly UIProperty FontStretchProperty = new UIProperty(nameof(FontStretch), FontStretch.Normal);
         public static readonly UIProperty TextAlignmentProperty = new UIProperty(nameof(TextAlignment), TextAlignment.Left);
         
-        public Brush Foreground
+        public IBrush Foreground
         {
-            get => (Brush) GetValue(ForegroundProperty);
+            get => (Brush) GetNonNullValue(ForegroundProperty);
             set => SetValue(ForegroundProperty, value);
-        }
-        IBrush ITextBlock.Foreground
-        {
-            get => Foreground;
-            set => Foreground = (Brush) value;
         }
         
         public string Text
         {
-            get => (string) GetValue(TextProperty);
+            get => (string) GetNonNullValue(TextProperty);
             set => SetValue(TextProperty, value);
         }
         
         public FontFamily FontFamily
         {
-            get => (FontFamily) GetValue(FontFamilyProperty);
+            get => (FontFamily) GetNonNullValue(FontFamilyProperty);
             set => SetValue(FontFamilyProperty, value);
         }
         
         public FontStyle FontStyle
         {
-            get => (FontStyle) GetValue(FontStyleProperty);
+            get => (FontStyle) GetNonNullValue(FontStyleProperty);
             set => SetValue(FontStyleProperty, value);
         }
         
         public FontWeight FontWeight
         {
-            get => (FontWeight) GetValue(FontWeightProperty);
+            get => (FontWeight) GetNonNullValue(FontWeightProperty);
             set => SetValue(FontWeightProperty, value);
         }
         
         public double FontSize
         {
-            get => (double) GetValue(FontSizeProperty);
+            get => (double) GetNonNullValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
         
         public FontStretch FontStretch
         {
-            get => (FontStretch) GetValue(FontStretchProperty);
+            get => (FontStretch) GetNonNullValue(FontStretchProperty);
             set => SetValue(FontStretchProperty, value);
         }
         
         public TextAlignment TextAlignment
         {
-            get => (TextAlignment) GetValue(TextAlignmentProperty);
+            get => (TextAlignment) GetNonNullValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawTextBlock(this);
     }
 }

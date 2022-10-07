@@ -34,5 +34,20 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string UICollectionElementTypeName => Utils.ToTypeName(UICollectionElementType!);
 
         public TypedConstant? GetSpecifiedDefaultValue(ISymbol symbol) => Utils.GetAttributeValue(symbol, KnownTypes.DefaultValueAttribute);
+
+        public bool IsNonNullable()
+        {
+            NullableAnnotation nullableAnnotation = Type.NullableAnnotation;
+
+            if (nullableAnnotation == NullableAnnotation.Annotated)
+                return false;
+            else if (nullableAnnotation == NullableAnnotation.NotAnnotated)
+                return true;
+            else
+            {
+                TypeKind kind = Type.TypeKind;
+                return kind == TypeKind.Enum || kind == TypeKind.Struct;
+            }
+        }
     }
 }

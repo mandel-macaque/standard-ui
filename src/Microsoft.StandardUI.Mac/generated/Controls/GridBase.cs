@@ -12,13 +12,13 @@ namespace Microsoft.StandardUI.Mac.Controls
         
         public double ColumnSpacing
         {
-            get => (double) GetValue(ColumnSpacingProperty);
+            get => (double) GetNonNullValue(ColumnSpacingProperty);
             set => SetValue(ColumnSpacingProperty, value);
         }
         
         public double RowSpacing
         {
-            get => (double) GetValue(RowSpacingProperty);
+            get => (double) GetNonNullValue(RowSpacingProperty);
             set => SetValue(RowSpacingProperty, value);
         }
     }

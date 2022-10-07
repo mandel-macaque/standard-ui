@@ -17,9 +17,8 @@ namespace Microsoft.StandardUI.WinForms
             SetValue(SettersProperty, _setters);
         }
         
-        public string Name => (string) GetValue(NameProperty);
+        public string Name => (string) GetNonNullValue(NameProperty);
         
-        public UICollection<ISetter> Setters => _setters;
-        IUICollection<ISetter> IVisualState.Setters => Setters;
+        public IUICollection<ISetter> Setters => (UICollection<ISetter>) GetNonNullValue(SettersProperty);
     }
 }

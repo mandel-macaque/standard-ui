@@ -2,6 +2,7 @@
 
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
+using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.StandardUI.Blazor.Media
 {
@@ -19,18 +20,19 @@ namespace Microsoft.StandardUI.Blazor.Media
             SetValue(GradientStopsProperty, _gradientStops);
         }
         
-        public UICollection<IGradientStop> GradientStops => _gradientStops;
-        IUICollection<IGradientStop> IGradientBrush.GradientStops => GradientStops;
+        public IUICollection<IGradientStop> GradientStops => (UICollection<IGradientStop>) GetNonNullValue(GradientStopsProperty);
         
+        [Parameter]
         public BrushMappingMode MappingMode
         {
-            get => (BrushMappingMode) GetValue(MappingModeProperty);
+            get => (BrushMappingMode) GetNonNullValue(MappingModeProperty);
             set => SetValue(MappingModeProperty, value);
         }
         
+        [Parameter]
         public GradientSpreadMethod SpreadMethod
         {
-            get => (GradientSpreadMethod) GetValue(SpreadMethodProperty);
+            get => (GradientSpreadMethod) GetNonNullValue(SpreadMethodProperty);
             set => SetValue(SpreadMethodProperty, value);
         }
     }

@@ -11,7 +11,7 @@ namespace Microsoft.StandardUI.Mac.Media
         
         public Point Point
         {
-            get => (Point) GetValue(PointProperty);
+            get => (Point) GetNonNullValue(PointProperty);
             set => SetValue(PointProperty, value);
         }
     }

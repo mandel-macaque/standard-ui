@@ -35,7 +35,14 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
 
         public virtual void GenerateStandardPanelLayoutMethods(string layoutManagerTypeName, Source methods) { }
         public virtual void GeneratePanelMethods(Source methods) { }
-        public virtual void GenerateDrawableObjectMethods(Interface intface, Source methods) { }
+
+        public virtual void GenerateDrawableObjectMethods(Interface intface, Source methods)
+        {
+            methods.AddBlankLineIfNonempty();
+            methods.AddLine(
+                $"public override void Draw(IDrawingContext drawingContext) => drawingContext.Draw{intface.FrameworkClassName}(this);");
+        }
+
         public virtual void GenerateIUIElementMethods(ClassSource classSource) { }
 
         public string ToFrameworkNamespaceName(INamespaceSymbol namespc)

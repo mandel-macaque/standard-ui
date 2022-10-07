@@ -13,19 +13,19 @@ namespace Microsoft.StandardUI.WinForms.Media
         
         public Point Point1
         {
-            get => (Point) GetValue(Point1Property);
+            get => (Point) GetNonNullValue(Point1Property);
             set => SetValue(Point1Property, value);
         }
         
         public Point Point2
         {
-            get => (Point) GetValue(Point2Property);
+            get => (Point) GetNonNullValue(Point2Property);
             set => SetValue(Point2Property, value);
         }
         
         public Point Point3
         {
-            get => (Point) GetValue(Point3Property);
+            get => (Point) GetNonNullValue(Point3Property);
             set => SetValue(Point3Property, value);
         }
     }

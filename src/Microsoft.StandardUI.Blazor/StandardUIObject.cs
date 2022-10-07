@@ -10,6 +10,7 @@ namespace Microsoft.StandardUI.Blazor
         private PropertyValues _propertyValues = new PropertyValues(true);
 
         public object? GetValue(UIProperty property) => _propertyValues.GetValue(property);
+        public object GetNonNullValue(UIProperty property) => _propertyValues.GetNonNullValue(property);
         object? IUIObject.GetValue(IUIProperty property) => _propertyValues.GetValue((UIProperty)property);
 
         public object? ReadLocalValue(UIProperty property) => _propertyValues.ReadLocalValue(property);

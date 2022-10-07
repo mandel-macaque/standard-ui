@@ -16,49 +16,39 @@ namespace Microsoft.StandardUI.WinForms.Shapes
         public static readonly UIProperty StrokeLineCapProperty = new UIProperty(nameof(StrokeLineCap), PenLineCap.Flat);
         public static readonly UIProperty StrokeLineJoinProperty = new UIProperty(nameof(StrokeLineJoin), PenLineJoin.Miter);
         
-        public Brush? Fill
+        public IBrush? Fill
         {
             get => (Brush?) GetValue(FillProperty);
             set => SetValue(FillProperty, value);
         }
-        IBrush? IShape.Fill
-        {
-            get => Fill;
-            set => Fill = (Brush?) value;
-        }
         
-        public Brush? Stroke
+        public IBrush? Stroke
         {
             get => (Brush?) GetValue(StrokeProperty);
             set => SetValue(StrokeProperty, value);
         }
-        IBrush? IShape.Stroke
-        {
-            get => Stroke;
-            set => Stroke = (Brush?) value;
-        }
         
         public double StrokeThickness
         {
-            get => (double) GetValue(StrokeThicknessProperty);
+            get => (double) GetNonNullValue(StrokeThicknessProperty);
             set => SetValue(StrokeThicknessProperty, value);
         }
         
         public double StrokeMiterLimit
         {
-            get => (double) GetValue(StrokeMiterLimitProperty);
+            get => (double) GetNonNullValue(StrokeMiterLimitProperty);
             set => SetValue(StrokeMiterLimitProperty, value);
         }
         
         public PenLineCap StrokeLineCap
         {
-            get => (PenLineCap) GetValue(StrokeLineCapProperty);
+            get => (PenLineCap) GetNonNullValue(StrokeLineCapProperty);
             set => SetValue(StrokeLineCapProperty, value);
         }
         
         public PenLineJoin StrokeLineJoin
         {
-            get => (PenLineJoin) GetValue(StrokeLineJoinProperty);
+            get => (PenLineJoin) GetNonNullValue(StrokeLineJoinProperty);
             set => SetValue(StrokeLineJoinProperty, value);
         }
     }

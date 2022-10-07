@@ -11,15 +11,12 @@ namespace Microsoft.StandardUI.WinForms.Shapes
     {
         public static readonly UIProperty DataProperty = new UIProperty(nameof(Data), null);
         
-        public Geometry Data
+        public IGeometry Data
         {
-            get => (Geometry) GetValue(DataProperty);
+            get => (Geometry) GetNonNullValue(DataProperty);
             set => SetValue(DataProperty, value);
         }
-        IGeometry IPath.Data
-        {
-            get => Data;
-            set => Data = (Geometry) value;
-        }
+        
+        public override void Draw(IDrawingContext drawingContext) => drawingContext.DrawPath(this);
     }
 }

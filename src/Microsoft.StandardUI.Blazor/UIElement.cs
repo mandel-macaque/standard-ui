@@ -1,5 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.StandardUI.Blazor.Shapes;
 using Microsoft.StandardUI.DefaultImplementations;
 
 namespace Microsoft.StandardUI.Blazor
@@ -23,61 +25,97 @@ namespace Microsoft.StandardUI.Blazor
         public static readonly UIProperty FlowDirectionProperty = new(nameof(VerticalAlignment), FlowDirection.LeftToRight);
         public static readonly UIProperty VisibleProperty = new(nameof(Visible), true);
 
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            base.BuildRenderTree(builder);
 
+            // TODO: Only create the host canvas if an outer component hasn't already created it
+            IVisualFramework visualFramework = HostEnvironment.VisualFramework;
+            IVisualHostControl hostCanvas = visualFramework.CreateHostControl(builder, 0);
+
+            // TODO: Hack for now, but replace this
+            if (this is Shape shape)
+            {
+                IDrawingContext drawingContext = HostEnvironment.VisualFramework.CreateDrawingContext(this);
+                shape.Draw(drawingContext);
+                IVisual? visual = drawingContext.Close();
+
+                if (visual != null)
+                    hostCanvas.Content = visual;
+            }
+        }
+
+        [Parameter]
         public double Width
         {
             get => (double)GetNonNullValue(WidthProperty);
             set => SetValue(WidthProperty, value);
         }
+
+        [Parameter]
         public double MinWidth
         {
             get => (double)GetNonNullValue(MinWidthProperty);
             set => SetValue(MinWidthProperty, value);
         }
+
+        [Parameter]
         public double MaxWidth
         {
             get => (double)GetNonNullValue(MaxWidthProperty);
             set => SetValue(MaxWidthProperty, value);
         }
 
+        [Parameter]
         public double Height
         {
             get => (double)GetNonNullValue(HeightProperty);
             set => SetValue(HeightProperty, value);
         }
+
+        [Parameter]
         public double MinHeight
         {
             get => (double)GetNonNullValue(MinHeightProperty);
             set => SetValue(MinHeightProperty, value);
         }
+
+        [Parameter]
         public double MaxHeight
         {
             get => (double)GetNonNullValue(MaxHeightProperty);
             set => SetValue(MaxHeightProperty, value);
         }
 
+        [Parameter]
         public Thickness Margin
         {
             get => (Thickness)GetNonNullValue(MarginProperty);
             set => SetValue(MarginProperty, value);
         }
 
+        [Parameter]
         public HorizontalAlignment HorizontalAlignment
         {
             get => (HorizontalAlignment)GetNonNullValue(HorizontalAlignmentProperty);
             set => SetValue(HorizontalAlignmentProperty, value);
         }
+
+        [Parameter]
         public VerticalAlignment VerticalAlignment
         {
             get => (VerticalAlignment)GetNonNullValue(VerticalAlignmentProperty);
             set => SetValue(VerticalAlignmentProperty, value);
         }
 
+        [Parameter]
         public FlowDirection FlowDirection
         {
             get => (FlowDirection)GetNonNullValue(FlowDirectionProperty);
             set => SetValue(FlowDirectionProperty, value);
         }
+
+        [Parameter]
         public bool Visible
         {
             get => (bool)GetNonNullValue(VisibleProperty);

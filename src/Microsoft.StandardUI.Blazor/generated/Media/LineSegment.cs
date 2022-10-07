@@ -1,6 +1,7 @@
 // This file is generated from ILineSegment.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Blazor.Media
@@ -9,9 +10,10 @@ namespace Microsoft.StandardUI.Blazor.Media
     {
         public static readonly UIProperty PointProperty = new UIProperty(nameof(Point), Point.Default);
         
+        [Parameter]
         public Point Point
         {
-            get => (Point) GetValue(PointProperty);
+            get => (Point) GetNonNullValue(PointProperty);
             set => SetValue(PointProperty, value);
         }
     }

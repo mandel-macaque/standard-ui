@@ -1,8 +1,7 @@
 using System;
-using Microsoft.StandardUI.Blazor.NativeVisualFramework;
 using Microsoft.StandardUI.Controls;
 
-namespace Microsoft.StandardUI.Blazor
+namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
 {
     public partial class StandardControl : UIElement, IStandardControl, IStandardControlEnvironmentPeer
     {

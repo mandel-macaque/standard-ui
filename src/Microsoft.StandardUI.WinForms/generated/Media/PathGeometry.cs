@@ -18,12 +18,11 @@ namespace Microsoft.StandardUI.WinForms.Media
             SetValue(FiguresProperty, _figures);
         }
         
-        public UICollection<IPathFigure> Figures => _figures;
-        IUICollection<IPathFigure> IPathGeometry.Figures => Figures;
+        public IUICollection<IPathFigure> Figures => (UICollection<IPathFigure>) GetNonNullValue(FiguresProperty);
         
         public FillRule FillRule
         {
-            get => (FillRule) GetValue(FillRuleProperty);
+            get => (FillRule) GetNonNullValue(FillRuleProperty);
             set => SetValue(FillRuleProperty, value);
         }
     }

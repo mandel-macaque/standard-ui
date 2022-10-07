@@ -1,6 +1,7 @@
 // This file is generated from ISetter.cs. Update the source file to change its contents.
 
 using Microsoft.StandardUI.DefaultImplementations;
+using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.StandardUI.Blazor
 {
@@ -10,31 +11,24 @@ namespace Microsoft.StandardUI.Blazor
         public static readonly UIProperty TargetProperty = new UIProperty(nameof(Target), null);
         public static readonly UIProperty ValueProperty = new UIProperty(nameof(Value), null);
         
-        public UIProperty? Property
+        [Parameter]
+        public IUIProperty? Property
         {
             get => (UIProperty?) GetValue(PropertyProperty);
             set => SetValue(PropertyProperty, value);
         }
-        IUIProperty? ISetter.Property
-        {
-            get => Property;
-            set => Property = (UIProperty?) value;
-        }
         
-        public TargetPropertyPath Target
+        [Parameter]
+        public ITargetPropertyPath Target
         {
-            get => (TargetPropertyPath) GetValue(TargetProperty);
+            get => (TargetPropertyPath) GetNonNullValue(TargetProperty);
             set => SetValue(TargetProperty, value);
         }
-        ITargetPropertyPath ISetter.Target
-        {
-            get => Target;
-            set => Target = (TargetPropertyPath) value;
-        }
         
+        [Parameter]
         public object Value
         {
-            get => (object) GetValue(ValueProperty);
+            get => (object) GetNonNullValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
     }

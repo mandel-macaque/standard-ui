@@ -3,6 +3,7 @@
 using Microsoft.StandardUI.DefaultImplementations;
 using Microsoft.StandardUI.Media;
 using Microsoft.StandardUI.Blazor.Media;
+using Microsoft.AspNetCore.Components;
 using Microsoft.StandardUI.Controls;
 
 namespace Microsoft.StandardUI.Blazor.Controls
@@ -17,60 +18,52 @@ namespace Microsoft.StandardUI.Blazor.Controls
         public static readonly UIProperty CornerRadiusProperty = new UIProperty(nameof(CornerRadius), CornerRadius.Default);
         public static readonly UIProperty PaddingProperty = new UIProperty(nameof(Padding), Thickness.Default);
         
-        public Brush Background
+        [Parameter]
+        public IBrush Background
         {
-            get => (Brush) GetValue(BackgroundProperty);
+            get => (Brush) GetNonNullValue(BackgroundProperty);
             set => SetValue(BackgroundProperty, value);
         }
-        IBrush IBorder.Background
-        {
-            get => Background;
-            set => Background = (Brush) value;
-        }
         
+        [Parameter]
         public BackgroundSizing BackgroundSizing
         {
-            get => (BackgroundSizing) GetValue(BackgroundSizingProperty);
+            get => (BackgroundSizing) GetNonNullValue(BackgroundSizingProperty);
             set => SetValue(BackgroundSizingProperty, value);
         }
         
-        public Brush BorderBrush
+        [Parameter]
+        public IBrush BorderBrush
         {
-            get => (Brush) GetValue(BorderBrushProperty);
+            get => (Brush) GetNonNullValue(BorderBrushProperty);
             set => SetValue(BorderBrushProperty, value);
         }
-        IBrush IBorder.BorderBrush
-        {
-            get => BorderBrush;
-            set => BorderBrush = (Brush) value;
-        }
         
+        [Parameter]
         public Thickness BorderThickness
         {
-            get => (Thickness) GetValue(BorderThicknessProperty);
+            get => (Thickness) GetNonNullValue(BorderThicknessProperty);
             set => SetValue(BorderThicknessProperty, value);
         }
         
-        public BuiltInUIElement Child
+        [Parameter]
+        public IUIElement Child
         {
-            get => (BuiltInUIElement) GetValue(ChildProperty);
+            get => (BuiltInUIElement) GetNonNullValue(ChildProperty);
             set => SetValue(ChildProperty, value);
         }
-        IUIElement IBorder.Child
-        {
-            get => Child;
-            set => Child = (BuiltInUIElement) value;
-        }
         
+        [Parameter]
         public CornerRadius CornerRadius
         {
-            get => (CornerRadius) GetValue(CornerRadiusProperty);
+            get => (CornerRadius) GetNonNullValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
         
+        [Parameter]
         public Thickness Padding
         {
-            get => (Thickness) GetValue(PaddingProperty);
+            get => (Thickness) GetNonNullValue(PaddingProperty);
             set => SetValue(PaddingProperty, value);
         }
     }
