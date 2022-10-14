@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.StandardUI.Controls;
 using Microsoft.StandardUI.Media;
@@ -241,6 +241,31 @@ namespace Microsoft.StandardUI.SkiaVisualFramework
                 skiaPoints[i] = new SKPoint((float)points[i].X, (float)points[i].Y);
 
             return skiaPoints;
+        }
+
+        public void DrawRectangle(IBrush? brush, Pen? pen, Rect rect)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DrawRoundedRectangle(IBrush? brush, Pen? pen, Rect rect, double radiusX, double radiusY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushRotateTransform(double angle, double centerX, double centerY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushTransform(ITransform transform)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Pop()
+        {
+            throw new NotImplementedException();
         }
     }
 }

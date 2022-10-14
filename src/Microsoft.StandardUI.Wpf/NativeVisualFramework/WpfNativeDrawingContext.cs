@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Media;
 using Microsoft.StandardUI.Controls;
@@ -234,8 +234,8 @@ namespace Microsoft.StandardUI.Wpf.NativeVisualFramework
             return new System.Windows.Media.Pen(strokeBrush.ToWpfBrush(), shape.StrokeThickness)
             {
                 MiterLimit = shape.StrokeMiterLimit,
-                StartLineCap = shape.StrokeStartLineCap.ToWpfPenLineCap(),
-                EndLineCap = shape.StrokeEndLineCap.ToWpfPenLineCap(),
+                StartLineCap = shape.StrokeLineCap.ToWpfPenLineCap(),
+                EndLineCap = shape.StrokeLineCap.ToWpfPenLineCap(),
                 LineJoin = shape.StrokeLineJoin.ToWpfPenLineJoin()
             };
         }

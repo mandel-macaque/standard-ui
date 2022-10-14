@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Microsoft.StandardUI.Media;
 
 namespace Microsoft.StandardUI.Shapes
@@ -31,16 +31,10 @@ namespace Microsoft.StandardUI.Shapes
         double StrokeMiterLimit { get; set; }
 
         /// <summary>
-        /// A value of the PenLineCap enumeration that specifies the shape at the start of a Stroke. The default is Flat.
+        /// A value of the PenLineCap enumeration that specifies the shape at the start and end of a Stroke. The default is Flat.
         /// </summary>
         [DefaultValue(PenLineCap.Flat)]
-        PenLineCap StrokeStartLineCap { get; set; }
-
-        /// <summary>
-        /// A value of the PenLineCap enumeration that specifies the shape at the end of a Stroke. The default is Flat.
-        /// </summary>
-        [DefaultValue(PenLineCap.Flat)]
-        PenLineCap StrokeEndLineCap { get; set; }
+        PenLineCap StrokeLineCap { get; set; }
 
         /// <summary>
         /// A value of the PenLineJoin enumeration that specifies the join appearance. The default value is Miter.
