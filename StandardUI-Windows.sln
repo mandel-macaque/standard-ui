@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "controls", "controls", "{9F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microcharts", "samples\controls\Microcharts\Microcharts.csproj", "{BF454D87-C790-4E9E-8E32-772DF3CA65BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.WinUI", "src\Microsoft.StandardUI.WinUI\Microsoft.StandardUI.WinUI.csproj", "{A078A512-B474-44A7-AA03-AA66DFC85891}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host-apps", "host-apps", "{63D6491B-37EA-4F36-8B9D-2AD526F74BB8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfSamplesHost", "samples\host-apps\WpfSamplesHost\WpfSamplesHost.csproj", "{8E651CB1-4524-4A5B-A47C-C1A51C73C775}"
@@ -30,12 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ComponentModelEx", "external\component-model-ex\src\Microsoft.ComponentModelEx\Microsoft.ComponentModelEx.csproj", "{A3FD54C6-4006-4B77-9EC7-A809DD54B307}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.Blazor", "src\Microsoft.StandardUI.Blazor\Microsoft.StandardUI.Blazor.csproj", "{620002CD-1FD2-4E08-8C89-AF58DCF899F4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorHost", "samples\host-apps\MauiBlazorHost\MauiBlazorHost.csproj", "{D3493E9A-35A1-402C-BE45-172A2D021968}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.Maui", "src\Microsoft.StandardUI.Maui\Microsoft.StandardUI.Maui.csproj", "{40D16031-9B65-4CC5-A8AA-8F3479706E09}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSamplesHost", "samples\host-apps\MauiSamplesHost\MauiSamplesHost.csproj", "{08CA747A-B0BF-4A4D-93AB-0317188C9167}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1D9AD821-E4C9-44C5-9807-DC296C17A38B}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "skia", "skia", "{705D949C-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.StandardUI.SkiaVisualFramework", "src\skia\Microsoft.StandardUI.SkiaVisualFramework\Microsoft.StandardUI.SkiaVisualFramework.csproj", "{66AC78D8-0A73-41FC-925C-E2840EA2639F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAssemblyHost", "samples\host-apps\BlazorWebAssemblyHost\BlazorWebAssemblyHost.csproj", "{9A48B66D-9B8D-4CD6-992E-BB0921AAE059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblyHost", "samples\host-apps\BlazorWebAssemblyHost\BlazorWebAssemblyHost.csproj", "{9A48B66D-9B8D-4CD6-992E-BB0921AAE059}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,10 +69,6 @@ Global
 		{BF454D87-C790-4E9E-8E32-772DF3CA65BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF454D87-C790-4E9E-8E32-772DF3CA65BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF454D87-C790-4E9E-8E32-772DF3CA65BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A078A512-B474-44A7-AA03-AA66DFC85891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A078A512-B474-44A7-AA03-AA66DFC85891}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A078A512-B474-44A7-AA03-AA66DFC85891}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A078A512-B474-44A7-AA03-AA66DFC85891}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E651CB1-4524-4A5B-A47C-C1A51C73C775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E651CB1-4524-4A5B-A47C-C1A51C73C775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E651CB1-4524-4A5B-A47C-C1A51C73C775}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,22 +85,6 @@ Global
 		{620002CD-1FD2-4E08-8C89-AF58DCF899F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{620002CD-1FD2-4E08-8C89-AF58DCF899F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{620002CD-1FD2-4E08-8C89-AF58DCF899F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3493E9A-35A1-402C-BE45-172A2D021968}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40D16031-9B65-4CC5-A8AA-8F3479706E09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D3A2A5DB-8EBE-47FB-936A-8A66CAEDA9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D3A2A5DB-8EBE-47FB-936A-8A66CAEDA9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3A2A5DB-8EBE-47FB-936A-8A66CAEDA9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -136,8 +108,6 @@ Global
 		{8E651CB1-4524-4A5B-A47C-C1A51C73C775} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
 		{CFF4EEBA-0EA7-49D1-B4F2-17DF640F2174} = {9FA8F699-79F5-48DB-A2D9-717CE875C5F0}
 		{A3FD54C6-4006-4B77-9EC7-A809DD54B307} = {7A42AC94-2253-4EBF-9A8D-047D903E6A48}
-		{D3493E9A-35A1-402C-BE45-172A2D021968} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
-		{08CA747A-B0BF-4A4D-93AB-0317188C9167} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
 		{D3A2A5DB-8EBE-47FB-936A-8A66CAEDA9A8} = {705D949C-2C10-46AD-9007-37E62BC8FA7A}
 		{66AC78D8-0A73-41FC-925C-E2840EA2639F} = {705D949C-2C10-46AD-9007-37E62BC8FA7A}
 		{9A48B66D-9B8D-4CD6-992E-BB0921AAE059} = {63D6491B-37EA-4F36-8B9D-2AD526F74BB8}
