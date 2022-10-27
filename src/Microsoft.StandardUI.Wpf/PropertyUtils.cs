@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Windows;
 
 namespace Microsoft.StandardUI.Wpf
 {
     public static class PropertyUtils
     {
-        public static System.Windows.DependencyProperty Register(string propertyName, Type propertyType, Type ownerType, object? defaultValue) =>
-            System.Windows.DependencyProperty.Register(propertyName, propertyType, ownerType, new PropertyMetadata(defaultValue, OnPropertyChanged));
-
+        public static DependencyProperty Register(string propertyName, Type propertyType, Type ownerType, object? defaultValue)
+            => DependencyProperty.Register(propertyName, propertyType, ownerType, new PropertyMetadata(defaultValue, OnPropertyChanged));
+ 
         public static System.Windows.DependencyProperty RegisterAttached(string propertyName, Type propertyType, Type ownerType, object? defaultValue)
         {
             //var propertyMetadata = new PropertyMetadata(defaultValue, OnPropertyChanged);
@@ -16,6 +16,13 @@ namespace Microsoft.StandardUI.Wpf
 
         private static void OnPropertyChanged(System.Windows.DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
+            if (obj is IUIPropertyChanged uiPropertyChanged)
+            {
+                uiPropertyChanged.OnPropertyChanged(e.Property.Name);
+            }
+
+            // Not currently used
+            /*
             if (!(obj is INotifyObjectOrSubobjectChanged parentObj))
                 return;
 
@@ -28,6 +35,7 @@ namespace Microsoft.StandardUI.Wpf
                 newChildObj.Changed += parentObj.NotifySinceSubobjectChanged;
 
             parentObj.NotifySinceObjectChanged();
+            */
         }
     }
 }
