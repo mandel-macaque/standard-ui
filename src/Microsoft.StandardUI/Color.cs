@@ -1,4 +1,6 @@
-﻿namespace Microsoft.StandardUI
+﻿using System;
+
+namespace Microsoft.StandardUI
 {
     /// <summary>
     /// Describes a color in terms of alpha, red, green, and blue channels.
@@ -37,6 +39,15 @@
                 throw new System.FormatException($"Color '{hex}' isn't a valid hex color");
 
             return value;
+        }
+
+        /// <summary>
+        /// Creates a Color structure from a 32-bit RGBA value
+        /// </summary>
+        public static Color FromRgba(int rgba)
+        {
+            byte[] bytes = BitConverter.GetBytes(rgba);
+            return FromArgb(bytes[3], bytes[0], bytes[1], bytes[2]);
         }
 
         public static bool FromHex(string hex, out Color color)
