@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Microsoft.StandardUI.SourceGenerator
@@ -20,8 +21,8 @@ namespace Microsoft.StandardUI.SourceGenerator
         {
             // Enable this to be able to debug the source generators
 #if false
-            if (!Debugger.IsAttached)
-                Debugger.Launch();
+            if (!System.Diagnostics.Debugger.IsAttached)
+                System.Diagnostics.Debugger.Launch();
 #endif
 
             IncrementalValuesProvider<TGenerateInput> syntaxProvider = initializationContext.SyntaxProvider
@@ -76,6 +77,58 @@ namespace Microsoft.StandardUI.SourceGenerator
             return attributeContainingTypeSymbol.ToDisplayString();
         }
 
+        public static bool IsMatchingAttribute(SemanticModel semanticModel, AttributeSyntax attributeSyntax, string matchingAttributeTypeName1)
+        {
+            var thisAttributeTypeName = GetAttributeFullTypeName(semanticModel, attributeSyntax);
+            if (thisAttributeTypeName == null)
+                return false;
+
+            return thisAttributeTypeName == matchingAttributeTypeName1;
+        }
+
+        public static bool IsMatchingAttribute(SemanticModel semanticModel, AttributeSyntax attributeSyntax, params string[] matchingAttributeTypeNames)
+        {
+            var thisAttributeTypeName = GetAttributeFullTypeName(semanticModel, attributeSyntax);
+            if (thisAttributeTypeName == null)
+                return false;
+
+            foreach (string matchingAttributeTypeName in matchingAttributeTypeNames)
+            {
+                if (thisAttributeTypeName == matchingAttributeTypeName)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static AttributeSyntax? GetTypeAttribute(SemanticModel semanticModel, TypeDeclarationSyntax typeDeclarationSyntax, string matchingAttributeTypeName)
+        {
+            foreach (AttributeListSyntax attributeListSyntax in typeDeclarationSyntax.AttributeLists)
+            {
+                foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes)
+                {
+                    if (IsMatchingAttribute(semanticModel, attributeSyntax, matchingAttributeTypeName))
+                        return attributeSyntax;
+                }
+            }
+
+            return null;
+        }
+
+        public static AttributeSyntax? GetTypeAttribute(SemanticModel semanticModel, TypeDeclarationSyntax typeDeclarationSyntax, params string[] matchingAttributeTypeNames)
+        {
+            foreach (AttributeListSyntax attributeListSyntax in typeDeclarationSyntax.AttributeLists)
+            {
+                foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes)
+                {
+                    if (IsMatchingAttribute(semanticModel, attributeSyntax, matchingAttributeTypeNames))
+                        return attributeSyntax;
+                }
+            }
+
+            return null;
+        }
+
         public static INamedTypeSymbol? GetAttributeTypeArgument(SemanticModel semanticModel, AttributeSyntax attributeSyntax, int argIndex)
         {
             ExpressionSyntax? attributeArg = attributeSyntax.ArgumentList!.Arguments[argIndex].Expression;
@@ -84,6 +137,22 @@ namespace Microsoft.StandardUI.SourceGenerator
 
             TypeSyntax? typeArgument = typeOfExpressionSyntax.Type;
             return semanticModel.GetSymbolInfo(typeArgument).Symbol as INamedTypeSymbol;
+        }
+
+        public static string? GetAttributeStringArgument(AttributeSyntax attributeSyntax, int argIndex)
+        {
+            ExpressionSyntax? attributeArg = attributeSyntax.ArgumentList!.Arguments[argIndex].Expression;
+            if (attributeArg is not LiteralExpressionSyntax literalExpressionSyntax)
+                return null;
+
+            if (literalExpressionSyntax.Kind() != SyntaxKind.StringLiteralExpression)
+                return null;
+
+            SyntaxToken token = literalExpressionSyntax.Token;
+            if (token.Value is not string stringValue)
+                return null;
+
+            return stringValue;
         }
 
         public static INamedTypeSymbol? GetAttributedType(SemanticModel semanticModel, AttributeSyntax attributeSyntax)

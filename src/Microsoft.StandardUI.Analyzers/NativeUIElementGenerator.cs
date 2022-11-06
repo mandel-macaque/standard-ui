@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.ComponentModel.Design;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.StandardUI.SourceGenerator.UIFrameworks;
@@ -14,32 +15,24 @@ namespace Microsoft.StandardUI.SourceGenerator
         protected override ClassDeclarationSyntax? Transform(SemanticModel semanticModel, SyntaxNode node)
         {
             var classDeclarationSyntax = (ClassDeclarationSyntax)node;
-
-            AttributeSyntax? attributeSyntax = GetAttribute(semanticModel, classDeclarationSyntax,
-                out UIFrameworkType? uiFrameworkType);
-            if (attributeSyntax == null)
-                return null;
-
-            return classDeclarationSyntax;
+            if (GetAttribute(semanticModel, classDeclarationSyntax, out _) != null)
+                return classDeclarationSyntax;
+            else return null;
         }
 
         private AttributeSyntax? GetAttribute(SemanticModel semanticModel, ClassDeclarationSyntax classDeclarationSyntax, out UIFrameworkType? uiFrameworkType)
         {
-            foreach (AttributeListSyntax attributeListSyntax in classDeclarationSyntax.AttributeLists)
+            AttributeSyntax? attributeSyntax = GetTypeAttribute(semanticModel, classDeclarationSyntax, KnownTypes.WpfStandardUIElementAttribute);
+            if (attributeSyntax != null)
             {
-                foreach (AttributeSyntax attributeSyntax in attributeListSyntax.Attributes)
-                {
-                    string? currentAttributeTypeName = GetAttributeFullTypeName(semanticModel, attributeSyntax);
-                    if (currentAttributeTypeName == KnownTypes.WpfStandardUIElementAttribute)
-                    {
-                        uiFrameworkType = UIFrameworkType.Wpf;
-                        return attributeSyntax;
-                    }
-                }
+                uiFrameworkType = UIFrameworkType.Wpf;
+                return attributeSyntax;
             }
-
-            uiFrameworkType = null;
-            return null;
+            else
+            {
+                uiFrameworkType = null;
+                return null;
+            }
         }
 
         protected override void Generate(Context context, ImmutableArray<ClassDeclarationSyntax> inputs)

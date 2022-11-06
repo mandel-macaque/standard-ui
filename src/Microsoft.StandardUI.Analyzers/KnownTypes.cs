@@ -14,6 +14,8 @@
         public const string UIObjectAttribute = "Microsoft.StandardUI.UIObjectAttribute";
         public const string StandardPanelAttribute = "Microsoft.StandardUI.StandardPanelAttribute";
         public const string StandardControlAttribute = "Microsoft.StandardUI.StandardControlAttribute";
+        public const string StandardUIElementAttribute = "Microsoft.StandardUI.StandardUIElementAttribute";
+        public const string StandardUISingletonAttribute = "Microsoft.StandardUI.StandardUISingletonAttribute";
 
         public const string ImportStandardControlAttribute = "Microsoft.StandardUI.ImportStandardControlAttribute";
         public const string WpfStandardUIElementAttribute = "Microsoft.StandardUI.WpfStandardUIElementAttribute";
