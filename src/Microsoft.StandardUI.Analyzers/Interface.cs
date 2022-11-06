@@ -107,7 +107,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 StandardControlImpelementationType = Context.Compilation.GetTypeByMetadataName(standardControlImplementationFullName);
 
                 if (StandardControlImpelementationType == null)
-                    throw UserVisibleErrors.NoLayoutManagerClassFound(standardControlImplementationFullName, Name);
+                    throw UserVisibleErrors.NoStandardControlImplementationClassFound(standardControlImplementationFullName, Name);
             }
 
             // Get content property name or null

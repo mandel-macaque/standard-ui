@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -99,12 +100,20 @@ namespace Microsoft.StandardUI.CommandLineSourceGenerator
             var gatherInterfacesVisitor = new GatherInterfacesVisitor(context);
             gatherInterfacesVisitor.Visit(compilation.GlobalNamespace);
 
-            AttributeData? attribute = compilation.Assembly.GetAttributes()
+            AttributeData? controlLibraryAttribute = compilation.Assembly.GetAttributes()
                 .FirstOrDefault(a => a.AttributeClass?.ToString() == KnownTypes.ControlLibraryAttribute);
-            if (attribute == null)
+            if (controlLibraryAttribute == null)
                 throw UserVisibleErrors.MissingControlLibraryAttribute();
 
-            var controlLibrary = new ControlLibrary(context, attribute, gatherInterfacesVisitor.Interfaces);
+            ImmutableArray<TypedConstant> constructorArguments = controlLibraryAttribute.ConstructorArguments;
+            if (constructorArguments.Length != 1)
+                throw UserVisibleErrors.ControlLibraryAttributeInvalid(controlLibraryAttribute.ApplicationSyntaxReference);
+
+            if (constructorArguments[0].Value is not string libraryFullyQualifiedName)
+                throw UserVisibleErrors.ControlLibraryAttributeInvalid(controlLibraryAttribute.ApplicationSyntaxReference);
+
+            var controlLibrary = new ControlLibrary(context, libraryFullyQualifiedName,
+                controlLibraryAttribute.ApplicationSyntaxReference, gatherInterfacesVisitor.Interfaces);
 
             var wpfUIFramework = new WpfUIFramework(context);
             var winUIUIFramework = new WinUIUIFramework(context);

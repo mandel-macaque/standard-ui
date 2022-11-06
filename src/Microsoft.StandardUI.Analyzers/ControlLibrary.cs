@@ -11,21 +11,15 @@ namespace Microsoft.StandardUI.SourceGenerator
         public string LibraryName { get; }
         public List<Interface> Interfaces { get; }
 
-        public ControlLibrary(Context context, AttributeData libraryAttribute, List<Interface> interfaces)
+        public ControlLibrary(Context context, string fullyQualifiedName, SyntaxReference? attributeSyntaxReference,
+            List<Interface> interfaces)
         {
             Context = context;
             Interfaces = interfaces;
 
-            ImmutableArray<TypedConstant> constructorArguments = libraryAttribute.ConstructorArguments;
-            if (constructorArguments.Length != 1)
-                throw UserVisibleErrors.ControlLibraryAttributeInvalid(libraryAttribute);
-
-            if (constructorArguments[0].Value is not string fullyQualifiedName)
-                throw UserVisibleErrors.ControlLibraryAttributeInvalid(libraryAttribute);
-
             int lastPeriod = fullyQualifiedName.LastIndexOf(".");
             if (lastPeriod == -1)
-                throw UserVisibleErrors.ControlLibraryAttributeInvalid(libraryAttribute);
+                throw UserVisibleErrors.ControlLibraryAttributeInvalid(attributeSyntaxReference);
 
             LibraryNamespace = fullyQualifiedName.Substring(0, lastPeriod);
             LibraryName = fullyQualifiedName.Substring(lastPeriod + 1);
@@ -42,6 +36,7 @@ namespace Microsoft.StandardUI.SourceGenerator
             Source members = factoryClassSource.StaticMethods;
 
             usings.AddNamespace("System");
+            usings.AddNamespace("Microsoft.StandardUI");
 
             members.AddLines(
                 "private static Func<T> UninitializedCreator<T>() =>");
