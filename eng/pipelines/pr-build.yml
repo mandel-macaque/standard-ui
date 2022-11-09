@@ -1,0 +1,22 @@
+# pipeline used for pr builds. This pipeline DOES NOT sign the project.
+
+resources:
+  repositories:
+  - repository: self
+    checkoutOptions:
+      submodules: true
+
+trigger: none
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - '*'  # yes, you do need the quote, * has meaning in yamls
+
+stages:
+- template: templates/main-stage.yml
+  parameters:
+    isPR: true
+    signatureType: 'Real'
+    microbuildConnection: ''

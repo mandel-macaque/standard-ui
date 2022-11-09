@@ -1,0 +1,92 @@
+# main template that is used to build the project, this allow to share the logic between the ci and the pr pipelines.
+parameters:
+
+- name: isPR
+  type: boolean
+  default: true
+
+- name: signatureType
+  type: string
+  default: 'Real'
+
+- name: microbuildConnection
+  type: string
+  default: ''
+
+stages:
+- stage: build_packages
+  displayName: 'Build'
+  dependsOn: []
+
+  jobs:
+  - job: build
+    timeoutInMinutes: 60
+    pool:
+      vmImage: windows-latest
+
+    steps:
+    - checkout: self
+      clean: true
+
+    - task: UseDotNet@2
+      inputs:
+        version: 6.0.201
+
+    - pwsh: |
+        msbuild StandardUI-Windows.sln /restore /p:Configuration=Release
+      displayName: 'Build project'
+
+    - ${{ not(parameters.isPR) }}:
+      - task: UseDotNet@2
+        inputs:
+          packageType: sdk
+          version: 3.x
+        displayName: 'Install .NET Core SDK 3.x needed for ESRP'
+
+      - task: MicroBuildSigningPlugin@4
+        displayName: 'Install Signing Plugin'
+        inputs:
+          signType: '${{ parameters.signatureType }}'
+          azureSubscription: ${{ parameters.microbuildConnection }}
+          zipSources: false  # we do not use the feature and makes the installation to last 10/12 mins instead of < 1 min
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+      - task: MicroBuildSigningPlugin@4
+        displayName: 'Install Notarizing Plugin'
+        inputs:
+          signType: ${{ parameters.signatureType }}
+          azureSubscription: ${{ parameters.microbuildConnection }}
+          zipSources: false  # we do not use the feature and makes the installation to last 10/12 mins instead of < 1 min
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+      - pwsh: |
+          $patterns = @(
+            "*.dll",
+          )
+          $files = @()
+          $bundlePath = "." # TODO: verify we want to do this. Best option is to point to the release folder and deal with it.
+          foreach ($p in $patterns) {
+            $files += Get-ChildItem -Path $bundlePath -Recurse  -Filter $p
+          }
+          $SignFiles = @()
+          foreach($f in $files) {
+              Write-Host "$($f.FullName)"
+              $SignFiles += @{ "SrcPath"="$($f.FullName)"}
+          }
+          $SignFileRecord = @(
+            @{
+              "Certs" = "400";
+              "SignFileList" = $SignFiles;
+            }
+          )
+          $SignFileList = @{
+              "SignFileRecordList" = $SignFileRecord
+          }
+          # Write the json to a file
+          ConvertTo-Json -InputObject $SignFileList -Depth 100 | Out-File -FilePath $(Build.ArtifactStagingDirectory)/bundle.json -Force
+          # the tool will stepover the files
+          dotnet $Env:MBSIGN_APPFOLDER/ddsignfiles.dll /filelist:$(Build.ArtifactStagingDirectory)/bundle.json
+        displayName: 'Sign dlls.'
+
