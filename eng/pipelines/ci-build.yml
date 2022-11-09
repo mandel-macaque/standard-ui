@@ -1,0 +1,18 @@
+# pipeline used for ci builds. This pipleine DOES sign the project.
+resources:
+  repositories:
+  - repository: self
+    checkoutOptions:
+      submodules: true
+
+trigger:
+  branches:
+    include:
+    - '*'  # yes, you do need the quote, * has meaning in yamls
+
+stages:
+- template: templates/main-stage.yml
+  parameters:
+    isPR: false
+    signatureType: 'Real'
+    microbuildConnection: 'MicroBuild Signing Task (DevDiv)'
