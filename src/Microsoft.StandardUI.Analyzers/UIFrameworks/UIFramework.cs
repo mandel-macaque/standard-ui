@@ -22,7 +22,7 @@ namespace Microsoft.StandardUI.SourceGenerator.UIFrameworks
         public abstract string NativeUIElementType { get; }
         public virtual TypeName BuiltInUIElementBaseClassType => new(RootNamespace, "BuiltInUIElement");
         public virtual TypeName BuiltInUIObjectBaseClassType => new(RootNamespace, "StandardUIObject");
-        public virtual TypeName StandardControlBaseClassType => new(RootNamespace, "StandardControl");
+        public virtual TypeName StandardControlBaseClassType => new(RootNamespace, Name + "StandardControl");
 
         public virtual string PropertyDescriptorName(Property property) => property.Name + "Property";
         public virtual string PropertyDescriptorName(AttachedProperty property) => property.Name + "Property";

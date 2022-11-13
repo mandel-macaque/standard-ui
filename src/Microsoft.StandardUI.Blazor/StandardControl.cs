@@ -5,7 +5,7 @@ namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
 {
     public partial class StandardControl : UIElement, IStandardControl, IStandardControlEnvironmentPeer
     {
-        private StandardControlImplementation? _implementation;
+        private StandardUI.Controls.StandardControl? _implementation;
         private IUIElement? _buildContent;
         private bool _invalid = true;
 
@@ -15,12 +15,10 @@ namespace Microsoft.StandardUI.Blazor.NativeVisualFramework
                 BlazorHostFramework.Init(new BlazorNativeVisualFramework());
         }
 
-        protected void InitImplementation(StandardControlImplementation implementation)
+        protected void InitImplementation(StandardUI.Controls.StandardControl implementation)
         {
             _implementation = implementation;
         }
-
-        IUIObject? IStandardControl.GetTemplateChild(string childName) => throw new NotImplementedException();
 
         public override void Measure(Size constraint) => throw new NotImplementedException();
 

@@ -4,7 +4,7 @@ using Visibility = System.Windows.Visibility;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public partial class StandardControl
+    public partial class WpfStandardControl
     {
         void IUIElement.Measure(Size availableSize) => Measure(availableSize.ToWpfSize());
         void IUIElement.Arrange(Rect finalRect) => Arrange(finalRect.ToWpfRect());

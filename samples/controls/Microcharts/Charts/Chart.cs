@@ -30,11 +30,11 @@ namespace Microcharts
         Color LabelColor { get; set; }
     }
 
-    public class ChartImplementation : StandardControlImplementation<IChart>
+    public class Chart : StandardControl<IChart>
     {
         private ChartBase _chart;
 
-        public ChartImplementation(IChart control) : base(control)
+        public Chart(IChart control) : base(control)
         {
         }
 

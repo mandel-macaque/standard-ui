@@ -7,15 +7,16 @@ using static Microsoft.StandardUI.StandardUIStatics;
 
 namespace SimpleControls
 {
+    [StandardControl]
     public interface IRadialGauge : IStandardControl
     {
         [DefaultValue(null)]
         IBrush? Fill { get; set; }
     }
 
-    public class RadialGauge<T> : StandardControlImplementation<T> where T : IRadialGauge
+    public class RadialGauge : StandardControl<IRadialGauge>
     {
-        public RadialGauge(T control) : base(control)
+        public RadialGauge(IRadialGauge control) : base(control)
         { }
 
         public override IUIElement? Build()

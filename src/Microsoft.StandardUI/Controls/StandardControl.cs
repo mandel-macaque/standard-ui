@@ -2,11 +2,11 @@ using System;
 
 namespace Microsoft.StandardUI.Controls
 {
-    public abstract class StandardControlImplementation
+    public abstract class StandardControl
     {
         IStandardControlEnvironmentPeer _environmentPeer;
 
-        public StandardControlImplementation(IStandardControlEnvironmentPeer environmentPeer)
+        public StandardControl(IStandardControlEnvironmentPeer environmentPeer)
         {
             _environmentPeer = environmentPeer;
         }
@@ -96,11 +96,11 @@ namespace Microsoft.StandardUI.Controls
         }
     }
 
-    public abstract class StandardControlImplementation<T> : StandardControlImplementation where T : IStandardControl
+    public abstract class StandardControl<T> : StandardControl where T : IStandardControl
     {
         public T Control { get; }
 
-        public StandardControlImplementation(T control) : base((IStandardControlEnvironmentPeer)control)
+        public StandardControl(T control) : base((IStandardControlEnvironmentPeer)control)
         {
             Control = control;
         }

@@ -103,11 +103,11 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
             else if (Purpose == InterfacePurpose.StandardControl)
             {
-                string standardControlImplementationFullName = $"{NamespaceName}.{Name.Substring(1)}Implementation";
+                string standardControlImplementationFullName = $"{NamespaceName}.{Name.Substring(1)}";
                 StandardControlImpelementationType = Context.Compilation.GetTypeByMetadataName(standardControlImplementationFullName);
 
                 if (StandardControlImpelementationType == null)
-                    throw UserVisibleErrors.NoStandardControlImplementationClassFound(standardControlImplementationFullName, Name);
+                    throw UserVisibleErrors.NoStandardControlImplementationClassFound(type, standardControlImplementationFullName, Name);
             }
 
             // Get content property name or null

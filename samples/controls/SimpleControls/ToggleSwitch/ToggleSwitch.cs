@@ -21,9 +21,9 @@ namespace AlohaKit.StandardControls
         public bool HasShadow { get; set; }
     }
 
-    public class ToggleSwitchImplementation : StandardControlImplementation<IToggleSwitch>
+    public class ToggleSwitch : StandardControl<IToggleSwitch>
     {
-        public ToggleSwitchImplementation(IToggleSwitch control) : base(control)
+        public ToggleSwitch(IToggleSwitch control) : base(control)
         {
             Control.Width = 40;
             Control.Height = 30;

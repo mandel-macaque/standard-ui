@@ -45,7 +45,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                 if (generatedInterfaces.Contains(fullTypeName))
                     continue;
 
-                GenerateSourceFile(context, fullTypeName);
+                GenerateSourceFile(context, importType);
                 generatedInterfaces.Add(fullTypeName);
 
                 // Generate any ancestor types
@@ -59,7 +59,7 @@ namespace Microsoft.StandardUI.SourceGenerator
                     if (ancestorFullTypeName == KnownTypes.IStandardControl || generatedInterfaces.Contains(ancestorFullTypeName))
                         break;
 
-                    GenerateSourceFile(context, ancestorFullTypeName);
+                    GenerateSourceFile(context, ancestorType);
                     generatedInterfaces.Add(ancestorFullTypeName);
 
                     ancestorType = GetBaseInterface(ancestorType);
@@ -84,15 +84,8 @@ namespace Microsoft.StandardUI.SourceGenerator
             throw UserVisibleErrors.CouldNotIdentifyUIFramework();
         }
 
-        private static void GenerateSourceFile(Context context, string interfaceFullTypeName)
+        private static void GenerateSourceFile(Context context, INamedTypeSymbol interfaceSymbol)
         {
-            INamedTypeSymbol? interfaceSymbol = context.Compilation.GetTypeByMetadataName(interfaceFullTypeName);
-            if (interfaceSymbol == null)
-                return;
-
-            if (!TryGetTypeNamesFromInterface(interfaceFullTypeName, out string interfaceNamespace, out string controlTypeName))
-                return;
-
             UIFramework uiFramework = GetUIFramework(context);
 
             var intface = new Interface(context, interfaceSymbol);

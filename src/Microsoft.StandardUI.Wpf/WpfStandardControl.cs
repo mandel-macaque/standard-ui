@@ -5,13 +5,13 @@ using Microsoft.StandardUI.Wpf.NativeVisualFramework;
 
 namespace Microsoft.StandardUI.Wpf
 {
-    public partial class StandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
+    public partial class WpfStandardControl : System.Windows.Controls.Control, IStandardControl, IStandardControlEnvironmentPeer, ILogicalParent
     {
-        private StandardControlImplementation? _implementation;
+        private StandardControl? _standardControl;
         private IUIElement? _buildContent;
         private bool _invalid = true;
 
-        public StandardControl()
+        public WpfStandardControl()
         {
             if (!HostEnvironment.IsInitialized)
             {
@@ -19,14 +19,9 @@ namespace Microsoft.StandardUI.Wpf
             }
         }
 
-        protected void InitImplementation(StandardControlImplementation implementation)
+        protected void InitImplementation(StandardControl standardControl)
         {
-            _implementation = implementation;
-        }
-
-        IUIObject? IStandardControl.GetTemplateChild(string childName)
-        {
-            throw new NotImplementedException();
+            _standardControl = standardControl;
         }
 
         protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint)
@@ -37,13 +32,13 @@ namespace Microsoft.StandardUI.Wpf
                 _invalid = false;
             }
 
-            _implementation!.Measure(new Size(constraint.Width, constraint.Height));
-            return _implementation.DesiredSize.ToWpfSize();
+            _standardControl!.Measure(new Size(constraint.Width, constraint.Height));
+            return _standardControl.DesiredSize.ToWpfSize();
         }
 
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size arrangeSize)
         {
-            _implementation!.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
+            _standardControl!.Arrange(new Rect(0, 0, arrangeSize.Width, arrangeSize.Height));
             return arrangeSize;
         }
 
@@ -75,7 +70,7 @@ namespace Microsoft.StandardUI.Wpf
                 _buildContent = null;
             }
 
-            _buildContent = _implementation!.Build();
+            _buildContent = _standardControl!.Build();
 
             if (_buildContent != null)
             {
