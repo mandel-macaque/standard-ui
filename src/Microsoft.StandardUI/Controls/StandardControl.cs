@@ -32,18 +32,6 @@ namespace Microsoft.StandardUI.Controls
         /// <param name="drawingContext">drawing context that should draw to</param>
         public virtual void Render(IDrawingContext drawingContext) { }
 
-        /// <summary>
-        /// Retrieves the named element in the instantiated ControlTemplate visual tree.
-        /// </summary>
-        /// <param name="childName">The name of the element to find.</param>
-        /// <returns>The named element from the template, if the element is found. Can
-        /// return null if no element with name childName was found in the template.</returns>
-        protected IUIObject? GetTemplateChild(string childName)
-        {
-            // TODO: Finish this
-            return null;
-        }
-
         public Size DesiredSize { get; private set; }
 
         public void Measure(Size availableSize)

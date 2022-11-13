@@ -79,44 +79,5 @@ namespace Microsoft.StandardUI.Wpf
                 AddLogicalChild(wpfUIElement);
             }
         }
-
-#if false
-        IControlTemplate? IControl.Template
-        {
-            get
-            {
-                System.Windows.Controls.ControlTemplate controlTemplate = Template;
-                if (controlTemplate == null)
-                    _controlTemplateWpf = null;
-                else
-                {
-                    // Cache our ControlTemplateWpf wrapper, so the reference stays the same except
-                    // when the underlying Template changes
-                    if (!(ReferenceEquals(_controlTemplateWpf?.ControlTemplate, controlTemplate)))
-                        _controlTemplateWpf = new ControlTemplateWpf(controlTemplate);
-                }
-                return _controlTemplateWpf;
-            }
-
-            set
-            {
-                var controlTemplateWpf = (ControlTemplateWpf?)value;
-                Template = controlTemplateWpf?.ControlTemplate;
-                _controlTemplateWpf = controlTemplateWpf;
-            }
-        }
-#endif
-
-#if false
-        IUIPropertyObject? IStandardUIControlEnvironmentPeer.GetTemplateChild(string childName)
-        {
-            System.Windows.DependencyObject? child = this.GetTemplateChild(childName);
-            if (child == null)
-                return null;
-
-            // TODO:Finish this
-            return null;
-        }
-#endif
     }
 }
