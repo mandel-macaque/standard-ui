@@ -6,6 +6,7 @@
         StandardUIObject,
         StandardControl,
         StandardPanel,
+        UISingleton,
         Unspecified
     }
 }

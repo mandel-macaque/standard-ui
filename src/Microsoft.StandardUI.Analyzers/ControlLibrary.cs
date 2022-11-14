@@ -47,11 +47,36 @@ namespace Microsoft.StandardUI.SourceGenerator
             }
             members.AddBlankLine();
 
+            bool anySingletons = false;
             foreach (Interface intface in Interfaces)
             {
+                if (intface.Purpose == InterfacePurpose.UISingleton)
+                {
+                    anySingletons = true;
+                    continue;
+                }
+
                 usings.AddNamespace(intface.NamespaceName);
                 members.AddLine(
                     $"public static Func<{intface.Name}> {intface.FrameworkClassName}Creator {{ get; set; }} = UninitializedCreator<{intface.Name}>();");
+            }
+
+            if (anySingletons)
+            {
+                members.AddBlankLine();
+                members.AddLine("// Singletons");
+
+                foreach (Interface intface in Interfaces)
+                {
+                    if (intface.Purpose != InterfacePurpose.UISingleton)
+                    {
+                        continue;
+                    }
+
+                    usings.AddNamespace(intface.NamespaceName);
+                    members.AddLine(
+                        $"public static {intface.Name} {intface.FrameworkClassName} {{ get; set; }}");
+                }
             }
 
             factoryClassSource.AddToOutput(null);
@@ -67,11 +92,35 @@ namespace Microsoft.StandardUI.SourceGenerator
             Usings usings = factoryClassSource.Usings;
             Source members = factoryClassSource.StaticMethods;
 
+            bool anySingletons = false;
             foreach (Interface intface in Interfaces)
             {
+                if (intface.Purpose == InterfacePurpose.UISingleton)
+                {
+                    anySingletons = true;
+                    continue;
+                }
+
                 usings.AddNamespace(intface.NamespaceName);
                 members.AddLine(
-                    $"public static {intface.Name} {intface.FrameworkClassName} => {LibraryName}Factory.{intface.FrameworkClassName}Creator();");
+                    $"public static {intface.Name} {intface.FrameworkClassName}() => {LibraryName}Factory.{intface.FrameworkClassName}Creator();");
+            }
+
+            if (anySingletons)
+            {
+                members.AddBlankLine();
+                members.AddLine("// Singletons");
+
+                foreach (Interface intface in Interfaces)
+                {
+                    if (intface.Purpose != InterfacePurpose.UISingleton)
+                    {
+                        continue;
+                    }
+
+                    members.AddLine(
+                        $"public static {intface.Name} {intface.FrameworkClassName} => {LibraryName}Factory.{intface.FrameworkClassName};");
+                }
             }
 
             factoryClassSource.AddToOutput(null);

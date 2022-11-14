@@ -58,6 +58,8 @@ namespace Microsoft.StandardUI.SourceGenerator
 
                 if (attributeTypeFullName == KnownTypes.UIModelAttribute)
                     return InterfacePurpose.StandardUIObject;
+                else if (attributeTypeFullName == KnownTypes.StandardUISingletonAttribute)
+                    return InterfacePurpose.UISingleton;
                 else if (attributeTypeFullName == KnownTypes.UIObjectAttribute)
                     return InterfacePurpose.UIObject;
                 else if (attributeTypeFullName == KnownTypes.StandardPanelAttribute)
